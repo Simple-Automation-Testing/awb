@@ -1,13 +1,3 @@
-const reflect = require('harmony-reflect')
-require('babel-register')({
-  ignore: (fname) => {
-    if (fname.indexOf('node_modules') >= 0) {
-      return true
-    }
-    return false
-  }
-});
-
 import { expect } from 'chai';
 import { JSDOM } from 'jsdom';
 import register from 'ignore-styles';
