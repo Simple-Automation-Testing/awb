@@ -19,14 +19,15 @@ const assertObject = arg => arg !== null && typeof arg === 'object';
 
 const requestInterface = (options, data) => new Promise((resolve, reject) => {
   const req = http.request(options, (res) => {
+    let body = '';
     // console.log(`STATUS: ${res.statusCode}`);
     // console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
     res.setEncoding('utf8')
-    res.on('data', (body) => {
-      resolve(parseJson(body))
+    res.on('data', (chunk) => {
+      body += chunk.toString('utf8');
     })
     res.on('end', () => {
-      // console.log('No more data in response.');
+      resolve({status: res.statusCode, body: parseJson(body)})
     })
   })
   data && req.write(data)
@@ -34,7 +35,7 @@ const requestInterface = (options, data) => new Promise((resolve, reject) => {
   req.on('error', (e) => {
     console.error(`problem with request: ${e.message}`);
   });
-}).catch()
+});
 
 module.exports = {
   assertNumber,
@@ -42,4 +43,4 @@ module.exports = {
   assertObject,
   assertString,
   requestInterface
-}
+};
