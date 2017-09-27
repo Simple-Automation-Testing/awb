@@ -1,5 +1,5 @@
 ":" //; exec /usr/bin/env node --harmony --expose-gc --trace-deprecation "$0" "$@"
-const { requestInterface } = require('./util')
+const { requestInterface } = require('./util');
 
 let defaultCapabilities = JSON.stringify({
   desiredCapabilities: {
@@ -23,39 +23,58 @@ const baseOptions = {
 const resizeWindow = async function (options, sessionId, rect) {
   if (!options) options = baseOptions;
   options.method = 'POST';
-  options.path = `/wd/hub/session/${sessionId}/window/current/size`
-  console.log(rect)
+  options.path = `/wd/hub/session/${sessionId}/window/current/size`;
   const { body } = await requestInterface(options, JSON.stringify(rect));
-  return body
-}
-
+  return body;
+};
 
 const getUrl = async function (options, sessionId) {
   if (!options) options = baseOptions;
   options.method = 'GET';
-  options.path = `/wd/hub/session/${sessionId}/url`
+  options.path = `/wd/hub/session/${sessionId}/url`;
   const { body: { value } } = await requestInterface(options);
   return value;
 };
-
 
 const clickElement = async function (options, sessionId, elementId) {
   if (!options) options = baseOptions;
   options.method = 'POST';
-  options.path = `/wd/hub/session/${sessionId}/element/${elementId}/click`
+  options.path = `/wd/hub/session/${sessionId}/element/${elementId}/click`;
   const data = await requestInterface(options, JSON.stringify({ button: 0 }));
-  return data
+  return data;
 };
 
+const submitElement = async function (options, sessionId, elementId) {
+  if (!options) options = baseOptions;
+  options.method = 'POST';
+  options.path = `/wd/hub/session/${sessionId}/element/${elementId}/submit`;
+  const data = await requestInterface(options);
+  return data;
+};
+
+const clearElementText = async function (options, sessionId, elementId) {
+  if (!options) options = baseOptions;
+  options.method = 'POST';
+  options.path = `/wd/hub/session/${sessionId}/element/${elementId}/clear`;
+  const data = await requestInterface(options);
+  return data;
+};
+
+const getElementText = async function (options, sessionId, elementId) {
+  if (!options) options = baseOptions;
+  options.method = 'GET';
+  options.path = `/wd/hub/session/${sessionId}/element/${elementId}/text`;
+  const data = await requestInterface(options);
+  return data;
+};
 
 const getTitle = async function (options, sessionId) {
   if (!options) options = baseOptions;
   options.method = 'GET';
-  options.path = `/wd/hub/session/${sessionId}/title`
+  options.path = `/wd/hub/session/${sessionId}/title`;
   const { body: { value } } = await requestInterface(options);
   return value;
 };
-
 
 const goToUrl = async function (options, sessionId, url) {
   if (!options) options = baseOptions;
@@ -94,6 +113,16 @@ const initSession = async function (options, data) {
   return sessionId;
 };
 
+const sendKeys = async function (options, sessionId, elementId, keysToSend) {
+  if (!options) options = baseOptions;
+  options.method = 'POST';
+  options.path = `/wd/hub/session/${sessionId}/element/${elementId}/value`
+  if (!Array.isArray(keysToSend)) {
+    keysToSend = [keysToSend];
+  }
+  await requestInterface(options, JSON.stringify({value: keysToSend}));
+};
+
 const killSession = async function (options, sessionId) {
   if (!options) options = baseOptions;
   options.method = 'DELETE';
@@ -101,8 +130,8 @@ const killSession = async function (options, sessionId) {
   await requestInterface(options);
 };
 
-
 module.exports = {
+  sendKeys,
   resizeWindow,
   killSession,
   initSession,
