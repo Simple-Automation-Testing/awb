@@ -27,31 +27,41 @@ const componentsList = [
 ];
 
 class Page extends Component {
-
   componentDidMount() {
 
-  }
+  };
   render() {
+    const { elements } = this.props;
+    console.log(elements);
     return (
       <div className="work__area">
-        <div className="scenario__area"></div>
-        <div className="scenario__components__area">{componentsList.map((element, index) => <ScenarioComponent key={index} {...element} />)}</div>
+        <div className="scenario__area">{
+          elements.map((element, index) => <ScenarioComponent key={index} {...element} position={index}/>)
+        }</div>
+        <div className="scenario__components__area">{
+          componentsList.map((element, index) => <ScenarioComponent key={index} {...element} />)
+        }</div>
       </div>
-    )
-  }
+    );
+  };
 };
 
 
+const mapStateToProps = ({ elements }) => ({
+  elements
+});
 
+const mapDispatchToProps = (dispatch) => ({
+  addName: (name) => dispatch(actionsName.addNewName(name)),
+  removeName: (name) => dispatch(actionsName.removeName(name)),
+  sortNames: (directive) => dispatch(actionsName.sortNames(directive)),
+  addItem: (item) => dispatch(actionsItem.addNewItem(item))
+});
 
-
-
-
-
-const Main = DragDropContext(HTML5Backend)(connect(Page))
+const Main = DragDropContext(HTML5Backend)(connect(mapStateToProps)(Page))
 
 ReactDom.render(
   <Provider store={store}>
     <Main />
   </Provider>
-  , document.getElementById('app'))
+  , document.getElementById('app'));

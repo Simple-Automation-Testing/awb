@@ -4,9 +4,11 @@ import { DragSource } from 'react-dnd';
 const type = 'SCENARIO_ITEM';
 
 const spec = {
-  beginDrag() {
-    return {}
-  }
+  beginDrag(props, monitor) {
+    console.log(props, monitor.getItem(), '!!!!')
+    return {a: 1}
+  },
+  endDrag() {}
 };
 
 const collect = (connect, monitor) => ({

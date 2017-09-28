@@ -4,12 +4,17 @@ import { DropTarget } from 'react-dnd';
 const type = 'SCENARIO_ITEM';
 
 const spec = {
-  drop() {
+  drop(props, monitor) {
+    console.log(props, '<----- props', 'dropitem ------>', monitor.getItem())
     return {}
   },
   canDrop(props, monitor) {
     const item = monitor.getItem();
+    return true;
   },
+  hover(props, monitor) {
+    // console.log(monitor.getItem());
+  }
 };
 
 const collect = (connect, monitor) => ({
