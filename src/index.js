@@ -1,46 +1,57 @@
-import React, { Component } from 'react'
-import ReactDom from 'react-dom'
-import { Provider } from 'react-redux'
+import React, { Component } from 'react';
+import { Provider, connect } from 'react-redux';
+import ReactDom from 'react-dom';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+import { v4 as uuid } from 'uuid'
+import { DraggableComponent } from './components/draggable-decorator';
+import { DroppableComponent } from './components/droppable-decorator';
 
+import store from './reducers/rootReducer'
 
-import {ScenarioComponent} from './components/scenario-component'
+import { ScenarioComponent as Element } from './components/scenario-component';
 
-// var saveData = (function () {
-//   var a = document.createElement("a");
-//   document.body.appendChild(a);
-//   a.style = "display: none";
-//   return function (data, fileName) {
-//       // //JSON.stringify(data),
-//          var blob = new Blob([data], {type: "octet/stream"}),
-//           url = window.URL.createObjectURL(blob);
-//       a.href = url;
-//       a.download = fileName;
-//       a.click();
-//       window.URL.revokeObjectURL(url);
-//   };
-// }());
+const ScenarioComponent = DroppableComponent(DraggableComponent(Element));
 
-// var data = `{ x: 42, s: "hello, world", d: new Date() }`,
-//   fileName = "my-download.js";
+const componentsList = [
+  {
+    title: 'Button (Click element)',
+    id: uuid(),
+    listElement: true
+  },
+  {
+    title: 'Input',
+    id: uuid(),
+    listElement: true
+  }
+];
 
-// saveData(data, fileName);
-
-
-
-class Main extends Component {
+class Page extends Component {
 
   componentDidMount() {
-    // Start file download.
 
   }
   render() {
     return (
       <div className="work__area">
         <div className="scenario__area"></div>
-        <div className="scenario__components__area"></div>
+        <div className="scenario__components__area">{componentsList.map((element, index) => <ScenarioComponent key={index} {...element} />)}</div>
       </div>
     )
   }
-}
+};
 
-ReactDom.render(<Main />, document.getElementById('app'))
+
+
+
+
+
+
+
+const Main = DragDropContext(HTML5Backend)(connect(Page))
+
+ReactDom.render(
+  <Provider store={store}>
+    <Main />
+  </Provider>
+  , document.getElementById('app'))

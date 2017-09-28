@@ -1,5 +1,13 @@
-import React from 'react'
+import React from 'react';
 
-export const ScenarioComponent = ({ text, onChange, listElement }) => (
-  <div>{text}{listElement && <input onChange={onChange} className="css__selector-input" />}</div>
-)
+export const ScenarioComponent = ({ title, text, onChange, listElement, className }) => {
+  const handleChange = (e) => {
+    onChange && onChange(e)
+  };
+  const classValue = className ? `css__selector-input-${className}` : 'css__selector-input';
+  return (
+    <div><span>{title}{text && text}</span>{
+      !listElement && <input onChange={handleChange} className={classValue} />
+    }</div>
+  );
+};

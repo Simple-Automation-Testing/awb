@@ -1,0 +1,9 @@
+.work__area {
+  display: flex;
+}
+.scenario__area {
+  flex: 2;
+}
+.scenario__components__area {
+  flex: 1;
+}
