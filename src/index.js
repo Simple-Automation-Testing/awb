@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
-import { Provider, connect } from 'react-redux';
 import ReactDom from 'react-dom';
-import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import { Provider, connect } from 'react-redux';
+import { DragDropContext } from 'react-dnd';
 import { v4 as uuid } from 'uuid'
 import { DraggableComponent } from './components/draggable-decorator';
 import { DroppableComponent } from './components/droppable-decorator';
+
+import { addElement, sortElements } from './reducers/elements'
+
+
 
 import store from './reducers/rootReducer'
 
@@ -31,12 +35,16 @@ class Page extends Component {
 
   };
   render() {
-    const { elements } = this.props;
+    const { elements, sortElements} = this.props;
     console.log(elements);
     return (
       <div className="work__area">
         <div className="scenario__area">{
-          elements.map((element, index) => <ScenarioComponent key={index} {...element} position={index}/>)
+          elements.map((element, index) => <ScenarioComponent 
+                                            key={index}
+                                            sortElements={sortElements}
+                                            position={index}
+                                            {...element}/>)
         }</div>
         <div className="scenario__components__area">{
           componentsList.map((element, index) => <ScenarioComponent key={index} {...element} />)
@@ -46,19 +54,15 @@ class Page extends Component {
   };
 };
 
-
 const mapStateToProps = ({ elements }) => ({
   elements
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  addName: (name) => dispatch(actionsName.addNewName(name)),
-  removeName: (name) => dispatch(actionsName.removeName(name)),
-  sortNames: (directive) => dispatch(actionsName.sortNames(directive)),
-  addItem: (item) => dispatch(actionsItem.addNewItem(item))
+  sortElements: (element, position) => dispatch(sortElements(element, position))
 });
 
-const Main = DragDropContext(HTML5Backend)(connect(mapStateToProps)(Page))
+const Main = DragDropContext(HTML5Backend)(connect(mapStateToProps, mapDispatchToProps)(Page));
 
 ReactDom.render(
   <Provider store={store}>

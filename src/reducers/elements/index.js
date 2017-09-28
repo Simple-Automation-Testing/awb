@@ -35,7 +35,7 @@ const initialState = [
     title: 'Button 1',
     listElement: true,
     cssSelector: null,
-    id: 'button0'
+    id: 'button1'
   },
   {
     title: 'Button 2',
@@ -51,8 +51,11 @@ export default (state = initialState, { type, ...rest }) => {
       return state.slice().push(rest.element)
     case DELETE_ELEMENT:
       return state.slice().filter((element) => element.id != rest.id);
-    case SORT_ELEMENTS:
-      return state.slice().filter((element) => rest.element.id != element.id).splice(rest.position, 0, rest.element);
+    case SORT_ELEMENTS: {
+      const newState = state.slice().filter((element) => rest.element.id != element.id);
+      newState.splice(rest.position, 0, rest.element);
+      return [...newState];
+    }
     default:
       return state
   }

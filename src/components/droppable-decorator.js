@@ -4,8 +4,9 @@ import { DropTarget } from 'react-dnd';
 const type = 'SCENARIO_ITEM';
 
 const spec = {
-  drop(props, monitor) {
-    console.log(props, '<----- props', 'dropitem ------>', monitor.getItem())
+  drop({sortElements, position, ...rest}, monitor) {
+    console.log(rest, '<----- props', 'dropitem ------>', monitor.getItem())
+    sortElements(monitor.getItem(), position);
     return {}
   },
   canDrop(props, monitor) {

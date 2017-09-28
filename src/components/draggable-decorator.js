@@ -5,8 +5,14 @@ const type = 'SCENARIO_ITEM';
 
 const spec = {
   beginDrag(props, monitor) {
-    console.log(props, monitor.getItem(), '!!!!')
-    return {a: 1}
+    const dragDataItem = {
+      title: props.title,
+      listElement: props.listElement,
+      cssSelector: props.cssSelector,
+      id: props.id
+    }
+    // console.log(props, monitor.getItem(), '!!!!')
+    return dragDataItem;
   },
   endDrag() {}
 };
