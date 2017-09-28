@@ -1,9 +1,10 @@
-// import { expect } from 'chai'
-import { shallow, mount } from 'enzyme';
+import React from 'react'
+import { expect } from 'chai'
+import { shallow, mount } from 'enzyme'
 
-const ComponentA = ({ onClick }) => (<div onClick={onClick} className="a" id="a"></div>)
+const ComponentA = ({ onClick }) => <div onClick={onClick} className="a" id="a"></div>
 
-const ComponentB = (props) => (<div onClick={props.onClick} className="b" id="b">{props.children}</div>)
+const ComponentB = (props) => <div onClick={props.onClick} className="b" id="b">{props.children}</div>
 
 
 class ComponentC extends React.Component {
@@ -13,7 +14,7 @@ class ComponentC extends React.Component {
   componentDidMount() {
     console.log('did mount')
   }
-  funcMap =  (arrr) =>  {
+  func = (arrr) => {
     return arrr.map(a => a + 1)
   }
   componentWillUpdate() {
@@ -35,12 +36,12 @@ describe('ComponentA', () => {
   it('shallow', () => {
     const onClick = (e) => { console.log(e) }
     const el = shallow(<ComponentA onClick={onClick} />)
-    expect(el.props()).toEql({ className: 'a', id: 'a', onClick })
+    expect(el.props()).to.eql({ className: 'a', id: 'a', onClick })
   })
   it('mount', () => {
     const onClick = (e) => { console.log(e) }
     const el = mount(<ComponentA onClick={onClick} />)
-    expect(el.props()).toEql({ onClick })
+    expect(el.props()).to.eql({ onClick })
   })
 })
 
@@ -77,8 +78,7 @@ describe.only('ComponentC', () => {
     const el = mount(<ComponentC />)
     expect(el.text()).to.eql('0')
     el.simulate('change', { target: { value: '2' } })
-    expect(el.instance().funcMap([1, 2])).to.eql([2, 3])
-    console.log(el.instance().componentDidMount)
+    expect(el.instance().func([1, 2])).to.eql([2, 3])
     expect(el.text()).to.eql('2')
   })
 })

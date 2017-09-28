@@ -8,7 +8,8 @@ const  {
   getUrl,
   getTitle,
   clickElement,
-  sendKeys
+  sendKeys,
+  killSession
 } = require('./core');
 
 const test = async () => {
@@ -21,11 +22,12 @@ const test = async () => {
   const data2 = await getTitle(sessionId);
   await clickElement(sessionId, getStaerted)
   const loginTab = await findElement(sessionId, '.tabs__link:nth-child(1)');
-  await clickElement(sessionId, loginTab)
+  await clickElement(sessionId, loginTab);
   const emailInput = await findElement(sessionId, '#id5');
   const passwordInput = await findElement(sessionId, '#id9');
   await sendKeys(sessionId, emailInput, 'test_d@weblium.com');
   await sendKeys(sessionId, passwordInput, 'password');
+  await killSession(sessionId);
 };
 
 

@@ -1,9 +1,8 @@
-import { expect } from 'chai';
-import { JSDOM } from 'jsdom';
-import register from 'ignore-styles';
-import React from 'react'
-import hook from 'css-modules-require-hook';
-import { shallow, mount } from 'enzyme';
+const { JSDOM } = require('jsdom');
+const register = require('ignore-styles');
+const React = require('react');
+const hook = require('css-modules-require-hook');
+const { shallow, mount } = require('enzyme');
 
 const exposedProperties = ['window', 'navigator', 'document'];
 
