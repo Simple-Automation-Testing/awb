@@ -11,10 +11,8 @@ const spec = {
       cssSelector: props.cssSelector,
       id: props.id
     }
-    // console.log(props, monitor.getItem(), '!!!!')
     return dragDataItem;
-  },
-  endDrag() {}
+  }
 };
 
 const collect = (connect, monitor) => ({
