@@ -20,6 +20,30 @@ const baseOptions = {
   timeout: 6000
 };
 
+const forwardHistory = async function (sessionId, options) {
+  if (!options) options = baseOptions;
+  options.method = 'POST';
+  options.path = `/wd/hub/session/${sessionId}/forward`;
+  const { body } = await requestInterface(options);
+  return body;
+};
+
+const backHistory = async function (sessionId, options) {
+  if (!options) options = baseOptions;
+  options.method = 'POST';
+  options.path = `/wd/hub/session/${sessionId}/back`;
+  const { body } = await requestInterface(options);
+  return body;
+};
+
+const refreshCurrentPage = async function (sessionId, options) {
+  if (!options) options = baseOptions;
+  options.method = 'POST';
+  options.path = `/wd/hub/session/${sessionId}/refresh`;
+  const { body } = await requestInterface(options);
+  return body;
+};
+
 const resizeWindow = async function (sessionId, rect, options) {
   if (!options) options = baseOptions;
   options.method = 'POST';

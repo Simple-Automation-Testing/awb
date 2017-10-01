@@ -1,56 +1,59 @@
 {
-  "name": "interface-webdriver",
-  "version": "1.0.0",
-  "description": "",
-  "scripts": {
-    "test": "mocha $(find ./specs/ -path '*.test.js') --compilers js:babel-core/register --require ./specs/setup.js",
-    "start": "webpack-dev-server"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/potapovDim/interface-webdriver.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/potapovDim/interface-webdriver/issues"
-  },
-  "homepage": "https://github.com/potapovDim/interface-webdriver#readme",
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-eslint": "^7.2.3",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-define": "^1.0.0",
-    "babel-plugin-module-resolver": "^2.4.0",
-    "babel-plugin-provide-modules": "^1.0.3",
-    "babel-plugin-transform-async-to-generator": "^6.16.0",
-    "babel-plugin-transform-decorators-legacy": "^1.3.4",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-es2015": "^6.9.0",
-    "babel-preset-react": "^6.11.1",
-    "babel-preset-stage-0": "^6.5.0",
-    "babel-register": "^6.26.0",
-    "chai": "^4.1.2",
-    "css-modules-require-hook": "^4.0.6",
-    "enzyme": "^2.9.1",
-    "ignore-styles": "^5.0.1",
-    "jasmine": "^2.8.0",
-    "jsdom": "^11.2.0",
-    "mocha": "^3.5.0",
-    "react-addons-test-utils": "^15.6.0",
-    "react-test-renderer": "^15.6.1",
-    "webpack": "^3.5.5",
-    "webpack-dev-server": "^2.7.1"
-  },
-  "dependencies": {
-    "react": "^15.6.1",
-    "react-dnd": "^2.5.3",
-    "react-dnd-html5-backend": "^2.5.3",
-    "react-dom": "^15.6.1",
-    "react-redux": "^5.0.6",
-    "redux": "^3.7.2",
-    "uuid": "^3.1.0",
-    "webdriver-manager": "^12.0.6"
-  }
+    "name": "interface-webdriver",
+    "version": "1.0.0",
+    "description": "",
+    "scripts": {
+        "test": "mocha $(find ./specs/ -path '*.test.js') --compilers js:babel-core/register --require ./specs/setup.js",
+        "start": "webpack-dev-server",
+        "wd:update": "webdriver-manager update",
+        "wd:start": "webdriver-manager start"
+
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/potapovDim/interface-webdriver.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/potapovDim/interface-webdriver/issues"
+    },
+    "homepage": "https://github.com/potapovDim/interface-webdriver#readme",
+    "devDependencies": {
+        "babel-cli": "^6.26.0",
+        "babel-core": "^6.26.0",
+        "babel-eslint": "^7.2.3",
+        "babel-loader": "^7.1.2",
+        "babel-plugin-define": "^1.0.0",
+        "babel-plugin-module-resolver": "^2.4.0",
+        "babel-plugin-provide-modules": "^1.0.3",
+        "babel-plugin-transform-async-to-generator": "^6.16.0",
+        "babel-plugin-transform-decorators-legacy": "^1.3.4",
+        "babel-polyfill": "^6.26.0",
+        "babel-preset-es2015": "^6.9.0",
+        "babel-preset-react": "^6.11.1",
+        "babel-preset-stage-0": "^6.5.0",
+        "babel-register": "^6.26.0",
+        "chai": "^4.1.2",
+        "css-modules-require-hook": "^4.0.6",
+        "enzyme": "^2.9.1",
+        "ignore-styles": "^5.0.1",
+        "jasmine": "^2.8.0",
+        "jsdom": "^11.2.0",
+        "mocha": "^3.5.0",
+        "react-addons-test-utils": "^15.6.0",
+        "react-test-renderer": "^15.6.1",
+        "webpack": "^3.5.5",
+        "webpack-dev-server": "^2.7.1"
+    },
+    "dependencies": {
+        "react": "^15.6.1",
+        "react-dnd": "^2.5.3",
+        "react-dnd-html5-backend": "^2.5.3",
+        "react-dom": "^15.6.1",
+        "react-redux": "^5.0.6",
+        "redux": "^3.7.2",
+        "uuid": "^3.1.0",
+        "webdriver-manager": "^12.0.6"
+    }
 }

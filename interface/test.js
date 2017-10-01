@@ -8,8 +8,7 @@ const  {
   getUrl,
   getTitle,
   clickElement,
-  sendKeys,
-  killSession
+  sendKeys
 } = require('./core');
 
 const test = async () => {
