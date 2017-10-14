@@ -7,7 +7,6 @@
         "start": "webpack-dev-server",
         "wd:update": "webdriver-manager update",
         "wd:start": "webdriver-manager start"
-
     },
     "repository": {
         "type": "git",

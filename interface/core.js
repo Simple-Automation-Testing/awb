@@ -20,6 +20,30 @@ const baseOptions = {
   timeout: 6000
 };
 
+const getCurrentWindowHandle = async function (sessionId, options) {
+  if (!options) options = baseOptions;
+  options.method = 'GET';
+  options.path = `/wd/hub/session/${sessionId}/window_handle`;
+  const { body } = await requestInterface(options);
+  return body;
+};
+
+const getCurrentWindowHandles = async function (sessionId, options) {
+  if (!options) options = baseOptions;
+  options.method = 'GET';
+  options.path = `/wd/hub/session/${sessionId}/window_handles`;
+  const { body } = await requestInterface(options);
+  return body;
+};
+
+const getScreenshot = async function (sessionId, options) {
+  if (!options) options = baseOptions;
+  options.method = 'GET';
+  options.path = `/wd/hub/session/${sessionId}/screenshot`;
+  const { body } = await requestInterface(options);
+  return body;
+};
+
 const forwardHistory = async function (sessionId, options) {
   if (!options) options = baseOptions;
   options.method = 'POST';
