@@ -20,7 +20,7 @@ const baseOptions = {
   timeout: 6000
 };
 
-const getCurrentWindowHandle = async function (sessionId, options) {
+async function getCurrentWindowHandle(sessionId, options) {
   if (!options) options = baseOptions;
   options.method = 'GET';
   options.path = `/wd/hub/session/${sessionId}/window_handle`;
@@ -28,7 +28,7 @@ const getCurrentWindowHandle = async function (sessionId, options) {
   return body;
 };
 
-const getCurrentWindowHandles = async function (sessionId, options) {
+async function getCurrentWindowHandles (sessionId, options) {
   if (!options) options = baseOptions;
   options.method = 'GET';
   options.path = `/wd/hub/session/${sessionId}/window_handles`;
@@ -36,7 +36,7 @@ const getCurrentWindowHandles = async function (sessionId, options) {
   return body;
 };
 
-const getScreenshot = async function (sessionId, options) {
+async function getScreenshot(sessionId, options) {
   if (!options) options = baseOptions;
   options.method = 'GET';
   options.path = `/wd/hub/session/${sessionId}/screenshot`;
@@ -44,7 +44,7 @@ const getScreenshot = async function (sessionId, options) {
   return body;
 };
 
-const forwardHistory = async function (sessionId, options) {
+async function forwardHistory(sessionId, options) {
   if (!options) options = baseOptions;
   options.method = 'POST';
   options.path = `/wd/hub/session/${sessionId}/forward`;
@@ -52,7 +52,7 @@ const forwardHistory = async function (sessionId, options) {
   return body;
 };
 
-const backHistory = async function (sessionId, options) {
+async function backHistory(sessionId, options) {
   if (!options) options = baseOptions;
   options.method = 'POST';
   options.path = `/wd/hub/session/${sessionId}/back`;
@@ -60,7 +60,7 @@ const backHistory = async function (sessionId, options) {
   return body;
 };
 
-const refreshCurrentPage = async function (sessionId, options) {
+async function refreshCurrentPage(sessionId, options) {
   if (!options) options = baseOptions;
   options.method = 'POST';
   options.path = `/wd/hub/session/${sessionId}/refresh`;
@@ -68,7 +68,7 @@ const refreshCurrentPage = async function (sessionId, options) {
   return body;
 };
 
-const resizeWindow = async function (sessionId, rect, options) {
+async function resizeWindow(sessionId, rect, options) {
   if (!options) options = baseOptions;
   options.method = 'POST';
   options.path = `/wd/hub/session/${sessionId}/window/current/size`;
@@ -76,7 +76,7 @@ const resizeWindow = async function (sessionId, rect, options) {
   return body;
 };
 
-const getUrl = async function (sessionId, options) {
+async function getUrl(sessionId, options) {
   if (!options) options = baseOptions;
   options.method = 'GET';
   options.path = `/wd/hub/session/${sessionId}/url`;
@@ -84,7 +84,7 @@ const getUrl = async function (sessionId, options) {
   return value;
 };
 
-const clickElement = async function (sessionId, elementId, options) {
+async function clickElement(sessionId, elementId, options) {
   if (!options) options = baseOptions;
   options.method = 'POST';
   options.path = `/wd/hub/session/${sessionId}/element/${elementId}/click`;
@@ -92,7 +92,7 @@ const clickElement = async function (sessionId, elementId, options) {
   return data;
 };
 
-const submitElement = async function (sessionId, elementId, options) {
+async function submitElement(sessionId, elementId, options) {
   if (!options) options = baseOptions;
   options.method = 'POST';
   options.path = `/wd/hub/session/${sessionId}/element/${elementId}/submit`;
@@ -100,7 +100,7 @@ const submitElement = async function (sessionId, elementId, options) {
   return data;
 };
 
-const clearElementText = async function (sessionId, elementId, options) {
+async function clearElementText(sessionId, elementId, options) {
   if (!options) options = baseOptions;
   options.method = 'POST';
   options.path = `/wd/hub/session/${sessionId}/element/${elementId}/clear`;
@@ -108,7 +108,7 @@ const clearElementText = async function (sessionId, elementId, options) {
   return data;
 };
 
-const getElementText = async function (sessionId, elementId, options) {
+async function getElementText(sessionId, elementId, options) {
   if (!options) options = baseOptions;
   options.method = 'GET';
   options.path = `/wd/hub/session/${sessionId}/element/${elementId}/text`;
@@ -116,7 +116,7 @@ const getElementText = async function (sessionId, elementId, options) {
   return data;
 };
 
-const getTitle = async function (sessionId, options) {
+async function getTitle(sessionId, options) {
   if (!options) options = baseOptions;
   options.method = 'GET';
   options.path = `/wd/hub/session/${sessionId}/title`;
@@ -124,7 +124,7 @@ const getTitle = async function (sessionId, options) {
   return value;
 };
 
-const goToUrl = async function (sessionId, url, options) {
+async function goToUrl(sessionId, url, options) {
   if (!options) options = baseOptions;
   options.method = 'POST';
   options.path = `/wd/hub/session/${sessionId}/url`
@@ -133,7 +133,7 @@ const goToUrl = async function (sessionId, url, options) {
   }));
 };
 
-const findElement = async function (sessionId, selector, options) {
+async function findElement(sessionId, selector, options) {
   if (!options) options = baseOptions;
   options.method = 'POST';
   options.path = `/wd/hub/session/${sessionId}/element`
@@ -143,7 +143,7 @@ const findElement = async function (sessionId, selector, options) {
   return ELEMENT;
 };
 
-const findElements = async function (sessionId, selector, options) {
+async function findElements(sessionId, selector, options) {
   if (!options) options = baseOptions;
   options.method = 'POST';
   options.path = `/wd/hub/session/${sessionId}/elements`
@@ -153,7 +153,7 @@ const findElements = async function (sessionId, selector, options) {
   return data;
 };
 
-const initSession = async function (data, options) {
+async function initSession(data, options) {
   if (!data) data = defaultCapabilities;
   if (!options) options = baseOptions;
   options.method = 'POST';
@@ -161,7 +161,7 @@ const initSession = async function (data, options) {
   return sessionId;
 };
 
-const sendKeys = async function (sessionId, elementId, keysToSend, options) {
+async function sendKeys(sessionId, elementId, keysToSend, options) {
   if (!options) options = baseOptions;
   options.method = 'POST';
   options.path = `/wd/hub/session/${sessionId}/element/${elementId}/value`
@@ -171,7 +171,7 @@ const sendKeys = async function (sessionId, elementId, keysToSend, options) {
   await requestInterface(options, JSON.stringify({value: keysToSend}));
 };
 
-const killSession = async function (sessionId, options) {
+async function killSession(sessionId, options) {
   if (!options) options = baseOptions;
   options.method = 'DELETE';
   options.path = `/wd/hub/session/${sessionId}`;
