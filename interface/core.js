@@ -5,8 +5,13 @@ const {
   assertObject,
   assertArray,
   assertString,
-  assertNumber
+  assertNumber,
+  waitCondition
 } = require('./util')
+
+
+const { defaultCapabilities, baseOptions } = require('./capabilitiesAndBaseOpts')
+
 
 const { InterfaceError } = require('./interfaceError')
 
@@ -16,52 +21,26 @@ const assertStatus = (status, body) => {
   }
 }
 
-let defaultCapabilities = JSON.stringify({
-  desiredCapabilities: {
-    browserName: 'chrome',
-    javascriptEnabled: true,
-    acceptSslCerts: true,
-    platform: 'ANY'
-  }
-})
-
-const baseOptions = {
-  hostname: 'localhost',
-  port: 4444,
-  path: '/wd/hub/session',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  timeout: 6000
-}
-
-
-
-
-
-async function syncWithDOM(sessionId, timeout, timeoutIteration = 10, options) {
+async function syncWithDOM(sessionId, timeout, options) {
   if (!options) options = baseOptions
   options.method = 'POST'
   options.path = `/wd/hub/session/${sessionId}/execute/sync`
-  setTimeout(() => {
-    timeoutIteration--
-    requestInterface(options, JSON.stringify({
-      script: function () {
-        return document.readyState === 'complete'
-      }.toString(),
-      args: []
-    })).then(({ body }) => {
-      if (!body.value && timeoutIteration != 0) {
-        console.log('A')
-        Promise.resolve(syncWithDOM(sessionId, timeout - (timeout / 10), timeoutIteration))
-      } else if (body.value) {
-        console.log('B')
-        Promise.resolve('DOM success moun')
-      } else {
-        throw new InterfaceError('DOM DID NOT MOUNT')
-      }
-    })
-  }, timeout / 10)
+
+  const waitState = function () {
+    return document.readyState === 'complete'
+  }
+
+  const fn = 'const passedArgs = Array.prototype.slice.call(arguments,0); return ' +
+    waitState.toString() + '.apply(window, passedArgs);';
+
+  const requestDomState = () => requestInterface(options, JSON.stringify({
+    script: fn,
+    args: []
+  }))
+  const result = await waitCondition(requestDomState, 3000)
+  if (!result) {
+    throw new InterfaceError('DOM mount does not complete')
+  }
 }
 
 async function executeScript(sessionId, script, args = [], options) {
@@ -83,10 +62,9 @@ async function executeScript(sessionId, script, args = [], options) {
     script,
     args
   }))
+  console.log(status)
   assertStatus(status, body)
-  console.log(body.status)
   return body
-
 }
 
 async function getCurrentWindowHandle(sessionId, options) {
