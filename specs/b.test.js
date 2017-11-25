@@ -6,7 +6,6 @@ const ComponentA = ({ onClick }) => <div onClick={onClick} className="a" id="a">
 
 const ComponentB = (props) => <div onClick={props.onClick} className="b" id="b">{props.children}</div>
 
-
 class ComponentC extends React.Component {
   componentWillMount() {
     console.log('will mount')
@@ -44,7 +43,6 @@ describe('ComponentA', () => {
     expect(el.props()).to.eql({ onClick })
   })
 })
-
 
 describe('ComponentB', () => {
   it('shallow', () => {

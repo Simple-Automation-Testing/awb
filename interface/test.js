@@ -11,11 +11,11 @@ const {
   sendKeys,
   executeScript,
   syncWithDOM
-} = require('./core');
+} = require('./core')
 
 const test = async () => {
   const { sessionId } = await initSession()
-  await goToUrl(sessionId, 'https://weblium.com')
+  await goToUrl(sessionId, 'http://localhost:9090')
   await syncWithDOM(sessionId, 50000)
   await executeScript(sessionId, 'return document.body.innerHTML')
   // const dataRes = await resizeWindow(sessionId, { width: 1200, height: 900 });

@@ -6,7 +6,8 @@
         "test": "mocha $(find ./specs/ -path '*.test.js') --compilers js:babel-core/register --require ./specs/setup.js",
         "start": "webpack-dev-server",
         "wd:update": "webdriver-manager update",
-        "wd:start": "webdriver-manager start"
+        "wd:start": "webdriver-manager start",
+        "assert": "node ./interface/test.js"
     },
     "repository": {
         "type": "git",
