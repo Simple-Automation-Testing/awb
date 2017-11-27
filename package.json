@@ -7,7 +7,11 @@
         "start": "webpack-dev-server",
         "wd:update": "webdriver-manager update",
         "wd:start": "webdriver-manager start",
-        "assert": "node ./interface/test.js"
+        "assert": "node ./interface/test.js",
+        "unit": "mocha $(find ./interface/__specs__ -path '*.spec.js')",
+        "unit:watch": "mocha -w --harmony --trace-deprecation  $(find ./interface/__specs__ -path '*.spec.js')",
+        "start-test-app": "cd ./react-ts&&npm start",
+        "kill-test-app": "kill $(ps aux | grep 'webpack' | awk '{print $2}')"
     },
     "repository": {
         "type": "git",

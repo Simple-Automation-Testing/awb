@@ -1,6 +1,5 @@
 const fetch = require('node-fetch')
 
-
 const body = JSON.stringify({
   desiredCapabilities: {
     browserName: 'chrome',
@@ -19,7 +18,6 @@ const baseOptions = {
   },
   timeout: 6000
 }
-
 
 
 fetch('http://localhost:9515/session', {

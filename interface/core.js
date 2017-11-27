@@ -1,6 +1,5 @@
 ":" // exec /usr/bin/env node --harmony --expose-gc --trace-deprecation "$0" "$@"
 const {
-  requestInterface,
   assertFunction,
   assertObject,
   assertArray,
@@ -9,14 +8,14 @@ const {
   waitCondition
 } = require('./util')
 
+const { Pathes } = require('./path')
 
 const { defaultCapabilities, baseOptions } = require('./capabilitiesAndBaseOpts')
-
-
+const { requestInterface } = require('./request')
 const { InterfaceError } = require('./interfaceError')
 
 const assertStatus = (status, body) => {
-  if (!(status < 300)) {
+  if (!(status < 300) || (body.value && typeof body.value === 'string' && body.value.includes('error'))) {
     throw new InterfaceError(body)
   }
 }
@@ -24,7 +23,7 @@ const assertStatus = (status, body) => {
 async function syncWithDOM(sessionId, timeout, options) {
   if (!options) options = baseOptions
   options.method = 'POST'
-  options.path = `/wd/hub/session/${sessionId}/execute/sync`
+  options.path = Pathes.executeSync(sessionId)
 
   const waitState = function () {
     return document.readyState === 'complete'
@@ -46,7 +45,8 @@ async function syncWithDOM(sessionId, timeout, options) {
 async function executeScript(sessionId, script, args = [], options) {
 
   if (assertFunction(script)) {
-    script = script.toString()
+    script = `const args = Array.prototype.slice.call(arguments,0)
+              return ${script.toString()}.apply(window, args)`
   }
   if (!assertArray(args)) {
     if (assertObject(args) || assertFunction(args) || assertNumber(args) || assertString(args)) {
@@ -56,13 +56,12 @@ async function executeScript(sessionId, script, args = [], options) {
 
   if (!options) options = baseOptions
   options.method = 'POST'
-  options.path = `/wd/hub/session/${sessionId}/execute/sync`
+  options.path = Pathes.executeSync(sessionId)
 
   const { body, status } = await requestInterface(options, JSON.stringify({
     script,
     args
   }))
-  console.log(status)
   assertStatus(status, body)
   return body
 }
@@ -70,7 +69,7 @@ async function executeScript(sessionId, script, args = [], options) {
 async function getCurrentWindowHandle(sessionId, options) {
   if (!options) options = baseOptions
   options.method = 'GET'
-  options.path = `/wd/hub/session/${sessionId}/window_handle`
+  options.path = Pathes.windowHandle(sessionId)
   const { body, status } = await requestInterface(options)
   assertStatus(status, body)
   return body
@@ -79,7 +78,7 @@ async function getCurrentWindowHandle(sessionId, options) {
 async function getCurrentWindowHandles(sessionId, options) {
   if (!options) options = baseOptions
   options.method = 'GET'
-  options.path = `/wd/hub/session/${sessionId}/window_handles`
+  options.path = Pathes.windowHandles(sessionId)
   const { body, status } = await requestInterface(options)
   assertStatus(status, body)
   return body
@@ -87,8 +86,7 @@ async function getCurrentWindowHandles(sessionId, options) {
 
 async function getScreenshot(sessionId, options) {
   if (!options) options = baseOptions
-  options.method = 'GET'
-  options.path = `/wd/hub/session/${sessionId}/screenshot`
+  options.path = Pathes.screenshot(sessionId)
   const { body, status } = await requestInterface(options)
   assertStatus(status, body)
   return body
@@ -97,7 +95,7 @@ async function getScreenshot(sessionId, options) {
 async function forwardHistory(sessionId, options) {
   if (!options) options = baseOptions
   options.method = 'POST'
-  options.path = `/wd/hub/session/${sessionId}/forward`
+  options.path = Pathes.forward(sessionId)
   const { body, status } = await requestInterface(options)
   assertStatus(status, body)
   return body
@@ -106,7 +104,7 @@ async function forwardHistory(sessionId, options) {
 async function backHistory(sessionId, options) {
   if (!options) options = baseOptions
   options.method = 'POST'
-  options.path = `/wd/hub/session/${sessionId}/back`
+  options.path = Pathes.back(sessionId)
   const { body, status } = await requestInterface(options)
   assertStatus(status, body)
   return body
@@ -115,7 +113,7 @@ async function backHistory(sessionId, options) {
 async function refreshCurrentPage(sessionId, options) {
   if (!options) options = baseOptions
   options.method = 'POST'
-  options.path = `/wd/hub/session/${sessionId}/refresh`
+  options.path = Pathes.refresh(sessionId)
   const { body, status } = await requestInterface(options)
   assertStatus(status, body)
   return body
@@ -124,7 +122,7 @@ async function refreshCurrentPage(sessionId, options) {
 async function resizeWindow(sessionId, rect, options) {
   if (!options) options = baseOptions
   options.method = 'POST'
-  options.path = `/wd/hub/session/${sessionId}/window/current/size`
+  options.path = Pathes.currentSize(sessionId)
   const { body, status } = await requestInterface(options, JSON.stringify(rect))
   assertStatus(status, body)
   return body
@@ -133,7 +131,7 @@ async function resizeWindow(sessionId, rect, options) {
 async function getUrl(sessionId, options) {
   if (!options) options = baseOptions
   options.method = 'GET'
-  options.path = `/wd/hub/session/${sessionId}/url`
+  options.path = Pathes.url(sessionId)
   const { body, status } = await requestInterface(options)
   assertStatus(status, body)
   return body
@@ -142,7 +140,7 @@ async function getUrl(sessionId, options) {
 async function clickElement(sessionId, elementId, options) {
   if (!options) options = baseOptions
   options.method = 'POST'
-  options.path = `/wd/hub/session/${sessionId}/element/${elementId}/click`
+  options.path = Pathes.click(sessionId, elementId)
   const { body, status } = await requestInterface(options, JSON.stringify({ button: 0 }))
   assertStatus(status, body)
   return body
@@ -151,7 +149,7 @@ async function clickElement(sessionId, elementId, options) {
 async function submitElement(sessionId, elementId, options) {
   if (!options) options = baseOptions
   options.method = 'POST'
-  options.path = `/wd/hub/session/${sessionId}/element/${elementId}/submit`
+  options.path = Pathes.submit(sessionId, elementId)
   const { body, status } = await requestInterface(options)
   assertStatus(status, body)
   return body
@@ -160,7 +158,7 @@ async function submitElement(sessionId, elementId, options) {
 async function clearElementText(sessionId, elementId, options) {
   if (!options) options = baseOptions
   options.method = 'POST'
-  options.path = `/wd/hub/session/${sessionId}/element/${elementId}/clear`
+  options.path = Pathes.clear(sessionId, elementId)
   const { body, status } = await requestInterface(options)
   assertStatus(status, body)
   return body
@@ -169,7 +167,7 @@ async function clearElementText(sessionId, elementId, options) {
 async function getElementText(sessionId, elementId, options) {
   if (!options) options = baseOptions
   options.method = 'GET'
-  options.path = `/wd/hub/session/${sessionId}/element/${elementId}/text`
+  options.path = Pathes.text(sessionId, elementId)
   const { body, status } = await requestInterface(options)
   assertStatus(status, body)
   return body
@@ -178,7 +176,7 @@ async function getElementText(sessionId, elementId, options) {
 async function getTitle(sessionId, options) {
   if (!options) options = baseOptions
   options.method = 'GET'
-  options.path = `/wd/hub/session/${sessionId}/title`
+  options.path = Pathes.title(sessionId)
   const { body, status } = await requestInterface(options)
   assertStatus(status, body)
   return body
@@ -187,17 +185,22 @@ async function getTitle(sessionId, options) {
 async function goToUrl(sessionId, url, options) {
   if (!options) options = baseOptions
   options.method = 'POST'
-  options.path = `/wd/hub/session/${sessionId}/url`
+  options.path = Pathes.url(sessionId)
   const { body, status } = await requestInterface(options, JSON.stringify({
     url
   }))
   assertStatus(status, body)
+  return body
 }
-
+/**
+   * @param {string} sessionId .
+   * @param {string} selector css selector.
+   * @param {object} options options.
+ */
 async function findElement(sessionId, selector, options) {
   if (!options) options = baseOptions
   options.method = 'POST'
-  options.path = `/wd/hub/session/${sessionId}/element`
+  options.path = Pathes.element(sessionId)
   const { body, status } = await requestInterface(options, JSON.stringify({
     using: 'css selector', value: selector
   }))
@@ -207,7 +210,7 @@ async function findElement(sessionId, selector, options) {
 async function findElements(sessionId, selector, options) {
   if (!options) options = baseOptions
   options.method = 'POST'
-  options.path = `/wd/hub/session/${sessionId}/elements`
+  options.path = Pathes.elements(sessionId)
   const { body, status } = await requestInterface(options, JSON.stringify({
     using: 'css selector', value: selector
   }))
@@ -219,24 +222,38 @@ async function initSession(data, options) {
   if (!options) options = baseOptions
   options.method = 'POST'
   const { body, status } = await requestInterface(options, data)
+  assertStatus(status, body)
   return body
 }
 
 async function sendKeys(sessionId, elementId, keysToSend, options) {
   if (!options) options = baseOptions
   options.method = 'POST'
-  options.path = `/wd/hub/session/${sessionId}/element/${elementId}/value`
+  options.path = Pathes.sendKeys(sessionId, elementId)
   if (!Array.isArray(keysToSend)) {
     keysToSend = [keysToSend]
   }
   const { body, status } = await requestInterface(options, JSON.stringify({ value: keysToSend }))
+  assertStatus(status, body)
+  return body
 }
 
 async function killSession(sessionId, options) {
   if (!options) options = baseOptions
   options.method = 'DELETE'
-  options.path = `/wd/hub/session/${sessionId}`
-  await requestInterface(options)
+  options.path = Pathes.killSession(sessionId)
+  const { status, body } = await requestInterface(options)
+  assertStatus(status, body)
+  return body
+}
+
+async function getAttribute(sessionId, elementId, attribute, options) {
+  if (!options) options = baseOptions
+  options.method = 'GET'
+  options.path = Pathes.attribute(sessionId, elementId, attribute)
+  const { body, status } = await requestInterface(options)
+  assertStatus(status, body)
+  return body
 }
 
 module.exports = {
@@ -251,5 +268,6 @@ module.exports = {
   getTitle,
   clickElement,
   syncWithDOM,
+  getAttribute,
   executeScript
 }
