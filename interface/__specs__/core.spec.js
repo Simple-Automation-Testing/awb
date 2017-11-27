@@ -13,7 +13,8 @@ const {
   sendKeys,
   getAttribute,
   executeScript,
-  syncWithDOM
+  syncWithDOM,
+  getElementText
 } = require('../core')
 
 describe('core function positive scenario', () => {
@@ -73,7 +74,7 @@ describe('core function positive scenario', () => {
     const body = await findElements(sessionId, addnewname)
     expect(body.status).to.eql(0)
     expect(body.sessionId).to.eql(sessionId)
-    expect(body.value.length).to.eql(1)
+    expect(body.value.length).to.eql(9)
     expect(body.value[0].ELEMENT).to.be.exist
     expect(body.value[0].ELEMENT).to.eql(elementButton)
   })
@@ -104,6 +105,45 @@ describe('core function positive scenario', () => {
     expect(body.status).to.eql(0)
     expect(body.sessionId).to.eql(sessionId)
     expect(body.value).to.eql(testString2)
+  })
+
+  it('combine data', async () => {
+    let elements
+    const elValue = []
+    const elementSelector = '[draggable="true"]'
+    {
+      const body = await findElements(sessionId, elementSelector)
+      expect(body.status).to.eql(0)
+      expect(body.sessionId).to.eql(sessionId)
+      expect(body.value.length).to.eql(9)
+      elements = body.value
+    }
+    {
+      for (let item of elements) {
+        const body = await getElementText(sessionId, item.ELEMENT)
+        expect(body.status).to.eql(0)
+        expect(body.sessionId).to.eql(sessionId)
+        expect(body.value).to.be.exist
+        elValue.push(body.value)
+      }
+      console.log(elValue)
+    }
+  })
+
+  it('combine data by execute script', async () => {
+    {
+      const body = await executeScript(sessionId, function () {
+        const elValue = []
+        document.querySelectorAll('[draggable="true"]').forEach(item => {
+          elValue.push(item.innerText)
+        })
+        return elValue
+      })
+      expect(body.status).to.eql(0)
+      expect(body.sessionId).to.eql(sessionId)
+      expect(body.value).to.be.exist 
+      console.log(body.value)
+    }
   })
 
   it('execute script', async () => {

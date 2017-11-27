@@ -29,8 +29,8 @@ async function syncWithDOM(sessionId, timeout, options) {
     return document.readyState === 'complete'
   }
 
-  const fn = 'const passedArgs = Array.prototype.slice.call(arguments,0); return ' +
-    waitState.toString() + '.apply(window, passedArgs);';
+  const fn = `const passedArgs = Array.prototype.slice.call(arguments,0);
+      return ${waitState.toString()}.apply(window, passedArgs);`
 
   const requestDomState = () => requestInterface(options, JSON.stringify({
     script: fn,
@@ -268,6 +268,7 @@ module.exports = {
   getTitle,
   clickElement,
   syncWithDOM,
+  getElementText,
   getAttribute,
   executeScript
 }
