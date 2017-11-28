@@ -9,8 +9,8 @@
         "wd:start": "webdriver-manager start",
         "assert": "node ./interface/test.js",
         "unit": "mocha $(find ./interface/__specs__ -path '*.spec.js')",
-        "unit:watch": "mocha -w --harmony --trace-deprecation  $(find ./interface/__specs__ -path '*.spec.js')",
-        "start-test-app": "cd ./react-ts&&npm start",
+        "unit:watch": "mocha -w --harmony --trace-deprecation --timeout 10000 $(find ./interface/__specs__ -path '*.spec.js')",
+        "start-test-app": "NODE_ENV=test-app webpack-dev-server ./webpack.test.app.js",
         "kill-test-app": "kill $(ps aux | grep 'webpack' | awk '{print $2}')"
     },
     "repository": {
@@ -25,8 +25,6 @@
     "homepage": "https://github.com/potapovDim/interface-webdriver#readme",
     "devDependencies": {
         "babel-cli": "^6.26.0",
-        "babel-core": "^6.26.0",
-        "babel-eslint": "^7.2.3",
         "babel-loader": "^7.1.2",
         "babel-plugin-define": "^1.0.0",
         "babel-plugin-module-resolver": "^2.4.0",
@@ -41,6 +39,8 @@
         "chai": "^4.1.2",
         "css-modules-require-hook": "^4.0.6",
         "enzyme": "^2.9.1",
+        "extract-text-webpack-plugin": "^3.0.2",
+        "html-webpack-plugin": "^2.30.1",
         "ignore-styles": "^5.0.1",
         "jasmine": "^2.8.0",
         "jsdom": "^11.2.0",
@@ -48,8 +48,11 @@
         "node-fetch": "^1.7.3",
         "react-addons-test-utils": "^15.6.0",
         "react-test-renderer": "^15.6.1",
+        "sinon": "^4.1.2",
+        "style-loader": "^0.19.0",
         "webpack": "^3.5.5",
-        "webpack-dev-server": "^2.7.1"
+        "webpack-dev-server": "^2.7.1",
+        "webpack-svgstore-plugin": "^4.0.1"
     },
     "dependencies": {
         "react": "^15.6.1",
@@ -57,7 +60,10 @@
         "react-dnd-html5-backend": "^2.5.3",
         "react-dom": "^15.6.1",
         "react-redux": "^5.0.6",
+        "react-slider": "^0.9.0",
         "redux": "^3.7.2",
+        "to-style": "^1.3.3",
+        "unzip": "^0.1.11",
         "uuid": "^3.1.0",
         "webdriver-manager": "^12.0.6"
     }

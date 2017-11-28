@@ -1,7 +1,7 @@
 import React from 'react'
 import { expect } from 'chai'
 import { shallow, mount } from 'enzyme'
-
+import sinon from 'sinon'
 const ComponentA = ({ onClick }) => <div onClick={onClick} className="a" id="a"></div>
 
 const ComponentB = (props) => <div onClick={props.onClick} className="b" id="b">{props.children}</div>
@@ -19,8 +19,14 @@ class ComponentC extends React.Component {
   componentWillUpdate() {
     console.log('will update')
   }
+  componentWillReceiveProps() {
+    console.log('resive props')
+  }
   componentDidUpdate() {
     console.log('did update')
+  }
+  componentWillUnmount() {
+
   }
   state = { value: '0' }
   onChange = ({ target: { value } }) => {
@@ -30,6 +36,38 @@ class ComponentC extends React.Component {
     return (<span onChange={this.onChange}>{this.state.value}</span>)
   }
 }
+
+describe('CMV', () => {
+  let cwrp
+  let cwm
+  let cwu
+  let wrap
+  beforeEach(() => {
+    wrap = mount(<ComponentC />)
+  })
+  before(() => {
+    cwrp = sinon.spy(ComponentC.prototype, 'componentWillReceiveProps')
+    cwm = sinon.spy(ComponentC.prototype, 'componentWillMount')
+    cwu = sinon.spy(ComponentC.prototype, 'componentWillUnmount')
+  })
+  after(() => {
+    cwrp.restore()
+    cwm.restore()
+    cwu.restore()
+  })
+  afterEach(() => {
+    cwrp.reset()
+    cwm.reset()
+    cwu.reset()
+  })
+  it('a', () => {
+    expect(ComponentC.prototype.componentWillMount.calledOnce).to.eql(true)
+  })
+  it('b', () => {
+    wrap.setProps({ a: 'a' })
+    expect(ComponentC.prototype.componentWillReceiveProps.calledOnce).to.eql(true) 
+  })
+})
 
 describe('ComponentA', () => {
   it('shallow', () => {
@@ -64,7 +102,7 @@ describe('ComponentB', () => {
   })
 })
 
-describe.only('ComponentC', () => {
+describe('ComponentC', () => {
   it('shallow', () => {
     const el = shallow(<ComponentC />, { disableLifecycleMethods: true })
     expect(el.text()).to.eql('0')

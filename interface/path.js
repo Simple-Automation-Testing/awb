@@ -17,9 +17,12 @@ const Pathes = {
   elements:                     (sessionId) =>                       `/wd/hub/session/${sessionId}/elements`,
   sendKeys:                     (sessionId, elementId) =>            `/wd/hub/session/${sessionId}/element/${elementId}/value`,
   killSession:                  (sessionId) =>                       `/wd/hub/session/${sessionId}`,
-  attribute:                    (sessionId, elementId, attribute) => `/wd/hub/session/${sessionId}/element/${elementId}/attribute/${attribute}`
+  attribute:                    (sessionId, elementId, attribute) => `/wd/hub/session/${sessionId}/element/${elementId}/attribute/${attribute}`,
+  moveto:                       (sessionId) =>                       `/wd/hub/session/${sessionId}/moveto`,   
+  buttonDown:                   (sessionId) =>                       `/wd/hub/session/${sessionId}/buttondown`,
+  buttonUp:                     (sessionId) =>                       `/wd/hub/session/${sessionId}/buttonup`,
+  pressKeys:                    (sessionId) =>                       `/wd/hub/session/${sessionId}/keys`
 }
-
 
 module.exports = {
   Pathes

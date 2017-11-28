@@ -7,6 +7,8 @@ const parseJson = (data) => {
   }
 }
 
+const elementIDregexp = /^(\d.)(\d+)(-)(\d)+$/gi
+
 const returnStringType = arg => Object.prototype.toString.call(arg)
 
 const assertArray = arg => returnStringType(arg) === '[object Array]'
@@ -46,6 +48,7 @@ function waitCondition(conditionFn, time) {
   })
 }
 
+
 module.exports = {
   assertNumber,
   parseJson,
@@ -53,5 +56,6 @@ module.exports = {
   assertObject,
   assertString,
   assertFunction,
-  waitCondition
+  waitCondition,
+  elementIDregexp
 }

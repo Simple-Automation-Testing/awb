@@ -2,6 +2,7 @@ const http = require('http')
 const { parseJson } = require('./util')
 
 const requestInterface = (options, data) => new Promise((resolve, reject) => {
+  // console.log('DATA=', data, 'PATH=', options.path)
   const req = http.request(options, (res) => {
     let body = ''
     // console.log(`STATUS: ${res.statusCode}`)

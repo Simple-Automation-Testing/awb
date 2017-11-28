@@ -5,7 +5,8 @@ const {
   assertArray,
   assertString,
   assertNumber,
-  waitCondition
+  waitCondition,
+  elementIDregexp
 } = require('./util')
 
 const { Pathes } = require('./path')
@@ -204,6 +205,7 @@ async function findElement(sessionId, selector, options) {
   const { body, status } = await requestInterface(options, JSON.stringify({
     using: 'css selector', value: selector
   }))
+  assertStatus(status, body)
   return body
 }
 
@@ -249,6 +251,17 @@ async function killSession(sessionId, options) {
 
 async function getAttribute(sessionId, elementId, attribute, options) {
   if (!options) options = baseOptions
+  // console.log(elementId.match(/s/), typeof elementId)
+  // console.log(elementId.toString())
+  // const elId = elementIDregexp.test(elementId)
+  // console.log([elementIDregexp.test(elementId), elId], elementId, elementId.match(elementIDregexp))
+  /**
+   * NEED EUGENE SUPPORT FOR THIS ISSUE
+   */
+  if (!elementId.match(elementIDregexp)) {
+    const body = await findElement(sessionId, elementId)
+    elementId = body.value.ELEMENT
+  }
   options.method = 'GET'
   options.path = Pathes.attribute(sessionId, elementId, attribute)
   const { body, status } = await requestInterface(options)
@@ -256,11 +269,62 @@ async function getAttribute(sessionId, elementId, attribute, options) {
   return body
 }
 
+//move buttonup buttondown
+async function mouseDown(sessionId, element/*element can be css selector or elementId*/, position, options) {
+  element = { button: 0 }
+  if (!options) options = baseOptions
+  options.method = 'POST'
+  options.path = Pathes.buttonDown(sessionId)
+  const { body, status } = await requestInterface(options, JSON.stringify({ element }))
+  assertStatus(status, body)
+  return body
+}
+
+function sleep(timeout) {
+  return new Promise((resolve) => setTimeout(resolve, timeout))
+}
+
+async function moveTo(sessionId, elementOrPosition, options) {
+  if (!options) options = baseOptions
+  options.method = 'POST'
+  options.path = Pathes.moveto(sessionId)
+
+  if (elementOrPosition.x || elementOrPosition.x) {
+    elementOrPosition = { xoffset: elementOrPosition.x, yoffset: elementOrPosition.y }
+  }
+  const { body, status } = await requestInterface(options, JSON.stringify({ ...elementOrPosition }))
+  assertStatus(status, body)
+  return body
+}
+
+async function pressKeys(sessionId, keys, options) {
+  if (!options) options = baseOptions
+  options.method = 'POST'
+  options.path = Pathes.moveto(sessionId)
+  if (!Array.isArray(keys)) {
+    keys = [keys]
+  }
+  const { body, status } = await requestInterface(options, JSON.stringify({ value: keys }))
+  assertStatus(status, body)
+  return body
+}
+
+async function buttonUp(sessionId, button = { button: 0 }, options) {
+  if (!options) options = baseOptions
+  options.method = 'POST'
+  options.path = Pathes.pressKeys(sessionId)
+  const { body, status } = await requestInterface(options, JSON.stringify({ button }))
+  assertStatus(status, body)
+}
+
 module.exports = {
   sendKeys,
   resizeWindow,
+  moveTo,
+  sleep,
   killSession,
   initSession,
+  mouseDown,
   findElements,
   findElement,
   goToUrl,

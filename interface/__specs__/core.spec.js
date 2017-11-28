@@ -1,5 +1,7 @@
 const { expect } = require('chai')
 
+const { Keys } = require('../event/keys')
+
 const {
   resizeWindow,
   initSession,
@@ -13,8 +15,11 @@ const {
   sendKeys,
   getAttribute,
   executeScript,
+  sleep,
   syncWithDOM,
-  getElementText
+  getElementText,
+  moveTo,
+  mouseDown
 } = require('../core')
 
 describe('core function positive scenario', () => {
@@ -30,6 +35,9 @@ describe('core function positive scenario', () => {
   const firstname = '[placeholder="firstname"]'
   const lastname = '[placeholder="lastname"]'
   const addnewname = 'button'
+  //mouse down mouse move mouse up
+  const bar3 = '.bar.bar-0'
+  const handler = '.my-handle'
 
   it('get sessionId', async () => {
     const body = await initSession()
@@ -39,10 +47,17 @@ describe('core function positive scenario', () => {
   })
 
   it('go to url', async () => {
-    const body = await goToUrl(sessionId, 'http://localhost:9090')
+    const body = await goToUrl(sessionId, baseURL)
     expect(body.sessionId).to.eql(sessionId)
     expect(body.status).to.eql(0)
     expect(body.value).to.eql(null)
+  })
+
+  it('get url', async () => {
+    const body = await getUrl(sessionId)
+    expect(body.sessionId).to.eql(sessionId)
+    expect(body.status).to.eql(0)
+    expect(body.value).to.eql(`${baseURL}/`)
   })
 
   it('get element (input)', async () => {
@@ -126,7 +141,6 @@ describe('core function positive scenario', () => {
         expect(body.value).to.be.exist
         elValue.push(body.value)
       }
-      console.log(elValue)
     }
   })
 
@@ -141,8 +155,7 @@ describe('core function positive scenario', () => {
       })
       expect(body.status).to.eql(0)
       expect(body.sessionId).to.eql(sessionId)
-      expect(body.value).to.be.exist 
-      console.log(body.value)
+      expect(body.value).to.be.exist
     }
   })
 
@@ -163,6 +176,72 @@ describe('core function positive scenario', () => {
     }
   })
 
+  it('mouse down move up', async () => {
+    let initialStyle = null
+    let changedStyleValue = null
+    {
+      //get initial style
+      const body = await getAttribute(sessionId, bar3, 'style')
+      expect(body.status).to.eql(0)
+      expect(body.sessionId).to.eql(sessionId)
+      expect(body.value).to.be.exist
+      initialStyle = body.value
+    }
+    {
+      //mouse down mouse move mouse up
+      const { value: { ELEMENT } } = await findElement(sessionId, handler)
+      const bodyMouseMoveTo = await moveTo(sessionId, { element: ELEMENT })
+      const bodyMouseDown = await mouseDown(sessionId, handler)
+      const bodyMouseMove = await moveTo(sessionId, { x: 60, y: 0 })
+    }
+    {
+      const body = await getAttribute(sessionId, bar3, 'style')
+      expect(body.status).to.eql(0)
+      expect(body.sessionId).to.eql(sessionId)
+      expect(body.value).to.be.exist
+      changedStyleValue = body.value
+    }
+    {
+      expect(changedStyleValue).to.not.eql(initialStyle)
+    }
+  })
+
+  it('send keys with enter', async () => {
+    let elementInput = null
+    let elementInputValue = null
+    let apearDisapearField = null
+    const enterInput = '[placeholder="KEY ENTER"]'
+    const apearDisapearFieldSelector = '.apear.disapear'
+    {
+      const body = await findElement(sessionId, enterInput)
+      expect(body.status).to.eql(0)
+      expect(body.sessionId).to.eql(sessionId)
+      expect(body.value.ELEMENT).to.be.exist
+      elementInput = body.value.ELEMENT
+    }
+    {
+      await sendKeys(sessionId, elementInput, testString1)
+      const body = await sendKeys(sessionId, elementInput, Keys.ENTER)
+      expect(body.status).to.eql(0)
+      expect(body.sessionId).to.eql(sessionId)
+      expect(body.value).to.eql(null)
+    }
+    {
+      const body = await findElement(sessionId, apearDisapearFieldSelector)
+      expect(body.status).to.eql(0)
+      expect(body.sessionId).to.eql(sessionId)
+      expect(body.value.ELEMENT).to.be.exist
+      apearDisapearField = body.value.ELEMENT
+    }
+    {
+      const body = await getElementText(sessionId, apearDisapearField)
+      expect(body.status).to.eql(0)
+      expect(body.sessionId).to.eql(sessionId)
+      expect(body.value).to.be.exist
+      expect(body.value).to.eql(testString1)
+    }
+  })
+
   it('kill session', async () => {
     const body = await killSession(sessionId)
     expect(body.status).to.eql(0)
@@ -171,32 +250,3 @@ describe('core function positive scenario', () => {
   })
 })
 
-
-
-const test = async () => {
-  const firstname = '[placeholder="firstname"]'
-  const lastname = '[placeholder="lastname"]'
-
-  const { sessionId } = await initSession()
-  await goToUrl(sessionId, 'http://localhost:9090')
-  await syncWithDOM(sessionId, 50000)
-  const a = await executeScript(sessionId, function () {
-    return document.body.baseURI
-  })
-  await resizeWindow(sessionId, { width: 1200, height: 900 })
-  const getStaerted = await findElement(sessionId, '[title="Get started"]')
-  const dataElement = await findElement(sessionId, firstname)
-  console.log(dataElement)
-  const dataElements = await findElements(sessionId, firstname)
-  console.log(dataElements)
-  // const data1 = await getUrl(sessionId);
-  // const data2 = await getTitle(sessionId);
-  // await clickElement(sessionId, getStaerted)
-  // const loginTab = await findElement(sessionId, '.tabs__link:nth-child(1)');
-  // await clickElement(sessionId, loginTab);
-  // const emailInput = await findElement(sessionId, '#id5');
-  // const passwordInput = await findElement(sessionId, '#id9');
-  // await sendKeys(sessionId, emailInput, 'test_d@weblium.com');
-  // await sendKeys(sessionId, passwordInput, 'password');
-  await killSession(sessionId)
-}
