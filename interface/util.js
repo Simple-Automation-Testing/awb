@@ -51,6 +51,7 @@ function waitCondition(conditionFn, time) {
 
 module.exports = {
   assertNumber,
+  returnStringType,
   parseJson,
   assertArray,
   assertObject,

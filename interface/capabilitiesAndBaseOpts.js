@@ -9,7 +9,7 @@ const defaultCapabilities = JSON.stringify({
 
 const baseOptions = {
     hostname: 'localhost',
-    port: 4444,
+    port: 9515,
     path: '/wd/hub/session',
     headers: {
         'Content-Type': 'application/json'

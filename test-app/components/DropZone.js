@@ -37,7 +37,7 @@ class DropZone extends React.Component {
 
       </div>)}
       <div >
-        <div >
+        <div className="dropzone">
           {items.length > 0 && items.map((item, index) => <Box key={index} index={index} {...item} />)}
         </div>
       </div>

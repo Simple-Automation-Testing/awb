@@ -309,6 +309,28 @@ async function pressKeys(sessionId, keys, options) {
   return body
 }
 
+async function elementFromElement(sessionId, elementId, selector, options) {
+  if (!options) options = baseOptions
+  options.method = 'POST'
+  options.path = Pathes.elementFromElement(sessionId, elementId)
+  const { body, status } = await requestInterface(options, JSON.stringify({
+    using: 'css selector', value: selector
+  }))
+  assertStatus(status, body)
+  return body
+}
+
+async function elementsFromElement(sessionId, elementId, selector, options) {
+  if (!options) options = baseOptions
+  options.method = 'POST'
+  options.path = Pathes.elementsFromElement(sessionId, elementId)
+  const { body, status } = await requestInterface(options, JSON.stringify({
+    using: 'css selector', value: selector
+  }))
+  assertStatus(status, body)
+  return body
+}
+
 async function buttonUp(sessionId, button = { button: 0 }, options) {
   if (!options) options = baseOptions
   options.method = 'POST'
@@ -319,6 +341,8 @@ async function buttonUp(sessionId, button = { button: 0 }, options) {
 
 module.exports = {
   sendKeys,
+  elementFromElement,
+  elementsFromElement,
   resizeWindow,
   moveTo,
   sleep,

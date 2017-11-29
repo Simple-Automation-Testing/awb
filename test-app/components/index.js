@@ -1,14 +1,14 @@
-import Names from './Names';
-import actionsName from '../reducers/names/actions';
-import actionsItem from '../reducers/items/actions';
-import { connect} from 'react-redux';
+import Names from './Names'
+import * as actionsName from '../reducers/names/actions'
+import * as actionsItem from '../reducers/items/actions'
+import { connect } from 'react-redux'
 
 export function mapStateToProps({ names, items }) {
   return {
     names,
     items
-  };
-};
+  }
+}
 
 export function mapDispatchToProps(dispatch) {
   return {
@@ -16,8 +16,8 @@ export function mapDispatchToProps(dispatch) {
     removeName: (name) => dispatch(actionsName.removeName(name)),
     sortNames: (directive) => dispatch(actionsName.sortNames(directive)),
     addItem: (item) => dispatch(actionsItem.addNewItem(item))
-  };
-};
+  }
+}
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Names);
+export default connect(mapStateToProps, mapDispatchToProps)(Names)

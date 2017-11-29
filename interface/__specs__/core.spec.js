@@ -2,25 +2,9 @@ const { expect } = require('chai')
 
 const { Keys } = require('../event/keys')
 
-const {
-  resizeWindow,
-  initSession,
-  killSession,
-  findElements,
-  findElement,
-  goToUrl,
-  getUrl,
-  getTitle,
-  clickElement,
-  sendKeys,
-  getAttribute,
-  executeScript,
-  sleep,
-  syncWithDOM,
-  getElementText,
-  moveTo,
-  mouseDown
-} = require('../core')
+const { resizeWindow, initSession, killSession, findElements, findElement, goToUrl, getUrl } = require('../core')
+const { getTitle, clickElement, sendKeys, getAttribute, executeScript, sleep, syncWithDOM } = require('../core')
+const { getElementText, moveTo, mouseDown, elementFromElement, elementsFromElement } = require('../core')
 
 describe('core function positive scenario', () => {
   //test variables
@@ -239,6 +223,60 @@ describe('core function positive scenario', () => {
       expect(body.sessionId).to.eql(sessionId)
       expect(body.value).to.be.exist
       expect(body.value).to.eql(testString1)
+    }
+  })
+
+  it('element from element', async () => {
+    const dropZoneSelector = '.dropzone'
+    const dropItemSelector = '[draggable="true"]'
+    let dropZone = null
+    let dropItem = null
+    {
+      const body = await findElement(sessionId, dropZoneSelector)
+      expect(body.status).to.eql(0)
+      expect(body.sessionId).to.eql(sessionId)
+      expect(body.value.ELEMENT).to.be.exist
+      dropZone = body.value.ELEMENT
+    }
+    {
+      const body = await elementFromElement(sessionId, dropZone, dropItemSelector)
+      expect(body.status).to.eql(0)
+      expect(body.sessionId).to.eql(sessionId)
+      expect(body.value.ELEMENT).to.be.exist
+      dropItem = body.value.ELEMENT
+    }
+    {
+      const body = await getAttribute(sessionId, dropItem, 'style')
+      expect(body.status).to.eql(0)
+      expect(body.sessionId).to.eql(sessionId)
+      expect(body.value).to.eql('')
+    }
+  })
+
+  it('elements from element', async () => {
+    const dropZoneSelector = '.dropzone'
+    const dropItemSelector = '[draggable="true"]'
+    let dropZone = null
+    let dropItem = null
+    {
+      const body = await findElement(sessionId, dropZoneSelector)
+      expect(body.status).to.eql(0)
+      expect(body.sessionId).to.eql(sessionId)
+      expect(body.value.ELEMENT).to.be.exist
+      dropZone = body.value.ELEMENT
+    }
+    {
+      const body = await elementsFromElement(sessionId, dropZone, dropItemSelector)
+      expect(body.status).to.eql(0)
+      expect(body.sessionId).to.eql(sessionId)
+      expect(body.value.length).to.eql(8)
+      dropItem = body.value[0].ELEMENT
+    }
+    {
+      const body = await getAttribute(sessionId, dropItem, 'style')
+      expect(body.status).to.eql(0)
+      expect(body.sessionId).to.eql(sessionId)
+      expect(body.value).to.eql('')
     }
   })
 
