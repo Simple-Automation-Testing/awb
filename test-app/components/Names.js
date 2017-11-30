@@ -74,6 +74,8 @@ class Names extends React.Component {
                         </ReactSlider>
                     </div>
                 </div>
+                <div style={{ display: 'none' }} className="not displayed div">NOT DISPLAYED ELEMENT</div>
+                <div style={{ marginTop: '2000px' }} className="bottom div">BOTTOM ELEMENT</div>
             </div>
         );
     }

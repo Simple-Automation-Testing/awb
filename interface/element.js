@@ -1,12 +1,13 @@
 const { resizeWindow, initSession, killSession, findElements, findElement, goToUrl, getUrl } = require('./core')
 const { getTitle, clickElement, sendKeys, getAttribute, executeScript, sleep, syncWithDOM } = require('./core')
-const { getElementText, moveTo, mouseDown, elementFromElement, elementsFromElement } = require('./core')
+const { getElementText, moveTo, mouseDown, elementFromElement, elementsFromElement, present, displayed } = require('./core')
 
 const { returnStringType } = require('./util')
 
+const WEB_EMENET_ID = 'element-6066-11e4-a52e-4f735466cecf'
 class Element {
 
-  constructor(selector, sessionId, elementId = null) {
+  constructor(selector, sessionId = ___sessionId, elementId = null) {
     this.selector = selector
     this.sessionId = sessionId
     this.elementId = elementId
@@ -18,12 +19,11 @@ class Element {
   }
 
   async getElementHTML() {
-    const body = await executeScript(this.sessionId, function () {
+    const { value } = await executeScript(this.sessionId, function () {
       const [element] = arguments
       return document.querySelector(element).outerHTML
     }, this.selector)
-
-    return body.value
+    return value
   }
 
   async getText() {
@@ -62,7 +62,7 @@ class Element {
       }
       return values
     }
-    
+
     !this.elementId
       && await this.getTthisElement()
     const { value } = await elementsFromElement(this.sessionId, this.elementId, selector)
@@ -93,6 +93,29 @@ class Element {
     return body
   }
 
+  async isPresent() {
+    !this.elementId
+      && await this.getTthisElement()
+    const { value } = await present(this.sessionId, this.elementId)
+    return value
+  }
+
+  async toElement() {
+    !this.elementId
+      && await this.getTthisElement()
+    const { value } = await executeScript(this.sessionId, 'arguments[0].scrollIntoView()', {
+      ELEMENT: this.elementId,
+      [WEB_EMENET_ID]: this.elementId
+    })
+    console.log(value)
+  }
+
+  async isDisplayed() {
+    !this.elementId
+      && await this.getTthisElement()
+    const { value } = await displayed(this.sessionId, this.elementId)
+    return value
+  }
 }
 
 module.exports = Element

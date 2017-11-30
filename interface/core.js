@@ -339,8 +339,28 @@ async function buttonUp(sessionId, button = { button: 0 }, options) {
   assertStatus(status, body)
 }
 
+async function displayed(sessionId, elementId, options) {
+  if (!options) options = baseOptions
+  options.method = 'GET'
+  options.path = Pathes.displayed(sessionId, elementId)
+  const { body, status } = await requestInterface(options)
+  assertStatus(status, body)
+  return body
+}
+
+async function present(sessionId, elementId, options) {
+  if (!options) options = baseOptions
+  options.method = 'GET'
+  options.path = Pathes.present(sessionId, elementId)
+  const { body, status } = await requestInterface(options)
+  assertStatus(status, body)
+  return body
+}
+
 module.exports = {
   sendKeys,
+  displayed,
+  present,
   elementFromElement,
   elementsFromElement,
   resizeWindow,
