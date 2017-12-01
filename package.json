@@ -89,6 +89,7 @@
         "webpack-svgstore-plugin": "^4.0.1"
     },
     "dependencies": {
+        "node-fetch": "^1.7.3",
         "unzip": "^0.1.11"
     },
     "engines": {

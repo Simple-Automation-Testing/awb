@@ -32,7 +32,7 @@ class Browser {
     async goTo(url) {
         !this.sessionId
             && await this.getSession()
-        await goToUrl(this.sessionId, 'http://localhost:9090')
+        await goToUrl(this.sessionId, url)
     }
 
     async closeBrowser() {

@@ -42,7 +42,7 @@ async function getChromeDriver(ver) {
     }
   })
 }
-getChromeDriver('2.33')
+
 async function getStandalone() {
   return new Promise((resolve, reject) => {
     fetch(seleniumUrl())
