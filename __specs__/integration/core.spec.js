@@ -6,7 +6,7 @@ const { resizeWindow, initSession, killSession, findElements, findElement, goToU
 const { getTitle, clickElement, sendKeys, getAttribute, executeScript, sleep, syncWithDOM } = require('../../interface/core')
 const { getElementText, moveTo, mouseDown, elementFromElement, elementsFromElement, present, displayed } = require('../../interface/core')
 
-describe.skip('core function positive scenario', () => {
+describe('core function positive scenario', () => {
   //test variables
   let sessionId = null
   let elementButton = null

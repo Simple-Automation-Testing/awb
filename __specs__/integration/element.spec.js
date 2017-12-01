@@ -1,12 +1,11 @@
 const { expect } = require('chai')
 
 const { resizeWindow, initSession, killSession, findElements, findElement, goToUrl, getUrl } = require('../../interface/core')
-const { getTitle, clickElement, sendKeys, getAttribute, executeScript, sleep, syncWithDOM } = require('../../interface/core')
-const { getElementText, moveTo, mouseDown, elementFromElement, elementsFromElement } = require('../../interface/core')
 
-const Element = require('../../interface/element')
+const element = require('../../interface/element')
+const Element = element.elementInstance
 
-describe('Element', () => {
+describe.only('Element', () => {
   //parts
   let sessionId = null
   let elementButton = null
@@ -14,13 +13,17 @@ describe('Element', () => {
   let elementInput = null
   let elementDisplayNoneDiv = null
   let elementBottomDiv = null
+  let elementHandle = null
+  let elementBar = null
   //selectors
+  const handleswiper = '.my-handle'
   const addnewname = 'button'
   const dropzone = '.dropzone'
   const dropitem = '.dropitem'
   const firstname = '[placeholder="firstname"]'
   const dispaynonediv = '.not.displayed'
   const bottomdiv = '.bottom.div'
+  const bar = '.bar.bar-0'
 
   before(async () => {
     const body = await initSession()
@@ -28,11 +31,13 @@ describe('Element', () => {
     expect(body.sessionId).to.be.exist
     sessionId = body.sessionId
     await goToUrl(sessionId, 'http://localhost:9090')
-    elementButton = new Element(addnewname, sessionId)
-    elementDropZone = new Element(dropzone, sessionId)
-    elementInput = new Element(firstname, sessionId)
-    elementBottomDiv = new Element(bottomdiv, sessionId)
-    elementDisplayNoneDiv = new Element(dispaynonediv, sessionId)
+    elementButton = element(addnewname, sessionId)
+    elementDropZone = element(dropzone, sessionId)
+    elementInput = element(firstname, sessionId)
+    elementBottomDiv = element(bottomdiv, sessionId)
+    elementDisplayNoneDiv = element(dispaynonediv, sessionId)
+    elementHandle = element(handleswiper, sessionId)
+    elementBar = element(bar, sessionId)
   })
 
   after(async () => {
@@ -130,6 +135,24 @@ describe('Element', () => {
     {
       const isdisplayed = await elementBottomDiv.isDisplayed()
       expect(isdisplayed).to.eql(true)
+    }
+  })
+
+  it('element mouseDownAndMove', async () => {
+    let styleBefore = null
+    let styleAfter = null
+    {
+      const baseStyle = await elementBar.getAttribute('style')
+      expect(baseStyle).to.be.exist
+      styleBefore = baseStyle
+    }
+    {
+      await elementHandle.mouseDownAndMove({ x: 60, y: 0 })
+    }
+    {
+      const changedStyle = elementBar.getAttribute('style')
+      expect(changedStyle).to.be.exist
+      expect(styleBefore).to.not.eql(changedStyle)
     }
   })
 

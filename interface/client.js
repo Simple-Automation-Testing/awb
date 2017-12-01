@@ -16,18 +16,49 @@ const {
   } = require('./core')
 
 
-function Client() {
-    this.port = null
-    this.url = null
-    this.opts = null
-    this.caps = null
-    this.sessionId = null
+class Browser {
+
+    constructor(capabilities) {
+        this.sessionId = null
+        this.capabilities = capabilities
+    }
+
+    async getSession() {
+        const { sessionId } = await initSession(this.capabilities)
+        this.sessionId = sessionId
+        global.___sessionId = this.sessionId
+    }
+
+    async goTo(url) {
+        !this.sessionId
+            && await this.getSession()
+        await goToUrl(this.sessionId, 'http://localhost:9090')
+    }
+
+    async closeBrowser() {
+        if (this.sessionId && global.___sessionId) {
+            await killSession(this.sessionId)
+            this.sessionId = null
+            global.___sessionId = null
+        }
+    }
 }
 
-Client.prototype.chrome = function (caps) {
-    this.caps = caps
+class Initiator {
+    constructor(seleniumPort = 4444) {
+        this.port = seleniumPort
+        this.url = null
+        this.opts = null
+        this.caps = null
+    }
+    chrome(capabilities = defaultCapabilities) {
+        return new Browser(capabilities)
+    }
 }
 
-Client.prototype.click = async function (selector) {
-    await clickElement(this.sessionId)
+module.exports = function (port) {
+    return new Initiator(port)
 }
+
+module.exports.initiatorInstance = Initiator
+module.exports.browserInstance = Browser

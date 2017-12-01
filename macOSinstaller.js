@@ -8,7 +8,7 @@ const fetch = require('node-fetch')
 const unzip = require('unzip')
 const { resolve } = require('path')
 
-const { execFile, spawn } = require('child_process')
+const { execFile, spawn, execSync } = require('child_process')
 
 const resolvePath = (path) => resolve(__dirname, path)
 
@@ -35,9 +35,14 @@ async function getChromeDriver(ver) {
     if (value) {
       console.info('chrome driver installed success')
     }
+    try {
+      execSync('chmod +x ./chromedriver_2.33')
+    } catch (error) {
+      console.error(error.toString())
+    }
   })
 }
-
+getChromeDriver('2.33')
 async function getStandalone() {
   return new Promise((resolve, reject) => {
     fetch(seleniumUrl())
@@ -117,7 +122,6 @@ async function writeId(id) {
     })
   })
 }
-
 
 async function killProc() {
   fs.readFile(resolvePath('./procid'), (err, data) => {

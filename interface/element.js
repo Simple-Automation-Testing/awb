@@ -5,15 +5,17 @@ const { getElementText, moveTo, mouseDown, elementFromElement, elementsFromEleme
 const { returnStringType } = require('./util')
 
 const WEB_EMENET_ID = 'element-6066-11e4-a52e-4f735466cecf'
+
 class Element {
 
-  constructor(selector, sessionId = ___sessionId, elementId = null) {
+  constructor(selector, sessionId, elementId = null) {
     this.selector = selector
     this.sessionId = sessionId
     this.elementId = elementId
   }
 
   async getTthisElement() {
+    this.sessionId = this.sessionId || global.___sessionId
     const { value: { ELEMENT } } = await findElement(this.sessionId, this.selector)
     this.elementId = ELEMENT
   }
@@ -107,7 +109,6 @@ class Element {
       ELEMENT: this.elementId,
       [WEB_EMENET_ID]: this.elementId
     })
-    console.log(value)
   }
 
   async isDisplayed() {
@@ -116,6 +117,19 @@ class Element {
     const { value } = await displayed(this.sessionId, this.elementId)
     return value
   }
+
+  async mouseDownAndMove({ x, y }) {
+    //mouse down mouse move mouse up
+    !this.elementId
+      && await this.getTthisElement()
+    await moveTo(this.sessionId, { element: this.elementId })
+    await mouseDown(this.sessionId, {
+      ELEMENT: this.elementId,
+      [WEB_EMENET_ID]: this.elementId
+    })
+    const body = await moveTo(this.sessionId, { x, y })
+  }
 }
 
-module.exports = Element
+module.exports = (...args) => new Element(...args)
+module.exports.elementInstance = Element
