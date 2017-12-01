@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 
+process.title = 'wd-interface'
+
 const { getChromeDriver, writeId, killProc, getStandalone, clearChrome, clearStandalone, spawnStandalone } = require('../macOSinstaller')
+
 // wd install
 
 const args = process.argv.slice(2)

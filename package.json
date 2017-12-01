@@ -3,6 +3,9 @@
     "version": "1.0.0",
     "description": "simple light weight interface for selenium webdriver (node js)",
     "main": "./interface.js",
+    "bin": {
+        "wd-interface": "./bin/wd-interface"
+    },
     "scripts": {
         "test": "mocha $(find ./specs/ -path '*.test.js') --compilers js:babel-core/register --require ./specs/setup.js",
         "integration": "mocha $(find ./__specs__/integration -path '*.spec.js')",
