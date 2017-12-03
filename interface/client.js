@@ -29,6 +29,22 @@ class Browser {
         global.___sessionId = this.sessionId
     }
 
+    async getUrl() {
+        if (!this.sessionId) {
+            console.error('Cant do it, session does not open')
+        }
+        const { value } = await getUrl(this.sessionId)
+        return value
+    }
+
+    async getTitle() {
+        if (!this.sessionId) {
+            console.error('Cant do it, session does not open')
+        }
+        const { value } = await getTitle(this.sessionId)
+        return value
+    }
+
     async goTo(url) {
         !this.sessionId
             && await this.getSession()
@@ -36,10 +52,12 @@ class Browser {
     }
 
     async closeBrowser() {
+        console.log('close browser')
         if (this.sessionId && global.___sessionId) {
-            await killSession(this.sessionId)
+            const { status } = await killSession(this.sessionId)
             this.sessionId = null
             global.___sessionId = null
+            !status && console.log('browser closed success')
         }
     }
 }

@@ -3,7 +3,7 @@ const { expect } = require('chai')
 const client = require('../../interface/client')
 const element = require('../../interface/element')
 
-describe('client', () => {
+describe.only('client', () => {
   let browser = null
 
   const baseURL = 'http://localhost:9090'
@@ -25,13 +25,16 @@ describe('client', () => {
     expect(global.__sessionId).to.eql(undefined)
     await browser.goTo(baseURL)
     expect(browser.sessionId).to.be.exist
+    console.log(browser.sessionId)
     expect(browser.sessionId).to.not.null
     expect(browser.sessionId).to.not.undefined
   })
+
   afterEach(async () => {
     await browser.closeBrowser()
   })
-  it('send keys to element and get attribure', async () => {
+
+  it('send case', async () => {
     const inputValue = '!#!#!@#!'
     {
       const body = await elementInput.sendKeys(inputValue)
@@ -42,6 +45,14 @@ describe('client', () => {
       const value = await elementInput.getAttribute('value')
       expect(value).to.be.exist
       expect(value).to.eql(inputValue)
+    }
+    process.exit(0)
+  })
+
+  it('get title and url', async () => {
+    {
+      const currentUrl = await browser.getUrl()
+      expect(currentUrl).to.eql(`${baseURL}/`)
     }
   })
 })

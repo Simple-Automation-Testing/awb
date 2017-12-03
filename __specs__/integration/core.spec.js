@@ -50,6 +50,13 @@ describe('core function positive scenario', () => {
     expect(body.value).to.eql(`${baseURL}/`)
   })
 
+  it('get title', async () => {
+    const body = await getTitle(sessionId)
+    expect(body.sessionId).to.eql(sessionId)
+    expect(body.status).to.eql(0)
+    expect(body.value).to.eql('Webdriver Interface')
+  })
+
   it('get element (input)', async () => {
     {
       const body = await findElement(sessionId, firstname)

@@ -5,7 +5,7 @@ const { resizeWindow, initSession, killSession, findElements, findElement, goToU
 const element = require('../../interface/element')
 const Element = element.elementInstance
 
-describe.only('Element', () => {
+describe('Element', () => {
   //parts
   let sessionId = null
   let elementButton = null

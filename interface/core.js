@@ -224,6 +224,7 @@ async function initSession(data, options) {
   if (!options) options = baseOptions
   options.method = 'POST'
   const { body, status } = await requestInterface(options, data)
+  console.log(body, status)
   assertStatus(status, body)
   return body
 }
