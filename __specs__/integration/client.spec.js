@@ -3,7 +3,7 @@ const { expect } = require('chai')
 const client = require('../../interface/client')
 const element = require('../../interface/element')
 
-describe.only('client', () => {
+describe('client', () => {
   let browser = null
 
   const baseURL = 'http://localhost:9090'
@@ -25,7 +25,6 @@ describe.only('client', () => {
     expect(global.__sessionId).to.eql(undefined)
     await browser.goTo(baseURL)
     expect(browser.sessionId).to.be.exist
-    console.log(browser.sessionId)
     expect(browser.sessionId).to.not.null
     expect(browser.sessionId).to.not.undefined
   })
@@ -46,7 +45,6 @@ describe.only('client', () => {
       expect(value).to.be.exist
       expect(value).to.eql(inputValue)
     }
-    process.exit(0)
   })
 
   it('get title and url', async () => {

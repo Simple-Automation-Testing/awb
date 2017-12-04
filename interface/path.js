@@ -53,9 +53,12 @@ const PathesChromeDirrectly = {
   buttonUp:                     (sessionId) =>                       `/session/${sessionId}/buttonup`,
   pressKeys:                    (sessionId) =>                       `/session/${sessionId}/keys`,
   elementFromElement:           (sessionId, elementId) =>            `/session/${sessionId}/element/${elementId}/element`,
-  elementsFromElement:          (sessionId, elementId) =>            `/session/${sessionId}/element/${elementId}/elements`
+  elementsFromElement:          (sessionId, elementId) =>            `/session/${sessionId}/element/${elementId}/elements`,
+  present:                      (sessionId, elementId) =>            `/session/${sessionId}/element/${elementId}/enabled`,
+  displayed:                    (sessionId, elementId) =>            `/session/${sessionId}/element/${elementId}/displayed`,
 }
 
 module.exports = {
-  Pathes: PathesStandAlone
+  PathesStandAlone,
+  PathesChromeDirrectly
 }

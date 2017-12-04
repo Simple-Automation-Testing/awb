@@ -36,7 +36,6 @@ class Page extends Component {
   };
   render() {
     const { elements, sortElements} = this.props;
-    console.log(elements);
     return (
       <div className="work__area">
         <div className="scenario__area">{

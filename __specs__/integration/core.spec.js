@@ -8,6 +8,7 @@ const { getElementText, moveTo, mouseDown, elementFromElement, elementsFromEleme
 
 describe('core function positive scenario', () => {
   //test variables
+  
   let sessionId = null
   let elementButton = null
   let elementInput_firstname = null

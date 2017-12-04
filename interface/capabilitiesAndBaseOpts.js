@@ -7,7 +7,7 @@ const defaultCapabilities = JSON.stringify({
     }
 })
 
-const baseOptions = {
+const baseOptionsStandAlone = {
     hostname: 'localhost',
     port: 4444,
     path: '/wd/hub/session',
@@ -17,7 +17,18 @@ const baseOptions = {
     timeout: 6000
 }
 
+const baseOptionsChrome = {
+    hostname: 'localhost',
+    port: 9515,
+    path: '/session',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    timeout: 6000
+}
+
 module.exports = {
-    baseOptions,
+    baseOptionsStandAlone,
+    baseOptionsChrome,
     defaultCapabilities
 }

@@ -113,7 +113,6 @@ async function spawnStandalone() {
 }
 
 async function writeId(id) {
-  console.log(id)
   return new Promise((resolve, reject) => {
     fs.writeFile(resolvePath('./procid'), id, (err) => {
       if (err) {

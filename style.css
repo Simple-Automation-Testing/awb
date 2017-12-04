@@ -76,3 +76,21 @@ body {
 #horizontal-2 .bar.bar-2 {
   background: #ddd;
 }
+.asyncform.handler {
+  color: rgba(200, 10, 120, 0.3);
+  border: solid;
+  border-color: rgba(200, 10, 10, 0.6);
+  text-align: left;
+}
+
+.success_entered_data {
+  border: dashed;
+  border-radius: 10%;
+  border-color: greenyellow;
+}
+
+.warning_entered_data {
+  border: dashed;
+  border-radius: 10%;
+  border-color: red; 
+}

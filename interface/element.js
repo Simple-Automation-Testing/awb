@@ -1,5 +1,5 @@
 const { resizeWindow, initSession, killSession, findElements, findElement, goToUrl, getUrl } = require('./core')
-const { getTitle, clickElement, sendKeys, getAttribute, executeScript, sleep, syncWithDOM } = require('./core')
+const { getTitle, clickElement, sendKeys, getAttribute, executeScript, sleep, syncWithDOM, waitCondition } = require('./core')
 const { getElementText, moveTo, mouseDown, elementFromElement, elementsFromElement, present, displayed } = require('./core')
 
 const { returnStringType } = require('./util')
@@ -12,6 +12,11 @@ class Element {
     this.selector = selector
     this.sessionId = sessionId
     this.elementId = elementId
+  }
+
+  async waitForElement(time) {
+    const result = await waitCondition(() => present(this.sessionId, this.elementId), time, true)
+    console.log(result)
   }
 
   async getTthisElement() {
@@ -29,6 +34,9 @@ class Element {
   }
 
   async getText() {
+    !this.elementId
+      && await this.getTthisElement()
+
     const body = await executeScript(this.sessionId, function () {
       const [element] = arguments
       return document.querySelector(element).innerText
@@ -98,6 +106,7 @@ class Element {
   async isPresent() {
     !this.elementId
       && await this.getTthisElement()
+    console.log('! - - - - - -')
     const { value } = await present(this.sessionId, this.elementId)
     return value
   }
@@ -115,6 +124,7 @@ class Element {
     !this.elementId
       && await this.getTthisElement()
     const { value } = await displayed(this.sessionId, this.elementId)
+    console.log(value)
     return value
   }
 

@@ -17,7 +17,7 @@ const assertNumber = arg => returnStringType(arg) === '[object String]'
 const assertFunction = arg => returnStringType(arg) === '[object Function]'
 const assertObject = arg => arg !== null && typeof arg === 'object'
 
-function waitCondition(conditionFn, time) {
+function waitCondition(conditionFn, time, conditionTarget) {
   let condition = null
   let callCount = 100
 
@@ -31,14 +31,17 @@ function waitCondition(conditionFn, time) {
 
   function recursiveCall(resolve, reject) {
     dummyAsyncCall(function (data) {
+      console.log(data)
       data.then((resp) => {
+        console.log(resp)
         condition = resp.body.value
+        if (callCount > 0 && !condition && (conditionTarget && (!conditionTarget === condition))) {
+          recursiveCall(resolve, reject)
+        } else {
+          resolve(condition)
+        }
       }).catch(reject)
-      if (callCount > 0 && !condition) {
-        recursiveCall(resolve, reject)
-      } else {
-        resolve(condition)
-      }
+
     }, callTime)
     callCount--
   }

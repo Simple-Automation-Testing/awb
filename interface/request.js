@@ -1,7 +1,11 @@
 const http = require('http')
+const fetch = require('node-fetch')
+
+
 const { parseJson } = require('./util')
 
 const requestInterface = (options, data) => new Promise((resolve, reject) => {
+  // console.log(options, data)
   const req = http.request(options, (res) => {
     let body = ''
     // console.log(`STATUS: ${res.statusCode}`)
