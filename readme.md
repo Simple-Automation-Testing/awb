@@ -85,7 +85,6 @@ describe('Google base example', () => {
   * [getElements](#getelements)
     * [mappy](#mappy)
     * [each](#each)
-  * [sendKeys](#sendkeys)
   * [getAttribute](#getattribute)
   * [click](#click)
   * [isPresent](#ispresent)
@@ -179,3 +178,139 @@ describe('Google base example', () => {
   /* return current tab url*/
 ```
 # Element
+
+## Constructor element
+```js
+  const elementDiv = element('div')
+  /* 
+  * args css selector for example '#id', '[name="name"]', '.class'
+  */
+```
+## sendKeys
+```js
+  const elementInput = element('input')
+  await elementInput.sendKeys('test value')
+  /* 
+  * args string or array string
+  */
+```
+## getElementHTML
+```js
+  const elementInput = element('input')
+  const inputHTML = await elementInput.getElementHTML()
+  /* 
+  * return outerHTML of current element , return string
+  * <input value="a"/> for example
+  */
+```
+## getText
+
+```js
+  const elementDiv = element('div')
+  const divText = await elementDiv.getText()
+  /* 
+  * return all text inside element , return string
+  */
+```
+
+## waitForElement
+```js
+  const elementDiv = element('div')
+  await elementDiv.waitForElement()
+  /* 
+  * will wait for element mount to DOM node
+  */
+```
+
+## getElement
+```js
+  const elementSpan = await element('div').getElement('span')
+  /* 
+  *  return element instanse
+  */
+```
+## getElements
+```js
+  const elementsSpan = await element('div').getElements('span')
+  /* 
+  *  return array element instanse
+  */
+```
+### mappy
+```js
+  const elementsSpan = await element('div').getElements('span')
+  const textArr = await elementsSpan.mappy(async (element) => {
+        return await element.getText()
+      })
+  /* 
+  *  args async call back 
+  *  return array  
+  */
+```
+### each
+```js
+ const elementsSpan = await element('div').getElements('span')
+ const textArr = await elementsSpan.each(async (element) => {
+        const html = await element.getElementHTML()
+        expect(html).to.includes('dropitem')
+        expect(html).to.includes('draggable="true"')
+      })
+  /* 
+  * args async call back 
+  * call async funcs with await 
+  * does not return 
+  * /
+```
+## getAttribute
+```js
+  const elementSpan = await element('div').getElement('span')
+  const style = await elementSpan.getAttribute('style')
+  /*
+  * args strin , value name , for example 'value', 'href', 'style' etc 
+  *  return string of attribute value
+  */
+```
+## click
+```js
+  const elementSpan = await element('div').getElement('span')
+  await elementSpan.click()
+  /*
+  * triger click 
+  */
+```
+## isPresent
+```js
+  const elementSpan = await element('div').getElement('span')
+  const present = await elementSpan.isPresent()
+  /*
+  * return true if element mounted to DOM
+  * return false if element didn`t mount to DOM
+  */
+```
+## isDisplayed
+```js
+  const elementSpan = await element('div').getElement('span')
+  const display = await elementSpan.isDisplayed()
+  /*
+  * return true if visible and in view port
+  * return false if doesn`t visible, for example display: none
+  */
+```
+## toElement
+```js
+  const elementSpan = await element('div').getElement('span')
+  await elementSpan.toElement()
+  /*
+  * will scroll view port to element 
+  */
+```
+
+## mouseDownAndMove
+```js
+  const elementSpan = await element('div').getElement('span')
+  await elementSpan.mouseDownAndMove({x: 100, y: 0})
+  /*
+  * args object with x and y 
+  * will mouse down mouse move from x and y from arg
+  */
+```
