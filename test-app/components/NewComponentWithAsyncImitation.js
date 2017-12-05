@@ -28,7 +28,7 @@ class AsyncImitationComponent extends Component {
     setTimeout(() => {
       this.setState({ asyncCallEnd: false, generateLoader: false })
       this.assertEntryData()
-    }, 3000)
+    }, 2500)
   }
 
   render() {

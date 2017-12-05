@@ -1,7 +1,7 @@
 const fetch = require('node-fetch')
 
 async function _fetchy(method, url, body, opts) {
-  
+
   opts = opts || {}
   const headers = opts.headers || {}
   if (method == "GET")
@@ -9,9 +9,9 @@ async function _fetchy(method, url, body, opts) {
   if (body != null) {
     headers["Content-Type"] = "application/json"
   }
-  
+
   const response = await fetch(url, Object.assign({
-    method, headers, body: typeof body === 'object' ? JSON.stringify(body) : body 
+    method, headers, body: typeof body === 'object' ? JSON.stringify(body) : body
   }, opts))
 
   const contentType = response.headers.get("content-type")

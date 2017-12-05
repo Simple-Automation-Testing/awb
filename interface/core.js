@@ -20,16 +20,26 @@ const { requestInterface } = require('./request')
 const { InterfaceError } = require('./interfaceError')
 
 const assertStatus = (status, body) => {
-  if (!(status < 300) || (body.value && typeof body.value === 'string' && body.value.includes('error'))) {
-    throw new InterfaceError(body)
+  if (
+    !(status < 300) ||
+    (body.value && typeof body.value === 'string' && body.value.includes('error')) ||
+    (body.value && body.value.message && body.value.message.includes('stale element reference'))
+  ) {
+    throw new InterfaceError(JSON.stringify(body), __filename)
   }
+}
+
+function getLocalEnv() {
+  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
+  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
+  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+
+  return { Pathes, baseOptions, fetchy_util }
 }
 
 async function syncWithDOM(sessionId, timeout, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const waitState = function () {
@@ -51,9 +61,7 @@ async function syncWithDOM(sessionId, timeout, options) {
 
 async function executeScript(sessionId, script, args = [], options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (assertFunction(script)) {
     script = `const args = Array.prototype.slice.call(arguments,0)
               return ${script.toString()}.apply(window, args)`
@@ -76,9 +84,8 @@ async function executeScript(sessionId, script, args = [], options) {
 
 async function getCurrentWindowHandle(sessionId, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
+
   if (!options) options = { ...baseOptions }
   const { body, status } = await fetchy_util.get(Pathes.windowHandle(sessionId), null, options)
   assertStatus(status, body)
@@ -87,9 +94,8 @@ async function getCurrentWindowHandle(sessionId, options) {
 
 async function getCurrentWindowHandles(sessionId, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
+
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.get(Pathes.windowHandles(sessionId), null, options)
@@ -97,10 +103,30 @@ async function getCurrentWindowHandles(sessionId, options) {
   return body
 }
 
-async function getScreenshot(sessionId, options) {
+async function openTab(sessionId, nameHandle, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
+
+  if (!options) options = { ...baseOptions }
+
+  const { body, status } = await fetchy_util.post(Pathes.window(sessionId), JSON.stringify({
+    name: nameHandle, handle: nameHandle
+  }), options)
+  assertStatus(status, body)
+  return body
+}
+
+async function closeCurrentTab(sessionId, options) {
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
+
+  if (!options) options = { ...baseOptions }
+
+  const { body, status } = await fetchy_util.del(Pathes.window(sessionId), undefined, options)
+  assertStatus(status, body)
+  return body
+}
+
+async function getScreenshot(sessionId, options) {
 
   if (!options) options = { ...baseOptions }
 
@@ -111,9 +137,7 @@ async function getScreenshot(sessionId, options) {
 
 async function forwardHistory(sessionId, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(Pathes.forward(sessionId), null, options)
@@ -124,9 +148,7 @@ async function forwardHistory(sessionId, options) {
 
 async function backHistory(sessionId, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(Pathes.back(sessionId), null, options)
@@ -136,9 +158,8 @@ async function backHistory(sessionId, options) {
 
 async function refreshCurrentPage(sessionId, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
+
   if (!options) options = { ...baseOptions }
   options.method = 'POST'
   options.path = Pathes.refresh(sessionId)
@@ -149,9 +170,7 @@ async function refreshCurrentPage(sessionId, options) {
 
 async function resizeWindow(sessionId, rect, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(Pathes.currentSize(sessionId), JSON.stringify(rect), options)
@@ -161,9 +180,7 @@ async function resizeWindow(sessionId, rect, options) {
 
 async function getUrl(sessionId, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.get(Pathes.url(sessionId), null, options)
@@ -173,9 +190,7 @@ async function getUrl(sessionId, options) {
 
 async function clickElement(sessionId, elementId, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(Pathes.click(sessionId, elementId), JSON.stringify({ button: 0 }), options)
@@ -185,9 +200,7 @@ async function clickElement(sessionId, elementId, options) {
 
 async function submitElement(sessionId, elementId, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(Pathes.submit(sessionId, elementId), null, options)
@@ -197,9 +210,7 @@ async function submitElement(sessionId, elementId, options) {
 
 async function clearElementText(sessionId, elementId, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(Pathes.clear(sessionId, elementId), null, options)
@@ -210,9 +221,7 @@ async function clearElementText(sessionId, elementId, options) {
 
 async function getElementText(sessionId, elementId, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.get(Pathes.text(sessionId, elementId), null, options)
@@ -223,9 +232,7 @@ async function getElementText(sessionId, elementId, options) {
 
 async function getTitle(sessionId, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.get(Pathes.title(sessionId), null, options)
@@ -236,9 +243,7 @@ async function getTitle(sessionId, options) {
 
 async function goToUrl(sessionId, url, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
   const { body, status } = await fetchy_util.post(Pathes.url(sessionId), JSON.stringify({
     url
@@ -253,9 +258,7 @@ async function goToUrl(sessionId, url, options) {
  */
 async function findElement(sessionId, selector, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(Pathes.element(sessionId), JSON.stringify({
@@ -267,9 +270,7 @@ async function findElement(sessionId, selector, options) {
 
 async function findElements(sessionId, selector, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(Pathes.elements(sessionId), JSON.stringify({
@@ -281,9 +282,7 @@ async function findElements(sessionId, selector, options) {
 
 async function initSession(data, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!data) data = defaultCapabilities
   if (!options) options = { ...baseOptions }
 
@@ -295,16 +294,22 @@ async function initSession(data, options) {
 
 async function sendKeys(sessionId, elementId, keysToSend, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
+  let text = null
   if (!options) options = { ...baseOptions }
 
   if (!Array.isArray(keysToSend)) {
-    keysToSend = [keysToSend]
+    text = keysToSend
+    keysToSend = keysToSend.split('')
+  } else {
+    text = keysToSend.join('')
+    keysToSend = keysToSend
   }
 
-  const { body, status } = await fetchy_util.post(Pathes.sendKeys(sessionId, elementId), JSON.stringify({ value: keysToSend }), options)
+  const { body, status } = await fetchy_util.post(Pathes.sendKeys(sessionId, elementId), JSON.stringify({
+    text,
+    value: keysToSend
+  }), options)
 
   assertStatus(status, body)
   return body
@@ -312,9 +317,7 @@ async function sendKeys(sessionId, elementId, keysToSend, options) {
 
 async function killSession(sessionId, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { status, body } = await fetchy_util.del(Pathes.killSession(sessionId), undefined, options)
@@ -325,9 +328,7 @@ async function killSession(sessionId, options) {
 
 async function getAttribute(sessionId, elementId, attribute, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
   // console.log(elementId.match(/s/), typeof elementId)
   // console.log(elementId.toString())
@@ -350,9 +351,7 @@ async function getAttribute(sessionId, elementId, attribute, options) {
 //move buttonup buttondown
 async function mouseDown(sessionId, element/*element can be css selector or elementId*/, position, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   element = { button: 0 }
   if (!options) options = { ...baseOptions }
 
@@ -367,9 +366,7 @@ function sleep(timeout) {
 
 async function moveTo(sessionId, elementOrPosition, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
   options.method = 'POST'
   options.path = Pathes.moveto(sessionId)
@@ -385,9 +382,7 @@ async function moveTo(sessionId, elementOrPosition, options) {
 
 async function pressKeys(sessionId, keys, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   if (!Array.isArray(keys)) {
@@ -400,9 +395,7 @@ async function pressKeys(sessionId, keys, options) {
 
 async function elementFromElement(sessionId, elementId, selector, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
   options.method = 'POST'
   options.path = Pathes.elementFromElement(sessionId, elementId)
@@ -417,9 +410,7 @@ async function elementFromElement(sessionId, elementId, selector, options) {
 
 async function elementsFromElement(sessionId, elementId, selector, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
   const { body, status } = await fetchy_util.post(Pathes.elementsFromElement(sessionId, elementId), JSON.stringify({
     using: 'css selector', value: selector
@@ -430,9 +421,7 @@ async function elementsFromElement(sessionId, elementId, selector, options) {
 
 async function buttonUp(sessionId, button = { button: 0 }, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(Pathes.pressKeys(sessionId), JSON.stringify({ button }), options)
@@ -441,9 +430,7 @@ async function buttonUp(sessionId, button = { button: 0 }, options) {
 
 async function displayed(sessionId, elementId, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.get(Pathes.displayed(sessionId, elementId), null, options)
@@ -453,9 +440,7 @@ async function displayed(sessionId, elementId, options) {
 
 async function present(sessionId, elementId, options) {
 
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.get(Pathes.present(sessionId, elementId), null, options)
@@ -472,6 +457,7 @@ module.exports = {
   resizeWindow,
   moveTo,
   sleep,
+  openTab,
   killSession,
   initSession,
   mouseDown,
@@ -479,11 +465,14 @@ module.exports = {
   findElement,
   goToUrl,
   getUrl,
+  closeCurrentTab,
   getTitle,
   clickElement,
   syncWithDOM,
   getElementText,
   waitCondition,
+  getCurrentWindowHandles,
+  getCurrentWindowHandle,
   getAttribute,
   executeScript
 }

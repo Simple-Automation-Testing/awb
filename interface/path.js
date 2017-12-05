@@ -26,6 +26,7 @@ const PathesStandAlone = {
   elementsFromElement:          (sessionId, elementId) =>            `/wd/hub/session/${sessionId}/element/${elementId}/elements`,
   present:                      (sessionId, elementId) =>            `/wd/hub/session/${sessionId}/element/${elementId}/enabled`,
   displayed:                    (sessionId, elementId) =>            `/wd/hub/session/${sessionId}/element/${elementId}/displayed`,
+  window:                       (sessionId) =>                       `/wd/hub/session/${sessionId}/window` 
 }
 
 const PathesChromeDirrectly = {
@@ -56,6 +57,7 @@ const PathesChromeDirrectly = {
   elementsFromElement:          (sessionId, elementId) =>            `/session/${sessionId}/element/${elementId}/elements`,
   present:                      (sessionId, elementId) =>            `/session/${sessionId}/element/${elementId}/enabled`,
   displayed:                    (sessionId, elementId) =>            `/session/${sessionId}/element/${elementId}/displayed`,
+  window:                       (sessionId) =>                       `/wd/hub/session/${sessionId}/window`
 }
 
 module.exports = {

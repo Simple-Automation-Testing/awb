@@ -9,8 +9,15 @@ const {
     getTitle,
     executeScript,
     sleep,
-    waitCondition
+    waitCondition,
+    getCurrentWindowHandles,
+    getCurrentWindowHandle,
+    openTab,
+    closeCurrentTab,
+    clickElement,
+    findElement
   } = require('./core')
+
 
 class Browser {
 
@@ -23,6 +30,10 @@ class Browser {
         const { sessionId } = await initSession(this.capabilities)
         this.sessionId = sessionId
         global.___sessionId = this.sessionId
+    }
+
+    async closeCurrentTab() {
+        const resp = await closeCurrentTab(this.sessionId)
     }
 
     async getUrl() {
@@ -50,6 +61,31 @@ class Browser {
             && await this.getSession()
 
         await goToUrl(this.sessionId, url)
+        // const { value: { ELEMENT } } = await findElement(this.sessionId, 'body')
+        // await clickElement(this.sessionId, ELE)
+    }
+
+    async getBrowserTabs() {
+        !this.sessionId
+            && await this.getSession()
+        const { value } = await getCurrentWindowHandles(this.sessionId)
+        return value
+    }
+
+    async getCurrentBrowserTab() {
+        !this.sessionId
+            && await this.getSession()
+        const { value } = await getCurrentWindowHandle(this.sessionId)
+        return value
+    }
+
+    async switchToTab(index) {
+        const tabs = await this.getBrowserTabs()
+        if (tabs.length <= index) {
+            console.error('tabs quantity less then index')
+            return
+        }
+        const { value } = await openTab(this.sessionId, tabs[index])
     }
 
     async closeBrowser() {
@@ -57,7 +93,6 @@ class Browser {
             const { status } = await killSession(this.sessionId)
             this.sessionId = null
             global.___sessionId = null
-            // !status && console.log('browser closed success')
         }
     }
 }

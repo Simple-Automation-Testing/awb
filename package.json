@@ -9,6 +9,7 @@
     "scripts": {
         "test": "mocha $(find ./specs/ -path '*.test.js') --compilers js:babel-core/register --require ./specs/setup.js",
         "integration": "mocha $(find ./__specs__/integration -path '*.spec.js')",
+        "google-exapmle": "mocha --timeout 10000 ./examples/google.example.js",
         "integration:watch": "mocha -w --harmony --trace-deprecation --timeout 10000 $(find ./__specs__/integration -path '*.spec.js')",
         "start-test-app": "NODE_ENV=test-app webpack-dev-server ./webpack.test.app.js",
         "kill-test-app": "kill $(ps aux | grep 'webpack' | awk '{print $2}')"

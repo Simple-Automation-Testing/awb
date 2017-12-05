@@ -2,7 +2,16 @@
 
 process.title = 'wd-interface'
 
-const { getChromeDriver, writeId, killProc, getStandalone, clearChrome, clearStandalone, spawnStandalone } = require('../macOSinstaller')
+const {
+  getChromeDriver,
+  writeId,
+  killProc,
+  getStandalone,
+  clearChrome,
+  clearStandalone,
+  spawnStandalone,
+  spawnChromedriver
+ } = require('../macOSinstaller')
 
 // wd install
 
@@ -11,8 +20,8 @@ const args = process.argv.slice(2)
 try {
   if (args.includes('chrome') && args.includes('standalone')) {
     getChromeDriver('2.33').then(getStandalone)
-  } else if (args.includes('chrome')) {
-    getChromeDriver('2.33')
+  } else if (args.includes('start') && args.includes('chrome')) {
+    spawnChromedriver().then(writeId)
   } else if (args.includes('start') && args.includes('standalone')) {
     spawnStandalone().then(writeId)
   } else if (args.includes('standalone')) {
@@ -21,7 +30,10 @@ try {
     clearChrome('2.33').then(clearStandalone)
   } else if (args.includes('killsession')) {
     killProc()
+  } else if (args.includes('chrome')) {
+    getChromeDriver('2.33')
   }
 } catch (error) {
   console.error(error.toString())
 }
+

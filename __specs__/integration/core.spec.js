@@ -6,7 +6,7 @@ const { resizeWindow, initSession, killSession, findElements, findElement, goToU
 const { getTitle, clickElement, sendKeys, getAttribute, executeScript, sleep, syncWithDOM } = require('../../interface/core')
 const { getElementText, moveTo, mouseDown, elementFromElement, elementsFromElement, present, displayed } = require('../../interface/core')
 
-describe('core function positive scenario', () => {
+describe.only('core function positive scenario', () => {
   //test variables
   
   let sessionId = null
@@ -87,7 +87,7 @@ describe('core function positive scenario', () => {
     const body = await findElements(sessionId, addnewname)
     expect(body.status).to.eql(0)
     expect(body.sessionId).to.eql(sessionId)
-    expect(body.value.length).to.eql(9)
+    expect(body.value.length).to.eql(10)
     expect(body.value[0].ELEMENT).to.be.exist
     expect(body.value[0].ELEMENT).to.eql(elementButton)
   })

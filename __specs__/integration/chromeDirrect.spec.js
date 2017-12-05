@@ -3,7 +3,7 @@ const { expect } = require('chai')
 const client = require('../../interface/client')
 const element = require('../../interface/element')
 
-describe.only('client dirrectConnection', () => {
+describe('client dirrectConnection', () => {
   let browser = null
   const baseURL = 'http://localhost:9090'
 
@@ -13,16 +13,18 @@ describe.only('client dirrectConnection', () => {
   const button = '.submit'
   const asyncform = '.asyncform.handler'
   const loader = '.loader'
+  const gotonextab = '.new.tab.open'
 
   //elements
   const asyncFormHandler = element(asyncform)
+  const nextTab = element(gotonextab)
   const enterCode = element(entercode)
   const enterPostCode = element(enterpostcode)
   const submitButton = element(button)
   const asyncLoade = element(loader)
 
   before(async () => {
-    browser = client().chrome(true)
+    browser = client().chrome()
     // expect(browser.sessionId).to.eql(true)
     expect(global.__sessionId).to.eql(undefined)
     await browser.goTo(baseURL)
@@ -35,6 +37,14 @@ describe.only('client dirrectConnection', () => {
   it('get text asyn form button', async () => {
     const buttonText = await asyncFormHandler.getText()
     expect(buttonText).to.eql('Go to async form')
+  })
+
+  it('get browser tabs', async () => {
+    await browser.getBrowserTabs()
+  })
+
+  it('get current browser tabs', async () => {
+    await browser.getCurrentBrowserTab()
   })
 
   it('click button and assert presents elements', async () => {
@@ -63,7 +73,23 @@ describe.only('client dirrectConnection', () => {
     }
     //wait for element
     {
-      const res = submitButton.waitForElement(2000)
+      await submitButton.waitForElement(3000)
+    }
+  })
+
+  it('go to next tab', async () => {
+    {
+      await nextTab.click()
+      await browser.sleep(500)
+      await browser.switchToTab(1)
+      await browser.sleep(500)
+      const tabs = await browser.getBrowserTabs()
+      expect(tabs.length).to.eql(2)
+    }
+    {
+      await browser.closeCurrentTab()
+      const tabs = await browser.getBrowserTabs()
+      expect(tabs.length).to.eql(1)
     }
   })
 

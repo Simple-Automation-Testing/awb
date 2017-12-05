@@ -31,9 +31,7 @@ function waitCondition(conditionFn, time, conditionTarget) {
 
   function recursiveCall(resolve, reject) {
     dummyAsyncCall(function (data) {
-      console.log(data)
       data.then((resp) => {
-        console.log(resp)
         condition = resp.body.value
         if (callCount > 0 && !condition && (conditionTarget && (!conditionTarget === condition))) {
           recursiveCall(resolve, reject)
@@ -51,12 +49,43 @@ function waitCondition(conditionFn, time, conditionTarget) {
   })
 }
 
+function waitElementPresent(conditionFn, session, selector, time) {
+  let callCount = 100
+
+  const callTime = time / 100
+
+  function dummyAsyncCall(callback, timeout) {
+    setTimeout(function () {
+      callback(conditionFn(session, selector))
+    }, timeout)
+  }
+
+  function recursiveCall(resolve, reject) {
+
+    dummyAsyncCall(function (data) {
+      data.then((resp) => {
+        if (callCount > 0 && (resp.value.message && resp.value.message.includes('no such element: Unable to locate elemen'))) {
+          recursiveCall(resolve, reject)
+        } else {
+          resolve(resp.value)
+        }
+      }).catch(reject)
+    }, callTime)
+
+    callCount--
+  }
+  return new Promise(function (resolve, reject) {
+    recursiveCall(resolve, reject)
+  })
+}
+
 
 module.exports = {
   assertNumber,
   returnStringType,
   parseJson,
   assertArray,
+  waitElementPresent,
   assertObject,
   assertString,
   assertFunction,

@@ -2,7 +2,9 @@ const { resizeWindow, initSession, killSession, findElements, findElement, goToU
 const { getTitle, clickElement, sendKeys, getAttribute, executeScript, sleep, syncWithDOM, waitCondition } = require('./core')
 const { getElementText, moveTo, mouseDown, elementFromElement, elementsFromElement, present, displayed } = require('./core')
 
-const { returnStringType } = require('./util')
+const { returnStringType, waitElementPresent } = require('./util')
+
+const { InterfaceError } = require('./interfaceError')
 
 const WEB_EMENET_ID = 'element-6066-11e4-a52e-4f735466cecf'
 
@@ -15,8 +17,13 @@ class Element {
   }
 
   async waitForElement(time) {
-    const result = await waitCondition(() => present(this.sessionId, this.elementId), time, true)
-    console.log(result)
+    this.sessionId = this.sessionId || global.___sessionId
+    const result = await waitElementPresent(findElement, this.sessionId, this.selector, time)
+    if (result.ELEMENT) {
+
+    } else if (result.includes('no such element: Unable to locate elemen')) {
+      throw new InterfaceError(result, __filename)
+    }
   }
 
   async getTthisElement() {
@@ -86,6 +93,7 @@ class Element {
     !this.elementId
       && await this.getTthisElement()
     const body = await sendKeys(this.sessionId, this.elementId, keys)
+
     return body
   }
 
@@ -106,7 +114,6 @@ class Element {
   async isPresent() {
     !this.elementId
       && await this.getTthisElement()
-    console.log('! - - - - - -')
     const { value } = await present(this.sessionId, this.elementId)
     return value
   }
@@ -124,7 +131,6 @@ class Element {
     !this.elementId
       && await this.getTthisElement()
     const { value } = await displayed(this.sessionId, this.elementId)
-    console.log(value)
     return value
   }
 

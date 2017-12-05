@@ -112,6 +112,24 @@ async function spawnStandalone() {
   })
 }
 
+async function spawnChromedriver() {
+  const existchrome = fs.existsSync(resolvePath(CHROME_PATH))
+  if (!existchrome) {
+    console.info(`${!existchrome && 'chrome was not installed, for install run *wd-interface chrome*'}`)
+    return
+  }
+  return new Promise((resolve, reject) => {
+    try {
+      const nodeProc = spawn('./chromedriver_2.33', {
+        stdio: ['pipe', process.stdout, process.stderr]
+      })
+      resolve(nodeProc.pid)
+    } catch (error) {
+      console.error(error.toString())
+    }
+  })
+}
+
 async function writeId(id) {
   return new Promise((resolve, reject) => {
     fs.writeFile(resolvePath('./procid'), id, (err) => {
@@ -141,6 +159,7 @@ module.exports = {
   clearStandalone,
   spawnStandalone,
   writeId,
+  spawnChromedriver,
   killProc
 }
 
