@@ -28,7 +28,7 @@ Use with [mocha](https://mochajs.org/) or other test runner
 ```js
 const { expect } = require('chai')
 
-const {client, element} = require('wd-interface')
+const { client, element } = require('wd-interface')
 
 describe('Google base example', () => {
   let browser = null

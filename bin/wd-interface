@@ -9,6 +9,7 @@ const {
   getStandalone,
   clearChrome,
   clearStandalone,
+  getGeckoDriver,
   spawnStandalone,
   spawnChromedriver
  } = require('../macOSinstaller')
@@ -32,6 +33,8 @@ try {
     killProc()
   } else if (args.includes('chrome')) {
     getChromeDriver('2.33')
+  } else if (args.includes('gecko')) {
+    getGeckoDriver()
   }
 } catch (error) {
   console.error(error.toString())

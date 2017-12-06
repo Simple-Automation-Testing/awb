@@ -3,5 +3,5 @@ const browser = require('./interface/client')
 
 module.exports = {
     element,
-    browser
+    client: browser
 }
