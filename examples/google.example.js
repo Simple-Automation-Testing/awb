@@ -28,8 +28,7 @@ describe('Google base example', () => {
   it('search git hub potapovDim', async () => {
     await inputSearch.sendKeys('git hub potapovDim')
     await submitSearch.click()
-    await browser.sleep(1000)
-    await resultSearch.waitForElement(1000)
+    await resultSearch.waitForElementVisible(1000)
     const allTextInSelector = await resultSearch.getText()
     expect(allTextInSelector).to.includes('potapovDim')
   })

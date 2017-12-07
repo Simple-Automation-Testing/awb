@@ -50,9 +50,9 @@ function waitCondition(conditionFn, time, conditionTarget) {
 }
 
 function waitElementPresent(conditionFn, session, selector, time) {
-  let callCount = 100
+  let callCount = time
 
-  const callTime = time / 100
+  const callTime = 1
 
   function dummyAsyncCall(callback, timeout) {
     setTimeout(function () {
@@ -61,7 +61,6 @@ function waitElementPresent(conditionFn, session, selector, time) {
   }
 
   function recursiveCall(resolve, reject) {
-
     dummyAsyncCall(function (data) {
       data.then((resp) => {
         if (callCount > 0 && (resp.value.message && resp.value.message.includes('no such element: Unable to locate elemen'))) {

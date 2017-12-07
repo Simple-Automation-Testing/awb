@@ -79,6 +79,8 @@ describe('Google base example', () => {
   * [Constructor](#consctructor-element)
   * [sendKeys](#sendkeys)
   * [getElementHTML](#getelementhtml)
+  * [waitForElementPresent](#waitforelementpresent)
+  * [waitForElementVisible](#waitforelementvisible)
   * [getText](#gettext)
   * [waitForElement](#waitforelement)
   * [getElement](#getelement)
@@ -216,12 +218,27 @@ describe('Google base example', () => {
 ## waitForElement
 ```js
   const elementDiv = element('div')
-  await elementDiv.waitForElement()
+  await elementDiv.waitForElement(1000)
   /* 
   * will wait for element mount to DOM node
   */
 ```
-
+## waitForElementPresent
+```js
+  const elementDiv = element('div')
+  await elementDiv.waitForElementPresent(1000)
+  /* 
+  * will wait for element mount to DOM node
+  */
+```
+## waitForElementVisible
+```js
+  const elementDiv = element('div')
+  await elementDiv.waitForElementVisible(1000)
+  /* 
+  * will wait for element visible in DOM node
+  */
+```
 ## getElement
 ```js
   const elementSpan = await element('div').getElement('span')

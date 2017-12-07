@@ -1,6 +1,5 @@
-const { resizeWindow, initSession, killSession, findElements, findElement, goToUrl, getUrl } = require('./core')
-const { getTitle, clickElement, sendKeys, getAttribute, executeScript, sleep, syncWithDOM, waitCondition } = require('./core')
 const { getElementText, moveTo, mouseDown, elementFromElement, elementsFromElement, present, displayed } = require('./core')
+const { clickElement, sendKeys, getAttribute, executeScript, waitCondition, findElements, findElement } = require('./core')
 
 const { returnStringType, waitElementPresent } = require('./util')
 
@@ -20,9 +19,25 @@ class Element {
     this.sessionId = this.sessionId || global.___sessionId
     const result = await waitElementPresent(findElement, this.sessionId, this.selector, time)
     if (result.ELEMENT) {
+      this.elementId = result.ELEMENT
+    } else if (result.message.includes('no such element: Unable to locate elemen')) {
+      throw new InterfaceError(result.message, __filename)
+    }
+  }
 
-    } else if (result.includes('no such element: Unable to locate elemen')) {
-      throw new InterfaceError(result, __filename)
+  async waitForElementPresent(time) {
+    await this.waitForElement(time)
+    const isPresent = await this.isPresent()
+    if (!isPresent) {
+      throw new InterfaceError(`elemen does not present`, __filename)
+    }
+  }
+
+  async waitForElementVisible(time) {
+    await this.waitForElement(time)
+    const isVisible = await this.isDisplayed()
+    if (!isVisible) {
+      throw new InterfaceError(`elemen does not visible`, __filename)
     }
   }
 

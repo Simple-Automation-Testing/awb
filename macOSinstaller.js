@@ -12,7 +12,6 @@ const STANDALONE_PATH = './selenium-server-standalone-3.7.1.jar'
 const fs = require('fs')
 const fetch = require('node-fetch')
 const unzip = require('unzip')
-const tar = require('tar')
 
 const { resolve } = require('path')
 
@@ -141,24 +140,24 @@ async function clearStandalone() {
 async function getGeckoDriver(ver = geckdriver_ver) {
   return new Promise((resolve) => {
     fetch(urlGecko(ver))
-    .then(function (res) {
-      const dest = fs.createWriteStream(resolvePath('./geckodriver-v0.19.1-macos.tar.gz'))
-      res.body.pipe(dest)
-      res.body.on('end', () => {
-        resolve(true)
-        // spawn('gunz')
-        // const str = fs.createReadStream(resolvePath('./chromedriver_2.33.zip')).pipe(unzip.Extract({ path: resolvePath('./') }))
-        // str.on('close', () => {
-        //   fs.rename(resolvePath('./chromedriver'), resolvePath(`./chromedriver_${ver}`), (err) => {
-        //     if (err) throw err
-        //     fs.unlink(resolvePath(`./chromedriver_${ver}.zip`), (err) => {
-        //       if (err) throw err
-        //     })
-        //     resolve(true)
-        //   })
-        // })
+      .then(function (res) {
+        const dest = fs.createWriteStream(resolvePath('./geckodriver-v0.19.1-macos.tar.gz'))
+        res.body.pipe(dest)
+        res.body.on('end', () => {
+          resolve(true)
+          // spawn('gunz')
+          // const str = fs.createReadStream(resolvePath('./chromedriver_2.33.zip')).pipe(unzip.Extract({ path: resolvePath('./') }))
+          // str.on('close', () => {
+          //   fs.rename(resolvePath('./chromedriver'), resolvePath(`./chromedriver_${ver}`), (err) => {
+          //     if (err) throw err
+          //     fs.unlink(resolvePath(`./chromedriver_${ver}.zip`), (err) => {
+          //       if (err) throw err
+          //     })
+          //     resolve(true)
+          //   })
+          // })
+        })
       })
-    })
   }).then((value) => {
     if (value) {
       console.info('gecko driver installed success')
@@ -183,14 +182,18 @@ async function writeId(id) {
   })
 }
 
-async function killProc() {
-  fs.readFile(resolvePath('./procid'), (err, data) => {
-    if (err) throw err
-    try {
-      process.kill(data.toString())
-    } catch (error) {
-      console.error('active session was not found')
-    }
+function killProc() {
+  return new Promise((resolve, reject) => {
+    fs.readFile(resolvePath('./procid'), (err, data) => {
+      if (err) throw err
+      try {
+        process.kill(data.toString())
+        resolve(true)
+      } catch (error) {
+        console.error('active session was not found')
+        reject(false)
+      }
+    })
   })
 }
 
