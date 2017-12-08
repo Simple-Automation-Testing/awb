@@ -29,7 +29,7 @@ const PathesStandAlone = {
   window:                       (sessionId) =>                       `/wd/hub/session/${sessionId}/window` 
 }
 
-const PathesChromeDirrectly = {
+const PathesDirrectConnection = {
   executeSync:                  (sessionId) =>                       `/session/${sessionId}/execute/sync`,
   windowHandle:                 (sessionId) =>                       `/session/${sessionId}/window_handle`,
   windowHandles:                (sessionId) =>                       `/session/${sessionId}/window_handles`,
@@ -62,5 +62,6 @@ const PathesChromeDirrectly = {
 
 module.exports = {
   PathesStandAlone,
-  PathesChromeDirrectly
+  PathesDirrectConnection,
+  // PathesChromeDirrectly
 }

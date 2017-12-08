@@ -11,6 +11,7 @@ const {
   clearStandalone,
   getGeckoDriver,
   spawnStandalone,
+  spawnGeckodriver,
   spawnChromedriver
  } = require('../macOSinstaller')
 
@@ -19,10 +20,16 @@ const {
 const args = process.argv.slice(2)
 
 try {
-  if (args.includes('chrome') && args.includes('standalone')) {
+  if (args.includes('chrome') && args.includes('standalone') && args.includes('gecko')) {
+    getChromeDriver('2.33').then(getStandalone).then(getGeckoDriver)
+  } else if (args.includes('chrome') && args.includes('standalone')) {
     getChromeDriver('2.33').then(getStandalone)
+  } else if (args.includes('gecko') && args.includes('standalone')) {
+    getGeckoDriver().then(getStandalone)
   } else if (args.includes('start') && args.includes('chrome')) {
     spawnChromedriver().then(writeId)
+  } else if (args.includes('gecko') && args.includes('start')) {
+    spawnGeckodriver().then(writeId)
   } else if (args.includes('start') && args.includes('standalone')) {
     spawnStandalone().then(writeId)
   } else if (args.includes('standalone')) {

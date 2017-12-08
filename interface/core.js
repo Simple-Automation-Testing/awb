@@ -10,11 +10,17 @@ const {
 
 const SELENIUM_PORT = 4444
 const CHROMEDRIVER_PORT = 9515
+const GECKODRIVER_PORT = 9516
 
 const fetchyInitializator = require('./fetchy')
 
-const { PathesChromeDirrectly, PathesStandAlone } = require('./path')
-const { defaultCapabilities, baseOptionsChrome, baseOptionsStandAlone } = require('./capabilitiesAndBaseOpts')
+const { PathesDirrectConnection, PathesStandAlone } = require('./path')
+const {
+  defaultChromeCapabilities,
+  baseOptionsChrome,
+  baseOptionsStandAlone,
+  baseOptionsFirefox
+} = require('./capabilitiesAndBaseOpts')
 
 const { requestInterface } = require('./request')
 const { InterfaceError } = require('./interfaceError')
@@ -30,8 +36,17 @@ const assertStatus = (status, body) => {
 }
 
 function getLocalEnv() {
-  const Pathes = global.__provider && global.__provider.__chrome ? PathesChromeDirrectly : PathesStandAlone
+  const Pathes = global.__provider && (global.__provider.__chrome || global.__provider.__firefox) ? PathesDirrectConnection : PathesStandAlone
   const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
+  const getPort = () => {
+    if (!global.__provider) {
+      return SELENIUM_PORT
+    } else if (global.__provider.__chrome) {
+      return CHROMEDRIVER_PORT
+    } else if (global.__provider.__firefox) {
+      return GECKODRIVER_PORT
+    }
+  }
   const { fetchy_util } = fetchyInitializator(`http://localhost:${global.__provider && global.__provider.__chrome ? CHROMEDRIVER_PORT : SELENIUM_PORT}`)
 
   return { Pathes, baseOptions, fetchy_util }
@@ -260,7 +275,7 @@ async function findElement(sessionId, selector, options) {
 
   const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
-
+  console.log('findElement', selector)
   const { body, status } = await fetchy_util.post(Pathes.element(sessionId), JSON.stringify({
     using: 'css selector', value: selector
   }), options)
@@ -283,7 +298,7 @@ async function findElements(sessionId, selector, options) {
 async function initSession(data, options) {
 
   const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
-  if (!data) data = defaultCapabilities
+  if (!data) data = JSON.stringify(defaultChromeCapabilities)
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(options.path, data, options)
@@ -305,7 +320,7 @@ async function sendKeys(sessionId, elementId, keysToSend, options) {
     text = keysToSend.join('')
     keysToSend = keysToSend
   }
-
+  console.log(sessionId, elementId)
   const { body, status } = await fetchy_util.post(Pathes.sendKeys(sessionId, elementId), JSON.stringify({
     text,
     value: keysToSend

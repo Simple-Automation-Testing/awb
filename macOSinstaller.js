@@ -2,18 +2,23 @@ const urlChrome = (ver) => `http://chromedriver.storage.googleapis.com/${ver}/ch
 const urlGecko = (ver) => `https://github.com/mozilla/geckodriver/releases/download/v${ver}/geckodriver-v${ver}-macos.tar.gz`
 const seleniumUrl = (seleniumV) => `http://selenium-release.storage.googleapis.com/3.7/selenium-server-standalone-3.7.1.jar`
 
+const geckodriver = 'https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckodriver-v0.19.1-macos.tar.gz'
+
 const chromedriver_ver = '2.33'
 const geckdriver_ver = '0.19.1'
 
-const GECKO_PATH = './geckodriver_0.19.1'
+const GECKO_PATH = './geckodriver'
 const CHROME_PATH = './chromedriver_2.33'
 const STANDALONE_PATH = './selenium-server-standalone-3.7.1.jar'
 
 const fs = require('fs')
 const fetch = require('node-fetch')
 const unzip = require('unzip')
+const zlib = require('zlib')
+const tar = require('tar')
+const mkdirp = require('mkdirp')
 
-const { resolve } = require('path')
+const { resolve, dirname, join } = require('path')
 
 const { execFile, spawn, execSync } = require('child_process')
 
@@ -53,12 +58,12 @@ async function getChromeDriver(ver) {
 async function spawnChromedriver() {
   const existchrome = fs.existsSync(resolvePath(CHROME_PATH))
   if (!existchrome) {
-    console.info(`${!existchrome && 'chrome was not installed, for install run *wd-interface chrome*'}`)
+    console.info('chrome was not installed, for install run *wd-interface chrome*')
     return
   }
   return new Promise((resolve, reject) => {
     try {
-      const nodeProc = spawn('./chromedriver_2.33', {
+      const nodeProc = spawn(resolvePath(CHROME_PATH), {
         stdio: ['pipe', process.stdout, process.stderr]
       })
       resolve(nodeProc.pid)
@@ -99,24 +104,30 @@ async function getStandalone() {
 }
 
 async function spawnStandalone() {
-  const existchrome = fs.existsSync(resolvePath(CHROME_PATH))
+  const existschrome = fs.existsSync(resolvePath(CHROME_PATH))
   const existstandalone = fs.existsSync(resolvePath(STANDALONE_PATH))
-  if (!(existstandalone && existchrome)) {
-    if (!existstandalone && !existchrome) {
-      console.info('standalone and chromedriver were not installen, for install run wd-interface standalone chrome')
+  const existsgecko = fs.existsSync(resolvePath(GECKO_PATH))
+  if (!(existstandalone && existschrome && existsgecko)) {
+    if (!existstandalone && !existschrome && !existsgecko) {
+      console.info('standalone and chromedriver were not installen, for install run wd-interface standalone chrome gecko')
     } else {
       console.info(`
       ${!existstandalone && 'standalone was not installed, for install run *wd-interface standalone*'}
-      ${!existchrome && 'chrome was not installed, for install run *wd-interface chrome*'}
+      ${!existschrome && 'chrome was not installed, for install run *wd-interface chrome*'}
+      ${!existsgecko && 'gecko was not installed, for install run *wd-interface gecko*'}
     `)
     }
     return
   }
   return new Promise((resolve, reject) => {
     try {
-      const nodeProc = spawn('java', [`-Dwebdriver.chrome.driver=${resolvePath(CHROME_PATH)}`, '-jar', `${resolvePath(STANDALONE_PATH)}`], {
-        stdio: ['pipe', process.stdout, process.stderr]
-      })
+      const nodeProc = spawn('java', [
+        `-Dwebdriver.chrome.driver=${resolvePath(CHROME_PATH)}`,
+        `-Dwebdriver.gecko.driver=${resolvePath(GECKO_PATH)}`,
+        '-jar',
+        `${resolvePath(STANDALONE_PATH)}`], {
+          stdio: ['pipe', process.stdout, process.stderr]
+        })
       resolve(nodeProc.pid)
     } catch (error) {
       console.error(error.toString())
@@ -139,23 +150,27 @@ async function clearStandalone() {
 
 async function getGeckoDriver(ver = geckdriver_ver) {
   return new Promise((resolve) => {
-    fetch(urlGecko(ver))
+    fetch(geckodriver)
       .then(function (res) {
         const dest = fs.createWriteStream(resolvePath('./geckodriver-v0.19.1-macos.tar.gz'))
         res.body.pipe(dest)
         res.body.on('end', () => {
-          resolve(true)
-          // spawn('gunz')
-          // const str = fs.createReadStream(resolvePath('./chromedriver_2.33.zip')).pipe(unzip.Extract({ path: resolvePath('./') }))
-          // str.on('close', () => {
-          //   fs.rename(resolvePath('./chromedriver'), resolvePath(`./chromedriver_${ver}`), (err) => {
-          //     if (err) throw err
-          //     fs.unlink(resolvePath(`./chromedriver_${ver}.zip`), (err) => {
-          //       if (err) throw err
-          //     })
-          //     resolve(true)
-          //   })
-          // })
+          fs.createReadStream(resolvePath('./geckodriver-v0.19.1-macos.tar.gz'))
+            .on('error', console.log)
+            .pipe(zlib.Unzip())
+            .pipe(new tar.Parse())
+            .on('entry', function (entry) {
+              mkdirp(dirname(join(resolvePath('./'), entry.path)), function (err) {
+                if (err) throw err;
+                entry.pipe(fs.createWriteStream(join(resolvePath('./'), entry.path)))
+                entry.on('end', () => {
+                  fs.unlink(resolvePath('./geckodriver-v0.19.1-macos.tar.gz'), (err) => {
+                    if (err) throw err
+                  })
+                  resolve(true)
+                })
+              })
+            })
         })
       })
   }).then((value) => {
@@ -163,14 +178,43 @@ async function getGeckoDriver(ver = geckdriver_ver) {
       console.info('gecko driver installed success')
     }
     try {
-      execSync(`chmod +x ${resolvePath(`./geckodriver-${ver}`)}`)
+      execSync(`chmod +x ${resolvePath(`./geckodriver`)}`)
     } catch (error) {
       console.error(error.toString())
     }
   })
 }
 
+async function spawnGeckodriver() {
+  const existgecko = fs.existsSync(resolvePath(GECKO_PATH))
+  if (!existgecko) {
+    console.info('gecko was not installed, for install run *wd-interface gecko*')
+    return
+  }
+  return new Promise((resolve, reject) => {
+    try {
+      const nodeProc = spawn(`${resolvePath(GECKO_PATH)}`, ['-p', '9516'], {
+        stdio: ['pipe', process.stdout, process.stderr]
+      })
+      resolve(nodeProc.pid)
+    } catch (error) {
+      console.error(error.toString())
+    }
+  })
+}
 
+async function clearGecko() {
+  return new Promise((resolve, reject) => {
+    fs.unlink(resolvePath(GECKO_PATH), (err) => {
+      if (err) reject(err)
+      resolve(true)
+    })
+  }).then(val => {
+    if (val) {
+      console.info('gecko driver removed success')
+    }
+  }).catch(error => console.error(error.toString()))
+}
 
 async function writeId(id) {
   return new Promise((resolve, reject) => {
@@ -199,15 +243,19 @@ function killProc() {
 
 module.exports = {
   getChromeDriver,
-  getStandalone,
-  clearChrome,
-  getGeckoDriver,
-  clearStandalone,
-  spawnStandalone,
-  writeId,
   spawnChromedriver,
-  killProc,
-  getGeckoDriver
+  clearChrome,
+
+  getStandalone,
+  spawnStandalone,
+  clearStandalone,
+
+  getGeckoDriver,
+  spawnGeckodriver,
+  clearGecko,
+
+  writeId,
+  killProc
 }
 
 const CHROME_DRIVER_VERSION = `curl - sS chromedriver.storage.googleapis.com / LATEST_RELEASE`

@@ -43,7 +43,9 @@ class Element {
 
   async getTthisElement() {
     this.sessionId = this.sessionId || global.___sessionId
+    console.log(this.sessionId, 'get this element')
     const { value: { ELEMENT } } = await findElement(this.sessionId, this.selector)
+    console.log(ELEMENT, 'ELEMENT')
     this.elementId = ELEMENT
   }
 
@@ -107,6 +109,7 @@ class Element {
   async sendKeys(keys) {
     !this.elementId
       && await this.getTthisElement()
+      console.log('SEND KEYS')
     const body = await sendKeys(this.sessionId, this.elementId, keys)
 
     return body

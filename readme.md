@@ -9,14 +9,15 @@ Install [Node.js](http://nodejs.org/) and install framework
 ```sh
 $ npm i --SD wd-interface
 ```
-Drivers installation (now only for UNIX* systems)
+Drivers installation (now only for OSX* systems)
 ```sh
-$ wd-interface standalone chrome
+$ wd-interface standalone chrome gecko
 ```
-Run driver selenium-standalone-server or chrome driver
+Run driver selenium-standalone-server or chrome driver (now only for OSX* systems)
 ```sh
 $ wd-interface start standalone  #for standalone
 $ wd-interface start chrome  #for chromedriver 
+$ wd-interface start gecko  #for geckdriver
 ```
 
 Simple as a library

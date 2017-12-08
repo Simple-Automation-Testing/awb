@@ -83,6 +83,7 @@
     },
     "dependencies": {
         "node-fetch": "^1.7.3",
+        "tar": "^4.1.1",
         "unzip": "^0.1.11"
     },
     "engines": {

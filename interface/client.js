@@ -1,4 +1,7 @@
-const { defaultCapabilities } = require('./capabilitiesAndBaseOpts')
+const {
+    defaultChromeCapabilities,
+    defaultFirefoxCapabilities
+} = require('./capabilitiesAndBaseOpts')
 
 const {
     resizeWindow,
@@ -105,8 +108,12 @@ class Initiator {
         this.opts = null
         this.caps = null
     }
-    chrome(directToChrome = false, capabilities = defaultCapabilities) {
+    chrome(directToChrome = false, capabilities = JSON.stringify(defaultChromeCapabilities)) {
         global.__provider.__chrome = directToChrome
+        return new Browser(capabilities)
+    }
+    firefox(directToGecko = false, capabilities = JSON.stringify(defaultFirefoxCapabilities)) {
+        global.__provider.__firefox = directToGecko
         return new Browser(capabilities)
     }
 }

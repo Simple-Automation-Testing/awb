@@ -79,6 +79,7 @@ describe('client dirrectConnection', () => {
 
   it('go to next tab', async () => {
     {
+      await asyncFormHandler.click() 
       await nextTab.click()
       await browser.sleep(500)
       await browser.switchToTab(1)
