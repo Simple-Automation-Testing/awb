@@ -275,7 +275,6 @@ async function findElement(sessionId, selector, options) {
 
   const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
-  console.log('findElement', selector)
   const { body, status } = await fetchy_util.post(Pathes.element(sessionId), JSON.stringify({
     using: 'css selector', value: selector
   }), options)
@@ -320,7 +319,6 @@ async function sendKeys(sessionId, elementId, keysToSend, options) {
     text = keysToSend.join('')
     keysToSend = keysToSend
   }
-  console.log(sessionId, elementId)
   const { body, status } = await fetchy_util.post(Pathes.sendKeys(sessionId, elementId), JSON.stringify({
     text,
     value: keysToSend
