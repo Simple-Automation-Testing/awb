@@ -79,6 +79,7 @@ describe('Google base example', () => {
 - [Element](#element)
   * [Constructor](#consctructor-element)
   * [sendKeys](#sendkeys)
+  * [cliear](#clear)
   * [getElementHTML](#getelementhtml)
   * [waitForElementPresent](#waitforelementpresent)
   * [waitForElementVisible](#waitforelementvisible)
@@ -195,6 +196,14 @@ describe('Google base example', () => {
   await elementInput.sendKeys('test value')
   /* 
   * args string or array string
+  */
+```
+## clear
+```js
+  const elementInput = element('input')
+  await elementInput.clear()
+  /* 
+  * clear value inside input
   */
 ```
 ## getElementHTML

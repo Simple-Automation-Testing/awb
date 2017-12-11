@@ -3,12 +3,12 @@ const { expect } = require('chai')
 const { Keys } = require('../../interface/event/keys')
 
 const { resizeWindow, initSession, killSession, findElements, findElement, goToUrl, getUrl } = require('../../interface/core')
-const { getTitle, clickElement, sendKeys, getAttribute, executeScript, sleep, syncWithDOM } = require('../../interface/core')
+const { getTitle, clickElement, sendKeys, getAttribute, executeScript, sleep, syncWithDOM, clearElementText } = require('../../interface/core')
 const { getElementText, moveTo, mouseDown, elementFromElement, elementsFromElement, present, displayed } = require('../../interface/core')
 
 describe('core function positive scenario', () => {
   //test variables
-  
+
   let sessionId = null
   let elementButton = null
   let elementInput_firstname = null
@@ -357,6 +357,28 @@ describe('core function positive scenario', () => {
       expect(body.status).to.eql(0)
       expect(body.sessionId).to.eql(sessionId)
       expect(body.value).to.eql(true)
+    }
+  })
+
+  it('clearElementText', async () => {
+    {
+      const body = await findElement(sessionId, firstname)
+      expect(body.status).to.eql(0)
+      expect(body.sessionId).to.eql(sessionId)
+      expect(body.value.ELEMENT).to.be.exist
+      elementInput_firstname = body.value.ELEMENT
+    }
+    {
+      const body = await sendKeys(sessionId, elementInput_firstname, testString1)
+      expect(body.status).to.eql(0)
+      expect(body.sessionId).to.eql(sessionId)
+      expect(body.value).to.eql(null)
+    }
+    {
+      const body = await clearElementText(sessionId, elementInput_firstname)
+      expect(body.status).to.eql(0)
+      expect(body.sessionId).to.eql(sessionId)
+      expect(body.value).to.eql(null)
     }
   })
 })

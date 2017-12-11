@@ -1,5 +1,5 @@
 const { getElementText, moveTo, mouseDown, elementFromElement, elementsFromElement, present, displayed } = require('./core')
-const { clickElement, sendKeys, getAttribute, executeScript, waitCondition, findElements, findElement } = require('./core')
+const { clickElement, sendKeys, getAttribute, executeScript, waitCondition, findElements, findElement, clearElementText } = require('./core')
 
 const { returnStringType, waitElementPresent } = require('./util')
 
@@ -25,6 +25,10 @@ class Element {
     }
   }
 
+  async clear() {
+    await clearElementText(this.sessionId, this.elementId)
+  }
+
   async waitForElementPresent(time) {
     await this.waitForElement(time)
     const isPresent = await this.isPresent()
@@ -43,9 +47,7 @@ class Element {
 
   async getTthisElement() {
     this.sessionId = this.sessionId || global.___sessionId
-    console.log(this.sessionId, 'get this element')
     const { value: { ELEMENT } } = await findElement(this.sessionId, this.selector)
-    console.log(ELEMENT, 'ELEMENT')
     this.elementId = ELEMENT
   }
 
@@ -63,8 +65,11 @@ class Element {
 
     const body = await executeScript(this.sessionId, function () {
       const [element] = arguments
-      return document.querySelector(element).innerText
-    }, this.selector)
+      return element.innerText
+    }, {
+        ELEMENT: this.elementId,
+        [WEB_EMENET_ID]: this.elementId
+      })
 
     return body.value
   }
@@ -100,8 +105,8 @@ class Element {
     !this.elementId
       && await this.getTthisElement()
     const { value } = await elementsFromElement(this.sessionId, this.elementId, selector)
-    value.forEach(id => {
-      elements.push(new Element(selector, this.sessionId, id))
+    value.forEach(({ ELEMENT }) => {
+      elements.push(new Element(selector, this.sessionId, ELEMENT))
     })
     return elements
   }
@@ -109,7 +114,6 @@ class Element {
   async sendKeys(keys) {
     !this.elementId
       && await this.getTthisElement()
-      console.log('SEND KEYS')
     const body = await sendKeys(this.sessionId, this.elementId, keys)
 
     return body

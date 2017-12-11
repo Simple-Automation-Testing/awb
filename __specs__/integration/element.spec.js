@@ -47,21 +47,24 @@ describe('Element', () => {
   it('element getElementHTML', async () => {
     const nodeHtml = await elementButton.getElementHTML()
     expect(nodeHtml.includes('button')).to.be.true
-    expect(nodeHtml.includes('Add new name')).to.be.true
+    expect(nodeHtml.includes('Go to async form')).to.be.true
   })
 
   it('element getText', async () => {
     const nodeText = await elementButton.getText()
-    expect(nodeText).to.eql('Add new name')
+    expect(nodeText).to.eql('Go to async form')
   })
 
-  it('element click', async () => {
-    const clickResult = await elementButton.click()
-    expect(clickResult.status).to.eql(0)
-  })
+  // it('element click', async () => {
+  //   // const clickResult = await elementButton.click()
+  //   expect(clickResult.status).to.eql(0)
+  // })
 
   it('element get element', async () => {
     expect(elementDropZone).to.be.instanceOf(Element)
+    
+    const textInsideDropZone = await elementDropZone.getText()
+    expect(textInsideDropZone).to.be.exist
     {
       const elementDropItem = await elementDropZone.getElement(dropitem)
       expect(elementDropItem).to.be.instanceOf(Element)

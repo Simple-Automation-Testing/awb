@@ -55,7 +55,7 @@ describe('client', () => {
       }
     })
   })
-  describe.only('firefox', () => {
+  describe('firefox', () => {
     let browser = null
 
     const baseURL = 'http://localhost:9090'

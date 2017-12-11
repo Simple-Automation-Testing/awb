@@ -155,7 +155,7 @@ async function forwardHistory(sessionId, options) {
   const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
-  const { body, status } = await fetchy_util.post(Pathes.forward(sessionId), null, options)
+  const { body, status } = await fetchy_util.post(Pathes.forward(sessionId), undefined, options)
 
   assertStatus(status, body)
   return body
@@ -166,7 +166,7 @@ async function backHistory(sessionId, options) {
   const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
-  const { body, status } = await fetchy_util.post(Pathes.back(sessionId), null, options)
+  const { body, status } = await fetchy_util.post(Pathes.back(sessionId), undefined, options)
   assertStatus(status, body)
   return body
 }
@@ -198,7 +198,7 @@ async function getUrl(sessionId, options) {
   const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
-  const { body, status } = await fetchy_util.get(Pathes.url(sessionId), null, options)
+  const { body, status } = await fetchy_util.get(Pathes.url(sessionId), undefined, options)
   assertStatus(status, body)
   return body
 }
@@ -218,7 +218,7 @@ async function submitElement(sessionId, elementId, options) {
   const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
-  const { body, status } = await fetchy_util.post(Pathes.submit(sessionId, elementId), null, options)
+  const { body, status } = await fetchy_util.post(Pathes.submit(sessionId, elementId), undefined, options)
   assertStatus(status, body)
   return body
 }
@@ -228,7 +228,7 @@ async function clearElementText(sessionId, elementId, options) {
   const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
-  const { body, status } = await fetchy_util.post(Pathes.clear(sessionId, elementId), null, options)
+  const { body, status } = await fetchy_util.post(Pathes.clear(sessionId, elementId), undefined, options)
 
   assertStatus(status, body)
   return body
@@ -239,7 +239,7 @@ async function getElementText(sessionId, elementId, options) {
   const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
-  const { body, status } = await fetchy_util.get(Pathes.text(sessionId, elementId), null, options)
+  const { body, status } = await fetchy_util.get(Pathes.text(sessionId, elementId), undefined, options)
 
   assertStatus(status, body)
   return body
@@ -250,7 +250,7 @@ async function getTitle(sessionId, options) {
   const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
-  const { body, status } = await fetchy_util.get(Pathes.title(sessionId), null, options)
+  const { body, status } = await fetchy_util.get(Pathes.title(sessionId), undefined, options)
 
   assertStatus(status, body)
   return body
@@ -487,5 +487,6 @@ module.exports = {
   getCurrentWindowHandles,
   getCurrentWindowHandle,
   getAttribute,
-  executeScript
+  executeScript,
+  clearElementText
 }
