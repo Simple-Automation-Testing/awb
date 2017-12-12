@@ -5,7 +5,7 @@ const { resizeWindow, initSession, killSession, findElements, findElement, goToU
 const element = require('../../interface/element')
 const Element = element.elementInstance
 
-describe('Element', () => {
+describe.only('Element', () => {
   //parts
   let sessionId = null
   let elementButton = null
@@ -62,7 +62,7 @@ describe('Element', () => {
 
   it('element get element', async () => {
     expect(elementDropZone).to.be.instanceOf(Element)
-    
+
     const textInsideDropZone = await elementDropZone.getText()
     expect(textInsideDropZone).to.be.exist
     {
@@ -97,6 +97,15 @@ describe('Element', () => {
       textArr.forEach(str => {
         expect(typeof str).to.eql('string')
       })
+    }
+    //filter
+    {
+      const elementsWith = await dropItems.filter(async (element) => {
+        const text = await element.getText()
+        return text.includes('0')
+      })
+      expect(elementsWith.length).to.eq(1)
+      expect(await elementsWith[0].getText()).to.includes('0')
     }
   })
 

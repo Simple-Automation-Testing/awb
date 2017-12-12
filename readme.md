@@ -89,6 +89,7 @@ describe('Google base example', () => {
   * [getElements](#getelements)
     * [mappy](#mappy)
     * [each](#each)
+    * [filter](#filter)
   * [getAttribute](#getattribute)
   * [click](#click)
   * [isPresent](#ispresent)
@@ -286,6 +287,19 @@ describe('Google base example', () => {
   * args async call back 
   * call async funcs with await 
   * does not return 
+  * /
+```
+### filter
+```js
+ const elementsSpan = await element('div').getElements('span')
+ const textArr = await elementsSpan.filter(async (element) => {
+        const html = await element.getElementHTML()
+        return html.includes('class="test"')
+      })
+  /* 
+  * args async call back 
+  * call async funcs with await 
+  * return new elements array  
   * /
 ```
 ## getAttribute

@@ -87,10 +87,22 @@ class Element {
     elements.get = function (index) {
       return this[index]
     }
+
     elements.each = async function (cb) {
       for (let element of this) {
         cb.then || returnStringType(cb) === '[object AsyncFunction]' ? await cb(element) : cb(element)
       }
+    }
+
+    elements.filter = async function (cb) {
+      const values = []
+      for (let element of this) {
+        const resultValue = cb.then || returnStringType(cb) === '[object AsyncFunction]' ? await cb(element) : cb(element)
+        if (resultValue) {
+          values.push(element)
+        }
+      }
+      return values
     }
 
     elements.mappy = async function (cb) {
