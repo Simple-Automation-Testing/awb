@@ -70,7 +70,7 @@ describe('Google base example', () => {
   * [goTo](#goto)
   * [closeCurrentTab](#closecurrenttab)
   * [getTitle](#gettitle)
-  * [executeScript] (#executescript)
+  * [executeScript](#executescript)
   * [switchToTab](#switchtotab)
   * [closeBrowser](#closebrowser)
   * [getCurrentBrowserTab](#getcurrentbrowsertab)
