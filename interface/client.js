@@ -39,6 +39,13 @@ class Browser {
         const resp = await closeCurrentTab(this.sessionId)
     }
 
+    async executeScript(script, args) {
+        const result = await executeScript(this.sessionId, script, args)
+        if (result.value) {
+            return result.value
+        }
+    }
+
     async getUrl() {
         if (!this.sessionId) {
             console.error('Cant do it, session does not open')

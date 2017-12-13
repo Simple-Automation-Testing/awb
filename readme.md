@@ -70,6 +70,7 @@ describe('Google base example', () => {
   * [goTo](#goto)
   * [closeCurrentTab](#closecurrenttab)
   * [getTitle](#gettitle)
+  * [executeScript] (#executescript)
   * [switchToTab](#switchtotab)
   * [closeBrowser](#closebrowser)
   * [getCurrentBrowserTab](#getcurrentbrowsertab)
@@ -136,7 +137,17 @@ describe('Google base example', () => {
    * will return tab title
    * /
 ```
-
+## executeScript
+```js
+  const browser = client.chrome() 
+  const currentTitle = await browser.executeScript(function () {
+    const [cssSelector] = arguments
+    return document.querySelector(cssSelector).innerHTML
+  }, 'body')
+  /* first arg is function or string function ,for example 'return arguments[0]'
+   * if function return value it will be returned
+   * /
+```
 ## switchToTab
 ```js
   const browser = client.chrome() 
