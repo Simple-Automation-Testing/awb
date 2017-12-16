@@ -2,11 +2,11 @@ const { expect } = require('chai')
 
 const { Keys } = require('../../interface/event/keys')
 
-const { resizeWindow, initSession, killSession, findElements, findElement, goToUrl, getUrl } = require('../../interface/core')
+const { resizeWindow, initSession, killSession, findElements, findElement, goToUrl, getUrl, setScriptTimeout } = require('../../interface/core')
 const { getTitle, clickElement, sendKeys, getAttribute, executeScript, sleep, syncWithDOM, clearElementText } = require('../../interface/core')
 const { getElementText, moveTo, mouseDown, elementFromElement, elementsFromElement, present, displayed } = require('../../interface/core')
 
-describe('core function positive scenario', () => {
+describe.only('core function positive scenario', () => {
   //test variables
 
   let sessionId = null
@@ -23,11 +23,20 @@ describe('core function positive scenario', () => {
   //mouse down mouse move mouse up
   const bar3 = '.bar.bar-0'
   const handler = '.my-handle'
+
   before('get session', async () => {
-    const body = await initSession()
-    expect(body.status).to.eql(0)
-    expect(body.sessionId).to.be.exist
-    sessionId = body.sessionId
+    {
+      const body = await initSession()
+      expect(body.status).to.eql(0)
+      expect(body.sessionId).to.be.exist
+      sessionId = body.sessionId
+    }
+    {
+      const body = await setScriptTimeout(sessionId)
+      expect(body.status).to.eql(0)
+      expect(body.sessionId).to.eql(sessionId)
+      expect(body.value).to.be.null
+    }
   })
 
   after('kill session ', async () => {

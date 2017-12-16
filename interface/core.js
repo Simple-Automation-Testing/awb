@@ -339,6 +339,18 @@ async function killSession(sessionId, options) {
   return body
 }
 
+async function setScriptTimeout(sessionId, type = "page load", ms = 250000, options) {
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
+  if (!options) options = { ...baseOptions }
+  // 'script', 'implicit', 'page load'
+  const { status, body } = await fetchy_util.post(Pathes.timeouts(sessionId), JSON.stringify({
+    type,
+    ms
+  }), options)
+  assertStatus(status, body)
+  return body
+}
+
 async function getAttribute(sessionId, elementId, attribute, options) {
 
   const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
@@ -488,5 +500,6 @@ module.exports = {
   getCurrentWindowHandle,
   getAttribute,
   executeScript,
-  clearElementText
+  clearElementText,
+  setScriptTimeout
 }

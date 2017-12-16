@@ -18,6 +18,7 @@ const {
     openTab,
     closeCurrentTab,
     clickElement,
+    setScriptTimeout,
     findElement
   } = require('./core')
 
@@ -31,6 +32,7 @@ class Browser {
 
     async getSession() {
         const { sessionId } = await initSession(this.capabilities)
+        await setScriptTimeout(sessionId)
         this.sessionId = sessionId
         global.___sessionId = this.sessionId
     }
