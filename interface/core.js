@@ -347,6 +347,14 @@ async function setScriptTimeout(sessionId, type = "page load", ms = 250000, opti
     type,
     ms
   }), options)
+  await fetchy_util.post(Pathes.timeouts(sessionId), JSON.stringify({
+    type: "script",
+    ms
+  }), options)
+  await fetchy_util.post(Pathes.timeouts(sessionId), JSON.stringify({
+    type: "implicit",
+    ms
+  }), options)
   assertStatus(status, body)
   return body
 }
