@@ -77,6 +77,11 @@ describe('Google base example', () => {
   * [getBrowserTabs](#getbrowsertabs)
   * [sleep](#sleep)
   * [getUrl](#geturl)
+- [Elements](#elements)
+  * [map](#map)
+  * [forEach](#foreach)
+  * [filter](#filter)
+  * [get](#get)
 - [Element](#element)
   * [Constructor](#consctructor-element)
   * [sendKeys](#sendkeys)
@@ -88,9 +93,6 @@ describe('Google base example', () => {
   * [waitForElement](#waitforelement)
   * [getElement](#getelement)
   * [getElements](#getelements)
-    * [mappy](#mappy)
-    * [each](#each)
-    * [filter](#filter)
   * [getAttribute](#getattribute)
   * [click](#click)
   * [isPresent](#ispresent)
@@ -109,7 +111,6 @@ describe('Google base example', () => {
    * any, false , undefined - conncect to standalone server port 4444
    * /
 ```
-
 ## goTo
 ```js
   const browser = client.chrome() 
@@ -118,7 +119,6 @@ describe('Google base example', () => {
    * type string
    * /
 ```
-
 ## closeCurrentTab
 ```js
   const browser = client.chrome() 
@@ -128,7 +128,6 @@ describe('Google base example', () => {
    * if opened tabs length more than 1
    * /
 ```
-
 ## getTitle
 ```js
   const browser = client.chrome() 
@@ -178,7 +177,6 @@ describe('Google base example', () => {
   * return array with selenium tab ids
   */
 ```
-
 ## sleep
 ```js
   const browser = client.chrome() 
@@ -194,7 +192,6 @@ describe('Google base example', () => {
   /* return current tab url*/
 ```
 # Element
-
 ## Constructor element
 ```js
   const elementDiv = element('div')
@@ -228,7 +225,6 @@ describe('Google base example', () => {
   */
 ```
 ## getText
-
 ```js
   const elementDiv = element('div')
   const divText = await elementDiv.getText()
@@ -236,7 +232,6 @@ describe('Google base example', () => {
   * return all text inside element , return string
   */
 ```
-
 ## waitForElement
 ```js
   const elementDiv = element('div')
@@ -270,48 +265,10 @@ describe('Google base example', () => {
 ```
 ## getElements
 ```js
-  const elementsSpan = await element('div').getElements('span')
+  const elementsSpan = element('div').getElements('span')
   /* 
-  *  return array element instanse
+  *  return Elements instance
   */
-```
-### mappy
-```js
-  const elementsSpan = await element('div').getElements('span')
-  const textArr = await elementsSpan.mappy(async (element) => {
-        return await element.getText()
-      })
-  /* 
-  *  args async call back 
-  *  return array  
-  */
-```
-### each
-```js
- const elementsSpan = await element('div').getElements('span')
- const textArr = await elementsSpan.each(async (element) => {
-        const html = await element.getElementHTML()
-        expect(html).to.includes('dropitem')
-        expect(html).to.includes('draggable="true"')
-      })
-  /* 
-  * args async call back 
-  * call async funcs with await 
-  * does not return 
-  * /
-```
-### filter
-```js
- const elementsSpan = await element('div').getElements('span')
- const textArr = await elementsSpan.filter(async (element) => {
-        const html = await element.getElementHTML()
-        return html.includes('class="test"')
-      })
-  /* 
-  * args async call back 
-  * call async funcs with await 
-  * return new elements array  
-  * /
 ```
 ## getAttribute
 ```js
@@ -356,7 +313,6 @@ describe('Google base example', () => {
   * will scroll view port to element 
   */
 ```
-
 ## mouseDownAndMove
 ```js
   const elementSpan = await element('div').getElement('span')
@@ -365,4 +321,60 @@ describe('Google base example', () => {
   * args object with x and y 
   * will mouse down mouse move from x and y from arg
   */
+```
+# Elements
+```js
+const {elements} = require('wd-interface')
+const elementsSpan = elements('span')
+ /* 
+  *  args css selector
+  *  return array Element instaces
+  */
+```
+### map
+```js
+  const elementsSpan = elements('span')
+  const textArr = await elementsSpan.mappy(async (element) => {
+        return await element.getText()
+      })
+  /* 
+  *  args async call back 
+  *  return array  
+  */
+```
+### forEach
+```js
+ const elementsSpan = elements('span')
+ const textArr = await elementsSpan.forEach(async (element) => {
+        const html = await element.getElementHTML()
+        expect(html).to.includes('dropitem')
+        expect(html).to.includes('draggable="true"')
+      })
+  /* 
+  * args async call back 
+  * call async funcs with await 
+  * does not return 
+  * /
+```
+### filter
+```js
+ const elementsSpan = elements('span')
+ const textArr = await elementsSpan.filter(async (element) => {
+        const html = await element.getElementHTML()
+        return html.includes('class="test"')
+      })
+  /* 
+  * args async call back 
+  * call async funcs with await
+  * return new elements array  
+  * /
+```
+### get
+```js
+ const elementsSpan = elements('span')
+ const textArr = await elementsSpan.get(0)
+  /* 
+  * args index number
+  * return Element instance 
+  * /
 ```

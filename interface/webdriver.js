@@ -79,7 +79,7 @@ class SeleniumServer {
         const output = data.toString()
         self.output += output
         const isStarted = this.output.includes(START_SUCCESS_STACK)
-        console.log('!1!', self.output)
+        // console.log('!1!', self.output)
         const isAddressInUse = this.output.includes(ALREADY_IN_USE)
 
         if (isAddressInUse) {
@@ -132,9 +132,6 @@ class SeleniumServer {
   }
 }
 
-
-
-
 const server = new SeleniumServer({
   standAlonePath: `${path.resolve(process.cwd(), './selenium-server-standalone-3.7.1.jar')}`,
   host: "127.0.0.1",
@@ -144,7 +141,7 @@ const server = new SeleniumServer({
   }
 }, (data) => {
   console.log(data)
-  server.stop(() => { console.log('STOPED') })
+  // server.stop(() => { console.log('STOPED') })
 })
 
 server.start()

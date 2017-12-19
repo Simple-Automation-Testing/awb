@@ -2,8 +2,8 @@ const { expect } = require('chai')
 
 const { resizeWindow, initSession, killSession, findElements, findElement, goToUrl, getUrl } = require('../../interface/core')
 
-const element = require('../../interface/element')
-const Element = element.elementInstance
+const { element, elementInstance: Element } = require('../../interface/element')
+
 
 describe('Element', () => {
   //parts
@@ -55,11 +55,6 @@ describe('Element', () => {
     expect(nodeText).to.eql('Go to async form')
   })
 
-  // it('element click', async () => {
-  //   // const clickResult = await elementButton.click()
-  //   expect(clickResult.status).to.eql(0)
-  // })
-
   it('element get element', async () => {
     expect(elementDropZone).to.be.instanceOf(Element)
 
@@ -72,17 +67,17 @@ describe('Element', () => {
   })
 
   it('element get elements', async () => {
+    global.___sessionId = sessionId
     expect(elementDropZone).to.be.instanceOf(Element)
-    let dropItems = null
+    let dropItems = elementDropZone.getElements(dropitem)
     {
-      dropItems = await elementDropZone.getElements(dropitem)
-      dropItems.forEach(element => {
+      await dropItems.forEach(element => {
         expect(element).to.be.instanceOf(Element)
       })
     }
-    //for each
+    //forEach
     {
-      await dropItems.each(async (element) => {
+      await dropItems.forEach(async (element) => {
         const html = await element.getElementHTML()
         expect(html).to.includes('dropitem')
         expect(html).to.includes('draggable="true"')
@@ -90,7 +85,7 @@ describe('Element', () => {
     }
     //map
     {
-      const textArr = await dropItems.mappy(async (element) => {
+      const textArr = await dropItems.map(async (element) => {
         return await element.getText()
       })
       expect(Array.isArray(textArr)).to.eql(true)

@@ -5,7 +5,9 @@ const { returnStringType, waitElementPresent } = require('./util')
 
 const { InterfaceError } = require('./interfaceError')
 
+
 const WEB_EMENET_ID = 'element-6066-11e4-a52e-4f735466cecf'
+
 
 class Element {
 
@@ -82,45 +84,8 @@ class Element {
     return new Element(selector, this.sessionId, ELEMENT)
   }
 
-  async getElements(selector) {
-    const elements = []
-    elements.get = function (index) {
-      return this[index]
-    }
-
-    elements.each = async function (cb) {
-      for (let element of this) {
-        cb.then || returnStringType(cb) === '[object AsyncFunction]' ? await cb(element) : cb(element)
-      }
-    }
-
-    elements.filter = async function (cb) {
-      const values = []
-      for (let element of this) {
-        const resultValue = cb.then || returnStringType(cb) === '[object AsyncFunction]' ? await cb(element) : cb(element)
-        if (resultValue) {
-          values.push(element)
-        }
-      }
-      return values
-    }
-
-    elements.mappy = async function (cb) {
-      const values = []
-      for (let element of this) {
-        const result = cb.then || returnStringType(cb) === '[object AsyncFunction]' ? await cb(element) : cb(element)
-        values.push(result)
-      }
-      return values
-    }
-
-    !this.elementId
-      && await this.getTthisElement()
-    const { value } = await elementsFromElement(this.sessionId, this.elementId, selector)
-    value.forEach(({ ELEMENT }) => {
-      elements.push(new Element(selector, this.sessionId, ELEMENT))
-    })
-    return elements
+  getElements(selector) {
+    return new Elements(selector, this)
   }
 
   async sendKeys(keys) {
@@ -181,5 +146,92 @@ class Element {
   }
 }
 
-module.exports = (...args) => new Element(...args)
-module.exports.elementInstance = Element
+
+class Elements {
+
+  constructor(selector, baseElement = null, sessionId = null) {
+    this.baseElement = baseElement
+    this.selector = selector
+    this.sessionId = sessionId
+    this.elements = null
+  }
+
+  async map(cb) {
+    if (!this.elements) {
+      await this.getElements()
+    }
+    const values = []
+    for (let element of this.elements) {
+      const result = cb.then || returnStringType(cb) === '[object AsyncFunction]' ? await cb(element) : cb(element)
+      values.push(result)
+    }
+    return values
+  }
+
+  async get(index) {
+    if (!this.elements.length) {
+      await this.getElements()
+    }
+    return this.elements[index]
+  }
+
+  async forEach(cb) {
+    if (!this.elements) {
+      await this.getElements()
+    }
+    for (let element of this.elements) {
+      cb.then || returnStringType(cb) === '[object AsyncFunction]' ? await cb(element) : cb(element)
+    }
+  }
+
+  async filter(cb) {
+    if (!this.elements) {
+      await this.getElements()
+    }
+    const values = []
+    for (let element of this.elements) {
+      const resultValue = cb.then || returnStringType(cb) === '[object AsyncFunction]' ? await cb(element) : cb(element)
+      if (resultValue) {
+        values.push(element)
+      }
+    }
+    return values
+  }
+
+
+
+  async getElements() {
+    if (!this.sessionId) {
+      this.sessionId = this.sessionId || global.___sessionId
+    }
+    if (!this.baseElement) {
+      const { value } = await findElements(this.sessionId, this.selector)
+      if (!this.elements && value.length) {
+        this.elements = []
+      }
+      value.forEach(({ ELEMENT }) => {
+        this.elements.push(new Element(this.selector, this.sessionId, ELEMENT))
+      })
+    }
+    if (this.baseElement) {
+      if (!this.baseElement.elementId) {
+        await this.baseElement.getTthisElement()
+      }
+      const { value } = await elementsFromElement(this.sessionId, this.baseElement.elementId, this.selector)
+      if (!this.elements && value.length) {
+        this.elements = []
+      }
+      value.forEach(({ ELEMENT }) => {
+        this.elements.push(new Element(this.selector, this.sessionId, ELEMENT))
+      })
+    }
+  }
+}
+
+module.exports = {
+  element: (...args) => new Element(...args),
+  elements: (...args) => new Elements(...args),
+  elementInstance: Element,
+  elementsInstance: Elements
+}
+
