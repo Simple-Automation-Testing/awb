@@ -22,12 +22,57 @@ const {
     findElement
   } = require('./core')
 
+const path = require('path')
+
+function StartSesion() {
+    const { fork } = require('child_process')
+    const forked = fork(path.resolve(__dirname, './webdriver.js'))
+
+    return new Promise((resolve) => {
+        forked.on('message', ({ msg }) => {
+            if (msg === 'server started') {
+                resolve(forked)
+            }
+        })
+    }).then((proc) => {
+        if (proc) {
+            proc.on('message', (msg) => {
+                if (msg = 'server stoped') {
+                    proc.kill()
+                }
+            })
+            return proc
+        }
+    })
+}
+
+function WaitProcStop(proc, parentProc) {
+    return new Promise((resolve) => {
+
+        proc.on('message', (msg) => {
+            if (msg === 'server stoped') {
+                resolve()
+            }
+        })
+        proc.send('stop')
+    })
+}
 
 class Browser {
 
     constructor(capabilities) {
         this.sessionId = null
         this.capabilities = capabilities
+        this.seleniumProc = null
+    }
+    async startSelenium() {
+        const proc = await StartSesion()
+        this.seleniumProc = proc
+    }
+
+
+    async stopSelenium() {
+        await WaitProcStop(this.seleniumProc, process)
     }
 
     async getSession() {

@@ -300,7 +300,7 @@ async function initSession(data, options) {
   if (!data) data = JSON.stringify(defaultChromeCapabilities)
   if (!options) options = { ...baseOptions }
 
-  const { body, status } = await fetchy_util.post(options.path, data, options)
+  const { body, status } = await fetchy_util.post(options.path, data, options).catch(console.log)
 
   assertStatus(status, body)
   return body

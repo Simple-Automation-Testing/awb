@@ -6,3 +6,5 @@ node_modules/
 chromedriver*
 selenium*
 gecko*
+b.js
+c.js

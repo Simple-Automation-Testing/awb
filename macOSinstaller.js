@@ -1,15 +1,15 @@
 const urlChrome = (ver) => `http://chromedriver.storage.googleapis.com/${ver}/chromedriver_mac64.zip`
 const urlGecko = (ver) => `https://github.com/mozilla/geckodriver/releases/download/v${ver}/geckodriver-v${ver}-macos.tar.gz`
-const seleniumUrl = (seleniumV) => `http://selenium-release.storage.googleapis.com/3.7/selenium-server-standalone-3.7.1.jar`
+const seleniumUrl = (seleniumV) => `http://selenium-release.storage.googleapis.com/3.8/selenium-server-standalone-3.8.1.jar`
 
 const geckodriver = 'https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckodriver-v0.19.1-macos.tar.gz'
 
-const chromedriver_ver = '2.33'
+const chromedriver_ver = '2.34'
 const geckdriver_ver = '0.19.1'
 
 const GECKO_PATH = './geckodriver'
-const CHROME_PATH = './chromedriver_2.33'
-const STANDALONE_PATH = './selenium-server-standalone-3.7.1.jar'
+const CHROME_PATH = './chromedriver_2.34'
+const STANDALONE_PATH = './selenium-server-standalone-3.8.1.jar'
 
 const fs = require('fs')
 const fetch = require('node-fetch')
@@ -28,10 +28,10 @@ async function getChromeDriver(ver) {
   return new Promise((resolve) => {
     fetch(urlChrome(ver))
       .then(function (res) {
-        const dest = fs.createWriteStream(resolvePath('./chromedriver_2.33.zip'))
+        const dest = fs.createWriteStream(resolvePath('./chromedriver_2.34.zip'))
         res.body.pipe(dest)
         res.body.on('end', () => {
-          const str = fs.createReadStream(resolvePath('./chromedriver_2.33.zip')).pipe(unzip.Extract({ path: resolvePath('./') }))
+          const str = fs.createReadStream(resolvePath('./chromedriver_2.34.zip')).pipe(unzip.Extract({ path: resolvePath('./') }))
           str.on('close', () => {
             fs.rename(resolvePath('./chromedriver'), resolvePath(`./chromedriver_${ver}`), (err) => {
               if (err) throw err
@@ -48,7 +48,7 @@ async function getChromeDriver(ver) {
       console.info('chrome driver installed success')
     }
     try {
-      execSync(`chmod +x ${resolvePath('./chromedriver_2.33')}`)
+      execSync(`chmod +x ${resolvePath('./chromedriver_2.34')}`)
     } catch (error) {
       console.error(error.toString())
     }
@@ -90,7 +90,7 @@ async function getStandalone() {
   return new Promise((resolve, reject) => {
     fetch(seleniumUrl())
       .then(function (res) {
-        const dest = fs.createWriteStream(resolvePath('./selenium-server-standalone-3.7.1.jar'))
+        const dest = fs.createWriteStream(resolvePath('./selenium-server-standalone-3.8.1.jar'))
         res.body.pipe(dest)
         res.body.on('end', () => {
           resolve(true)
@@ -137,7 +137,7 @@ async function spawnStandalone() {
 
 async function clearStandalone() {
   return new Promise((resolve, reject) => {
-    fs.unlink(resolvePath('./selenium-server-standalone-3.7.1.jar'), (err) => {
+    fs.unlink(resolvePath('./selenium-server-standalone-3.8.1.jar'), (err) => {
       if (err) reject(err)
       resolve(true)
     })

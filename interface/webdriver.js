@@ -9,8 +9,8 @@ const DEFAULT_PORT = 4444
 const DEFAULT_HOST = '127.0.0.1'
 
 const GECKO_PATH = '../geckodriver'
-const CHROME_PATH = '../chromedriver_2.33'
-const STANDALONE_PATH = '../selenium-server-standalone-3.7.1.jar'
+const CHROME_PATH = '../chromedriver_2.34'
+const STANDALONE_PATH = '../selenium-server-standalone-3.8.1.jar'
 
 const resolvePath = (pathTofile) => path.resolve(__dirname, pathTofile)
 
@@ -71,7 +71,7 @@ class SeleniumServer {
 
           self.process.removeListener('exit', exitHandler)
 
-          self.startCb(null, self.process)
+          self.startCb('Close')
         }
       })
 
@@ -92,7 +92,7 @@ class SeleniumServer {
           const exitHandler = self.exit
 
           self.process.removeListener('exit', exitHandler)
-          self.startCb(null, self.process)
+          self.startCb('started success')
         }
       })
       resolve(true)
@@ -132,16 +132,27 @@ class SeleniumServer {
   }
 }
 
+let sendCount = 1
+
 const server = new SeleniumServer({
-  standAlonePath: `${path.resolve(process.cwd(), './selenium-server-standalone-3.7.1.jar')}`,
+  standAlonePath: `${path.resolve(__dirname, '../selenium-server-standalone-3.8.1.jar')}`,
   host: "127.0.0.1",
   port: 4444,
   browserDrivers: {
-    chrome: `${path.resolve(process.cwd(), './chromedriver_2.33')}`
+    chrome: `${path.resolve(__dirname, '../chromedriver_2.34')}`
   }
-}, (data) => {
-  console.log(data)
-  // server.stop(() => { console.log('STOPED') })
+}, (status) => {
+  if (status.includes('started success') && sendCount) {
+    sendCount--
+    process.send({ msg: 'server started' })
+  }
 })
 
 server.start()
+
+process.on('message', (msg) => {
+  if (msg === 'stop') {
+    server.stop()
+    process.send('server stoped')
+  }
+})

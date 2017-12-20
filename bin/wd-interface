@@ -21,9 +21,9 @@ const args = process.argv.slice(2)
 
 try {
   if (args.includes('chrome') && args.includes('standalone') && args.includes('gecko')) {
-    getChromeDriver('2.33').then(getStandalone).then(getGeckoDriver)
+    getChromeDriver('2.34').then(getStandalone).then(getGeckoDriver)
   } else if (args.includes('chrome') && args.includes('standalone')) {
-    getChromeDriver('2.33').then(getStandalone)
+    getChromeDriver('2.34').then(getStandalone)
   } else if (args.includes('gecko') && args.includes('standalone')) {
     getGeckoDriver().then(getStandalone)
   } else if (args.includes('start') && args.includes('chrome')) {
@@ -35,11 +35,11 @@ try {
   } else if (args.includes('standalone')) {
     getStandalone()
   } else if (args.includes('clear') && args.includes('all')) {
-    clearChrome('2.33').then(clearStandalone)
+    clearChrome('2.34').then(clearStandalone)
   } else if (args.includes('killsession')) {
     killProc()
   } else if (args.includes('chrome')) {
-    getChromeDriver('2.33')
+    getChromeDriver('2.34')
   } else if (args.includes('gecko')) {
     getGeckoDriver()
   }
