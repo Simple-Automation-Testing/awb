@@ -29,9 +29,10 @@ const assertStatus = (status, body) => {
   if (
     !(status < 300) ||
     (body.value && typeof body.value === 'string' && body.value.includes('error')) ||
-    (body.value && body.value.message && body.value.message.includes('stale element reference'))
+    (body.value && body.value.message && body.value.message.includes('stale element reference')) ||
+    (body.value && body.value.message && body.value.message.includes('invalid'))
   ) {
-    throw new InterfaceError(JSON.stringify(body), __filename)
+    throw new InterfaceError(JSON.stringify(body))
   }
 }
 
@@ -272,24 +273,35 @@ async function goToUrl(sessionId, url, options) {
    * @param {object} options options.
  */
 async function findElement(sessionId, selector, options) {
+  let bodyRequest
+
+  if (selector.includes('xpath: ')) {
+    selector = selector.replace('xpath: ', '')
+    bodyRequest = { using: 'xpath', value: selector }
+  } else {
+    bodyRequest = { using: 'css selector', value: selector }
+  }
 
   const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
-  const { body, status } = await fetchy_util.post(Pathes.element(sessionId), JSON.stringify({
-    using: 'css selector', value: selector
-  }), options)
+  const { body, status } = await fetchy_util.post(Pathes.element(sessionId), JSON.stringify(bodyRequest), options)
   assertStatus(status, body)
   return body
 }
 
 async function findElements(sessionId, selector, options) {
+  let bodyRequest
 
+  if (selector.includes('xpath: ')) {
+    selector = selector.replace('xpath: ', '')
+    bodyRequest = { using: 'xpath', value: selector }
+  } else {
+    bodyRequest = { using: 'css selector', value: selector }
+  }
   const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
-  const { body, status } = await fetchy_util.post(Pathes.elements(sessionId), JSON.stringify({
-    using: 'css selector', value: selector
-  }), options)
+  const { body, status } = await fetchy_util.post(Pathes.elements(sessionId), JSON.stringify(bodyRequest), options)
 
   return body
 }

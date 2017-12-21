@@ -1,7 +1,7 @@
 // const { expect } = require('chai')
 
 // const client = require('../../interface/client')
-// const element = require('../../interface/element')
+// const { element } = require('../../interface/element')
 
 // describe('client', () => {
 //   describe('chrome', () => {
@@ -20,8 +20,17 @@
 //     const elementBottomDiv = element(bottomdiv)
 //     const elementDisplayNoneDiv = element(dispaynonediv)
 
-//     beforeEach(async () => {
+//     before(async () => {
 //       browser = client().chrome()
+//       await browser.startSelenium()
+//     })
+//     after(async () => {
+//       await browser.stopSelenium()
+//     })
+
+//     beforeEach(async () => {
+
+
 //       expect(browser.sessionId).to.eql(null)
 //       expect(global.__sessionId).to.eql(undefined)
 //       await browser.goTo(baseURL)

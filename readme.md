@@ -6,6 +6,14 @@ Base: lazy elements, chrome driver dirrect connection, own standalone server and
 
 Install [Node.js](http://nodejs.org/) and install framework
 
+
+## Improvement plan
+ * [x] Run selenium server from a client instance method (now only for OSX* systems)
+ * [x] Add possibility find element by xpath (done)
+ * [ ] Develop error handler system 
+ * [ ] Develop and improve enviroment installer for every OS (unix, windows)
+
+
 ```sh
 $ npm i --SD wd-interface
 ```
@@ -258,7 +266,7 @@ describe('Google base example', () => {
 ```
 ## getElement
 ```js
-  const elementSpan = await element('div').getElement('span')
+  const elementSpan = element('div').getElement('span').getElement('a')
   /* 
   *  return element instanse
   */
@@ -272,7 +280,7 @@ describe('Google base example', () => {
 ```
 ## getAttribute
 ```js
-  const elementSpan = await element('div').getElement('span')
+  const elementSpan = element('div').getElement('span')
   const style = await elementSpan.getAttribute('style')
   /*
   * args strin , value name , for example 'value', 'href', 'style' etc 
@@ -281,7 +289,7 @@ describe('Google base example', () => {
 ```
 ## click
 ```js
-  const elementSpan = await element('div').getElement('span')
+  const elementSpan = element('div').getElement('span')
   await elementSpan.click()
   /*
   * triger click 
@@ -289,7 +297,7 @@ describe('Google base example', () => {
 ```
 ## isPresent
 ```js
-  const elementSpan = await element('div').getElement('span')
+  const elementSpan = element('div').getElement('span')
   const present = await elementSpan.isPresent()
   /*
   * return true if element mounted to DOM
@@ -298,7 +306,7 @@ describe('Google base example', () => {
 ```
 ## isDisplayed
 ```js
-  const elementSpan = await element('div').getElement('span')
+  const elementSpan = element('div').getElement('span')
   const display = await elementSpan.isDisplayed()
   /*
   * return true if visible and in view port
@@ -307,7 +315,7 @@ describe('Google base example', () => {
 ```
 ## toElement
 ```js
-  const elementSpan = await element('div').getElement('span')
+  const elementSpan = element('div').getElement('span')
   await elementSpan.toElement()
   /*
   * will scroll view port to element 
@@ -315,7 +323,7 @@ describe('Google base example', () => {
 ```
 ## mouseDownAndMove
 ```js
-  const elementSpan = await element('div').getElement('span')
+  const elementSpan = element('div').getElement('span')
   await elementSpan.mouseDownAndMove({x: 100, y: 0})
   /*
   * args object with x and y 
@@ -325,14 +333,18 @@ describe('Google base example', () => {
 # Elements
 ```js
 const {elements} = require('wd-interface')
+// by css selector
 const elementsSpan = elements('span')
+// by xpath 
+const elementsDiv = elements('xpath: /html/body/div[1]/div/div/div/div[1]/div[2]/div[2]/div/div')
  /* 
-  *  args css selector
+  *  args css selector or xpath format xpath: /html/body/div (for example)
   *  return array Element instaces
   */
 ```
 ### map
 ```js
+  // by css selector
   const elementsSpan = elements('span')
   const textArr = await elementsSpan.mappy(async (element) => {
         return await element.getText()
@@ -344,8 +356,10 @@ const elementsSpan = elements('span')
 ```
 ### forEach
 ```js
- const elementsSpan = elements('span')
- const textArr = await elementsSpan.forEach(async (element) => {
+  //by css selector
+  const elementsSpan = elements('span')
+
+  const textArr = await elementsSpan.forEach(async (element) => {
         const html = await element.getElementHTML()
         expect(html).to.includes('dropitem')
         expect(html).to.includes('draggable="true"')

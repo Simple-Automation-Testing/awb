@@ -2,10 +2,13 @@ const { expect } = require('chai')
 
 const { resizeWindow, initSession, killSession, findElements, findElement, goToUrl, getUrl } = require('../../interface/core')
 
-const { element, elementInstance: Element } = require('../../interface/element')
+const {
+  element, elementInstance: Element,
+  elements, elementsInstance: Elements
+} = require('../../interface/element')
 
 
-describe('Element', () => {
+describe.only('Element', () => {
   //parts
   let sessionId = null
   let elementButton = null
@@ -30,6 +33,7 @@ describe('Element', () => {
     expect(body.status).to.eql(0)
     expect(body.sessionId).to.be.exist
     sessionId = body.sessionId
+    global.___sessionId = sessionId
     await goToUrl(sessionId, 'http://localhost:9090')
     elementButton = element(addnewname, sessionId)
     elementDropZone = element(dropzone, sessionId)
@@ -44,6 +48,19 @@ describe('Element', () => {
     await killSession(sessionId)
   })
 
+  it('element by xpath', async () => {
+    const clickMe8 = element('xpath: /html/body/div[1]/div/div/div/div[1]/div[2]/div[2]/div/div[8]')
+    expect(await clickMe8.getText()).to.eql('7Click me')
+    expect(await clickMe8.getElementHTML()).to.contains('<button>Click me</button></div>')
+  })
+
+  it('elements by xpath', async () => {
+    const clickMeElements = elements('xpath: /html/body/div[1]/div/div/div/div[1]/div[2]/div[2]/div/div')
+    await clickMeElements.forEach(async (element) => {
+      expect(await element.getText()).to.includes('Click me')
+    })
+  })
+
   it('element getElementHTML', async () => {
     const nodeHtml = await elementButton.getElementHTML()
     expect(nodeHtml.includes('button')).to.be.true
@@ -56,18 +73,22 @@ describe('Element', () => {
   })
 
   it('element get element', async () => {
+
     expect(elementDropZone).to.be.instanceOf(Element)
 
     const textInsideDropZone = await elementDropZone.getText()
     expect(textInsideDropZone).to.be.exist
     {
-      const elementDropItem = await elementDropZone.getElement(dropitem)
+      const elementDropItem = elementDropZone.getElement(dropitem)
       expect(elementDropItem).to.be.instanceOf(Element)
+    }
+    {
+      const dropItem = element('body').getElement('.dropzone').getElement('.dropitem').getElement('button')
+      expect(await dropItem.getText()).to.eql('Click me')
     }
   })
 
   it('element get elements', async () => {
-    global.___sessionId = sessionId
     expect(elementDropZone).to.be.instanceOf(Element)
     let dropItems = elementDropZone.getElements(dropitem)
     {

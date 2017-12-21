@@ -11,10 +11,11 @@ const WEB_EMENET_ID = 'element-6066-11e4-a52e-4f735466cecf'
 
 class Element {
 
-  constructor(selector, sessionId, elementId = null) {
+  constructor(selector, sessionId = null, elementId = null, baseElement = null) {
     this.selector = selector
     this.sessionId = sessionId
     this.elementId = elementId
+    this.baseElement = baseElement
   }
 
   async waitForElement(time) {
@@ -49,15 +50,30 @@ class Element {
 
   async getTthisElement() {
     this.sessionId = this.sessionId || global.___sessionId
-    const { value: { ELEMENT } } = await findElement(this.sessionId, this.selector)
-    this.elementId = ELEMENT
+    if (this.baseElement) {
+      if (!this.baseElement.elementId) {
+        await this.baseElement.getTthisElement()
+        const { value: { ELEMENT } } = await elementFromElement(this.sessionId, this.baseElement.elementId, this.selector)
+        this.elementId = ELEMENT
+      }
+    } else {
+      const { value: { ELEMENT } } = await findElement(this.sessionId, this.selector)
+      this.elementId = ELEMENT
+    }
   }
 
   async getElementHTML() {
+    !this.elementId
+      && await this.getTthisElement()
+
     const { value } = await executeScript(this.sessionId, function () {
       const [element] = arguments
-      return document.querySelector(element).outerHTML
-    }, this.selector)
+      return element.outerHTML
+    }, {
+        ELEMENT: this.elementId,
+        [WEB_EMENET_ID]: this.elementId
+      })
+
     return value
   }
 
@@ -76,12 +92,8 @@ class Element {
     return body.value
   }
 
-  async getElement(selector) {
-    !this.elementId
-      && await this.getTthisElement()
-
-    const { value: { ELEMENT } } = await elementFromElement(this.sessionId, this.elementId, selector)
-    return new Element(selector, this.sessionId, ELEMENT)
+  getElement(selector) {
+    return new Element(selector, this.sessionId, null, this)
   }
 
   getElements(selector) {
@@ -197,8 +209,6 @@ class Elements {
     }
     return values
   }
-
-
 
   async getElements() {
     if (!this.sessionId) {
