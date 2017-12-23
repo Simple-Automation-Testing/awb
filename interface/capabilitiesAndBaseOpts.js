@@ -23,7 +23,7 @@ const baseOptionsStandAlone = {
     headers: {
         'Content-Type': 'application/json'
     },
-    timeout: 6000
+    timeout: 12000
 }
 
 const baseOptionsChrome = {
@@ -33,7 +33,7 @@ const baseOptionsChrome = {
     headers: {
         'Content-Type': 'application/json'
     },
-    timeout: 6000
+    timeout: 12000
 }
 
 const baseOptionsFirefox = {
@@ -43,7 +43,7 @@ const baseOptionsFirefox = {
     headers: {
         'Content-Type': 'application/json'
     },
-    timeout: 6000
+    timeout: 12000
 }
 
 module.exports = {

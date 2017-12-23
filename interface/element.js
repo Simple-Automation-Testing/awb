@@ -187,6 +187,13 @@ class Elements {
     return this.elements[index]
   }
 
+  async count() {
+    if (!this.elements) {
+      await this.getElements()
+    }
+    return this.elements.length
+  }
+
   async forEach(cb) {
     if (!this.elements) {
       await this.getElements()
