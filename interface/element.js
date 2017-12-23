@@ -181,7 +181,7 @@ class Elements {
   }
 
   async get(index) {
-    if (!this.elements.length) {
+    if (!this.elements) {
       await this.getElements()
     }
     return this.elements[index]
