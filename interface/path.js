@@ -27,7 +27,8 @@ const PathesStandAlone = {
   present:                      (sessionId, elementId) =>            `/wd/hub/session/${sessionId}/element/${elementId}/enabled`,
   displayed:                    (sessionId, elementId) =>            `/wd/hub/session/${sessionId}/element/${elementId}/displayed`,
   window:                       (sessionId) =>                       `/wd/hub/session/${sessionId}/window`,
-  timeouts:                     (sessionId) =>                       `/wd/hub/session/${sessionId}/timeouts`
+  timeouts:                     (sessionId) =>                       `/wd/hub/session/${sessionId}/timeouts`,
+  frame:                        (sessionId) =>                       `/wd/hub/session/${sessionId}/frame`
 }
 
 const PathesDirrectConnection = {
@@ -59,7 +60,8 @@ const PathesDirrectConnection = {
   present:                      (sessionId, elementId) =>            `/session/${sessionId}/element/${elementId}/enabled`,
   displayed:                    (sessionId, elementId) =>            `/session/${sessionId}/element/${elementId}/displayed`,
   window:                       (sessionId) =>                       `/session/${sessionId}/window`,
-  timeouts:                     (sessionId) =>                       `/session/${sessionId}/timeouts`
+  timeouts:                     (sessionId) =>                       `/session/${sessionId}/timeouts`,
+  frame:                        (sessionId) =>                       `/session/${sessionId}/frame`
 }
 
 module.exports = {

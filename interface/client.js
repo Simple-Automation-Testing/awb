@@ -19,7 +19,8 @@ const {
     closeCurrentTab,
     clickElement,
     setScriptTimeout,
-    findElement
+    findElement,
+    toFrame
   } = require('./core')
 
 const path = require('path')
@@ -65,11 +66,15 @@ class Browser {
         this.capabilities = capabilities
         this.seleniumProc = null
     }
+
     async startSelenium() {
         const proc = await StartSesion()
         this.seleniumProc = proc
     }
 
+    async switchToFrame(selector) {
+        await toFrame(this.sessionId, selector)
+    }
 
     async stopSelenium() {
         await WaitProcStop(this.seleniumProc, process)

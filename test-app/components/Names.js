@@ -2,6 +2,8 @@ import React from "react"
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
+import Iframe from 'react-iframe'
+
 import ReactSlider from 'react-slider'
 import DropZone from './DropZone'
 import DragItem from './DragItem'
@@ -50,7 +52,7 @@ class Names extends React.Component {
 
     render() {
         const { names: { names }, addName, removeName, addItem } = this.props
-        const { keyPressValue, showNewComponent, url } = this.state
+        const { keyPressValue, showNewComponent, url, showFrame } = this.state
 
         return (
             <div>{!url.includes('new-tab') ? < div > <button className="asyncform handler"
@@ -95,6 +97,17 @@ class Names extends React.Component {
                         </div>
                         <div style={{ display: 'none' }} className="not displayed div">NOT DISPLAYED ELEMENT</div>
                         <div style={{ marginTop: '2000px' }} className="bottom div">BOTTOM ELEMENT</div>
+                        <button
+                            onClick={() => this.setState({ showFrame: !showFrame })}
+                            className="frame-open-button">Show frame element</button>
+                        {showFrame && <Iframe url="http://www.youtube.com/embed/xDMP3i36naA"
+                            width="450px"
+                            height="450px"
+                            id="myId"
+                            className="myClassname"
+                            display="initial"
+                            position="relative"
+                            allowFullScreen />}
                     </div>
                     : <AsyncImitationComponent />}
             </div> : <NewTabComponent />

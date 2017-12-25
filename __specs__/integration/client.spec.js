@@ -1,119 +1,130 @@
-// const { expect } = require('chai')
+const { expect } = require('chai')
 
-// const client = require('../../interface/client')
-// const { element } = require('../../interface/element')
+const client = require('../../interface/client')
+const { element } = require('../../interface/element')
 
-// describe('client', () => {
-//   describe('chrome', () => {
-//     let browser = null
+describe('client', () => {
+  describe.only('chrome', () => {
+    let browser = null
 
-//     const baseURL = 'http://localhost:9090'
-//     const addnewname = 'button'
-//     const dropzone = '.dropzone'
-//     const dropitem = '.dropitem'
-//     const firstname = '[placeholder="firstname"]'
-//     const dispaynonediv = '.not.displayed'
-//     const bottomdiv = '.bottom.div'
+    const baseURL = 'http://localhost:9090'
+    const addnewname = 'button'
+    const dropzone = '.dropzone'
+    const dropitem = '.dropitem'
+    const firstname = '[placeholder="firstname"]'
+    const dispaynonediv = '.not.displayed'
+    const bottomdiv = '.bottom.div'
+    const openframe = '.frame-open-button'
+    const playbutton = '.ytp-large-play-button.ytp-button'
 
-//     const elementDropZone = element(dropzone)
-//     const elementInput = element(firstname)
-//     const elementBottomDiv = element(bottomdiv)
-//     const elementDisplayNoneDiv = element(dispaynonediv)
+    const elementDropZone = element(dropzone)
+    const elementInput = element(firstname)
+    const elementBottomDiv = element(bottomdiv)
+    const elementDisplayNoneDiv = element(dispaynonediv)
+    const elementOpenFrame = element(openframe)
+    const playButton = element(playbutton)
 
-//     before(async () => {
-//       browser = client().chrome()
-//       await browser.startSelenium()
-//     })
-//     after(async () => {
-//       await browser.stopSelenium()
-//     })
+    before(async () => {
+      browser = client().chrome()
+      // await browser.startSelenium()
+    })
+    after(async () => {
+      // await browser.stopSelenium()
+    })
 
-//     beforeEach(async () => {
+    beforeEach(async () => {
 
+      expect(browser.sessionId).to.eql(null)
+      expect(global.__sessionId).to.eql(undefined)
+      await browser.goTo(baseURL)
+      expect(browser.sessionId).to.be.exist
+      expect(browser.sessionId).to.not.null
+      expect(browser.sessionId).to.not.undefined
+    })
 
-//       expect(browser.sessionId).to.eql(null)
-//       expect(global.__sessionId).to.eql(undefined)
-//       await browser.goTo(baseURL)
-//       expect(browser.sessionId).to.be.exist
-//       expect(browser.sessionId).to.not.null
-//       expect(browser.sessionId).to.not.undefined
-//     })
+    afterEach(async () => {
+      await browser.closeBrowser()
+    })
 
-//     afterEach(async () => {
-//       await browser.closeBrowser()
-//     })
+    // it('send case', async () => {
+    //   const inputValue = '!#!#!@#!'
+    //   {
+    //     const body = await elementInput.sendKeys(inputValue)
+    //     expect(body).to.be.exist
+    //     expect(body.sessionId).to.be.exist
+    //   }
+    //   {
+    //     const value = await elementInput.getAttribute('value')
+    //     expect(value).to.be.exist
+    //     expect(value).to.eql(inputValue)
+    //   }
+    // })
 
-//     it('send case', async () => {
-//       const inputValue = '!#!#!@#!'
-//       {
-//         const body = await elementInput.sendKeys(inputValue)
-//         expect(body).to.be.exist
-//         expect(body.sessionId).to.be.exist
-//       }
-//       {
-//         const value = await elementInput.getAttribute('value')
-//         expect(value).to.be.exist
-//         expect(value).to.eql(inputValue)
-//       }
-//     })
+    // it('get title and url', async () => {
+    //   {
+    //     const currentUrl = await browser.getUrl()
+    //     expect(currentUrl).to.eql(`${baseURL}/`)
+    //   }
+    // })
 
-//     it('get title and url', async () => {
-//       {
-//         const currentUrl = await browser.getUrl()
-//         expect(currentUrl).to.eql(`${baseURL}/`)
-//       }
-//     })
-//   })
-//   describe('firefox', () => {
-//     let browser = null
+    it('to frame', async () => {
+      await elementOpenFrame.click()
+      await browser.switchToFrame('#myId')
+      // await playButton.waitForElement(500)
+      await playButton.click()
+    })
+  })
 
-//     const baseURL = 'http://localhost:9090'
-//     const addnewname = 'button'
-//     const dropzone = '.dropzone'
-//     const dropitem = '.dropitem'
-//     const firstname = '[placeholder="firstname"]'
-//     const dispaynonediv = '.not.displayed'
-//     const bottomdiv = '.bottom.div'
+  describe('firefox', () => {
+    let browser = null
 
-//     const elementDropZone = element(dropzone)
-//     const elementInput = element(firstname)
-//     const elementBottomDiv = element(bottomdiv)
-//     const elementDisplayNoneDiv = element(dispaynonediv)
+    const baseURL = 'http://localhost:9090'
+    const addnewname = 'button'
+    const dropzone = '.dropzone'
+    const dropitem = '.dropitem'
+    const firstname = '[placeholder="firstname"]'
+    const dispaynonediv = '.not.displayed'
+    const bottomdiv = '.bottom.div'
 
-//     beforeEach(async () => {
-//       browser = client().firefox()
-//       expect(browser.sessionId).to.eql(null)
-//       expect(global.__sessionId).to.eql(undefined)
-//       await browser.goTo(baseURL)
-//       expect(browser.sessionId).to.be.exist
-//       expect(browser.sessionId).to.not.null
-//       expect(browser.sessionId).to.not.undefined
-//     })
+    const elementDropZone = element(dropzone)
+    const elementInput = element(firstname)
+    const elementBottomDiv = element(bottomdiv)
+    const elementDisplayNoneDiv = element(dispaynonediv)
 
-//     afterEach(async () => {
-//       await browser.closeBrowser()
-//     })
+    beforeEach(async () => {
+      browser = client().firefox()
+      expect(browser.sessionId).to.eql(null)
+      expect(global.__sessionId).to.eql(undefined)
+      await browser.goTo(baseURL)
+      expect(browser.sessionId).to.be.exist
+      expect(browser.sessionId).to.not.null
+      expect(browser.sessionId).to.not.undefined
+    })
 
-//     it('send case', async () => {
-//       const inputValue = '!#!#!@#!'
-//       {
-//         const body = await elementInput.sendKeys(inputValue)
-//         expect(body).to.be.exist
-//         expect(body.sessionId).to.be.exist
-//       }
-//       {
-//         const value = await elementInput.getAttribute('value')
-//         expect(value).to.be.exist
-//         expect(value).to.eql(inputValue)
-//       }
-//     })
+    afterEach(async () => {
+      await browser.closeBrowser()
+    })
 
-//     it('get title and url', async () => {
-//       {
-//         const currentUrl = await browser.getUrl()
-//         expect(currentUrl).to.eql(`${baseURL}/`)
-//       }
-//     })
-//   })
-// })
+    it('send case', async () => {
+      const inputValue = '!#!#!@#!'
+      {
+        const body = await elementInput.sendKeys(inputValue)
+        expect(body).to.be.exist
+        expect(body.sessionId).to.be.exist
+      }
+      {
+        const value = await elementInput.getAttribute('value')
+        expect(value).to.be.exist
+        expect(value).to.eql(inputValue)
+      }
+    })
+
+    it('get title and url', async () => {
+      {
+        const currentUrl = await browser.getUrl()
+        expect(currentUrl).to.eql(`${baseURL}/`)
+      }
+    })
+  })
+})
 

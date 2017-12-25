@@ -14,6 +14,8 @@ const GECKODRIVER_PORT = 9516
 
 const fetchyInitializator = require('./fetchy')
 
+const WEB_EMENET_ID = 'element-6066-11e4-a52e-4f735466cecf'
+
 const { PathesDirrectConnection, PathesStandAlone } = require('./path')
 const {
   defaultChromeCapabilities,
@@ -289,6 +291,24 @@ async function findElement(sessionId, selector, options) {
   return body
 }
 
+async function toFrame(sessionId, selector, options) {
+  let elementId;
+
+  if (selector) {
+    const { ELEMENT } = await findElement(sessionId, selector, options)
+    elementId = ELEMENT;
+  }
+
+  const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
+  if (!options) options = { ...baseOptions }
+
+  const { body, status } = await fetchy_util.post(Pathes.frame(sessionId, JSON.stringify({
+    id: !elementId ? null : { [WEB_EMENET_ID]: elementId, ELEMENT: elementId }
+  })), options)
+  assertStatus(status, body)
+  return body
+}
+
 async function findElements(sessionId, selector, options) {
   let bodyRequest
 
@@ -496,6 +516,7 @@ async function present(sessionId, elementId, options) {
 module.exports = {
   sendKeys,
   displayed,
+  toFrame,
   present,
   elementFromElement,
   elementsFromElement,
