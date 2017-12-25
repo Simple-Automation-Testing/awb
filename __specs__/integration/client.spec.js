@@ -1,7 +1,7 @@
 const { expect } = require('chai')
 
 const client = require('../../interface/client')
-const { element } = require('../../interface/element')
+const { element, elements } = require('../../interface/element')
 
 describe('client', () => {
   describe.only('chrome', () => {
@@ -18,7 +18,7 @@ describe('client', () => {
     const playbutton = '.ytp-large-play-button.ytp-button'
 
     const elementDropZone = element(dropzone)
-    const elementInput = element(firstname)
+    const elementInput = element('.testtest')
     const elementBottomDiv = element(bottomdiv)
     const elementDisplayNoneDiv = element(dispaynonediv)
     const elementOpenFrame = element(openframe)
@@ -68,10 +68,10 @@ describe('client', () => {
     // })
 
     it('to frame', async () => {
-      await elementOpenFrame.click()
-      await browser.switchToFrame('#myId')
-      // await playButton.waitForElement(500)
-      await playButton.click()
+      await elementInput.waitForElementPresent(6000)
+      // await elementOpenFrame.click()
+      // await browser.switchToFrame('#myId')
+      // await playButton.waitForElement(1000)
     })
   })
 

@@ -73,7 +73,8 @@ class Browser {
     }
 
     async switchToFrame(selector) {
-        await toFrame(this.sessionId, selector)
+        const body = await toFrame(this.sessionId, selector)
+        console.log(body)
     }
 
     async stopSelenium() {

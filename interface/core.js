@@ -276,7 +276,7 @@ async function goToUrl(sessionId, url, options) {
  */
 async function findElement(sessionId, selector, options) {
   let bodyRequest
-
+  console.log('!!!!!!!!! fin element', sessionId, selector)
   if (selector.includes('xpath: ')) {
     selector = selector.replace('xpath: ', '')
     bodyRequest = { using: 'xpath', value: selector }
@@ -287,6 +287,7 @@ async function findElement(sessionId, selector, options) {
   const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
   const { body, status } = await fetchy_util.post(Pathes.element(sessionId), JSON.stringify(bodyRequest), options)
+  console.log(body, '-=-=-=-=')
   assertStatus(status, body)
   return body
 }
@@ -295,16 +296,15 @@ async function toFrame(sessionId, selector, options) {
   let elementId;
 
   if (selector) {
-    const { ELEMENT } = await findElement(sessionId, selector, options)
+    const { value: { ELEMENT } } = await findElement(sessionId, selector, options)
     elementId = ELEMENT;
   }
-
   const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
-  const { body, status } = await fetchy_util.post(Pathes.frame(sessionId, JSON.stringify({
-    id: !elementId ? null : { [WEB_EMENET_ID]: elementId, ELEMENT: elementId }
-  })), options)
+  const requestBody = elementId ? { id: { [WEB_EMENET_ID]: elementId, ELEMENT: elementId } } : { id: null }
+
+  const { body, status } = await fetchy_util.post(Pathes.frame(sessionId), JSON.stringify(requestBody), options)
   assertStatus(status, body)
   return body
 }
