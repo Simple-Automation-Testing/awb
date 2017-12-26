@@ -13,7 +13,7 @@ const {
   spawnStandalone,
   spawnGeckodriver,
   spawnChromedriver
- } = require('../macOSinstaller')
+ } = require('../installer')
 
 // wd install
 
