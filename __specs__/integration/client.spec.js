@@ -26,10 +26,10 @@ describe('client', () => {
 
     before(async () => {
       browser = client().chrome()
-      // await browser.startSelenium()
+      await browser.startSelenium()
     })
     after(async () => {
-      // await browser.stopSelenium()
+      await browser.stopSelenium()
     })
 
     beforeEach(async () => {

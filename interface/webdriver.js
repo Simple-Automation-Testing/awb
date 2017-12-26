@@ -2,17 +2,14 @@ const path = require('path')
 const fs = require('fs')
 const { spawn } = require('child_process')
 
+const { GECKO_PATH, CHROME_PATH, STANDALONE_PATH, resolvePath } = require('../envUtils')
+
 const START_SUCCESS_STACK = 'INFO - Selenium Server is up and running'
 const ALREADY_IN_USE = 'java.lang.RuntimeException: java.net.BindException: Address already in use'
 
 const DEFAULT_PORT = 4444
 const DEFAULT_HOST = '127.0.0.1'
 
-const GECKO_PATH = '../geckodriver'
-const CHROME_PATH = '../chromedriver_2.34'
-const STANDALONE_PATH = '../selenium-server-standalone-3.8.1.jar'
-
-const resolvePath = (pathTofile) => path.resolve(__dirname, pathTofile)
 
 class SeleniumServer {
 
@@ -34,14 +31,14 @@ class SeleniumServer {
 
       if (typeof this.settings.browserDrivers == 'object') {
         if (this.settings.browserDrivers.chrome && typeof this.settings.browserDrivers.chrome === 'string') {
-          args.push(`-Dwebdriver.chrome.driver=${resolvePath(CHROME_PATH)}`)
+          args.push(`-Dwebdriver.chrome.driver=${CHROME_PATH}`)
         }
         if (this.settings.browserDrivers.gecko && typeof this.settings.browserDrivers.gecko == 'string') {
-          args.push(`-Dwebdriver.gecko.driver=${resolvePath(GECKO_PATH)}`)
+          args.push(`-Dwebdriver.gecko.driver=${GECKO_PATH}`)
         }
       }
 
-      args.push('-jar', `${resolvePath(STANDALONE_PATH)}`)
+      args.push('-jar', `${STANDALONE_PATH}`)
 
       self.process = spawn('java', args)
 
@@ -79,7 +76,7 @@ class SeleniumServer {
         const output = data.toString()
         self.output += output
         const isStarted = this.output.includes(START_SUCCESS_STACK)
-        // console.log('!1!', self.output)
+
         const isAddressInUse = this.output.includes(ALREADY_IN_USE)
 
         if (isAddressInUse) {
@@ -125,7 +122,7 @@ class SeleniumServer {
 
     fs.writeFile(filePath, this.output, function (err) {
       if (err) {
-        console.log(console.log.colors.light_red('\nError writing log file to:'), err.path)
+        console.log('\nError writing log file to:', err.path)
       }
       cb && cb()
     })
@@ -135,11 +132,11 @@ class SeleniumServer {
 let sendCount = 1
 
 const server = new SeleniumServer({
-  standAlonePath: `${path.resolve(__dirname, '../selenium-server-standalone-3.8.1.jar')}`,
+  standAlonePath: `${STANDALONE_PATH}`,
   host: "127.0.0.1",
   port: 4444,
   browserDrivers: {
-    chrome: `${path.resolve(__dirname, '../chromedriver_2.34')}`
+    chrome: `${CHROME_PATH}`
   }
 }, (status) => {
   if (status.includes('started success') && sendCount) {
