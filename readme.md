@@ -8,10 +8,10 @@ Install [Node.js](http://nodejs.org/) and install framework
 
 
 ## Improvement plan
- * [x] Run selenium server from a client instance method (now only for OSX* and windows x64 systems)
+ * [x] Run selenium server from a client instance method 
  * [x] Add possibility find element by xpath (done)
  * [ ] Develop error handler system 
- * [ ] Develop and improve enviroment installer for every OS (unix, windows)
+ * [x] Develop and improve enviroment installer for every OS 
 
 
 ```sh
