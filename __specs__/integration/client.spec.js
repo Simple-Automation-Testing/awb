@@ -26,10 +26,10 @@ describe('client', () => {
 
     before(async () => {
       browser = client().chrome()
-      await browser.startSelenium()
+      // await browser.startSelenium()
     })
     after(async () => {
-      await browser.stopSelenium()
+      // await browser.stopSelenium()
     })
 
     beforeEach(async () => {
@@ -68,10 +68,12 @@ describe('client', () => {
     // })
 
     it('to frame', async () => {
-      await elementInput.waitForElementPresent(6000)
-      // await elementOpenFrame.click()
-      // await browser.switchToFrame('#myId')
-      // await playButton.waitForElement(1000)
+      await elementOpenFrame.click()
+      await browser.switchToFrame('#myId')
+      await browser.sleep(1500)
+
+      await elements(playbutton).get(0)
+      // await browser.sleep(10000)
     })
   })
 

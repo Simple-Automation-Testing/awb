@@ -63,13 +63,12 @@ function waitElementPresent(conditionFn, session, selector, time) {
   function recursiveCall(resolve, reject) {
     dummyAsyncCall(function (data) {
       data.then((resp) => {
-        console.log('i then')
         if (callCount > 0 && (resp.value.message && resp.value.message.includes('no such element: Unable to locate elemen'))) {
           recursiveCall(resolve, reject)
         } else {
           resolve(resp.value)
         }
-      }).catch((a) => console.log('!!!!!!!', a.toString()))
+      }).catch((e) => console.log(e.toString()))
     }, callTime)
 
     callCount--

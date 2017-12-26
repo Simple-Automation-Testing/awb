@@ -20,6 +20,7 @@ class Element {
 
   async waitForElement(time) {
     this.sessionId = this.sessionId || global.___sessionId
+
     const result = await waitElementPresent(findElement, this.sessionId, this.selector, time)
     if (result.ELEMENT) {
       this.elementId = result.ELEMENT

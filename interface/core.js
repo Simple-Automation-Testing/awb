@@ -276,7 +276,7 @@ async function goToUrl(sessionId, url, options) {
  */
 async function findElement(sessionId, selector, options) {
   let bodyRequest
-  console.log('!!!!!!!!! fin element', sessionId, selector)
+
   if (selector.includes('xpath: ')) {
     selector = selector.replace('xpath: ', '')
     bodyRequest = { using: 'xpath', value: selector }
@@ -287,7 +287,7 @@ async function findElement(sessionId, selector, options) {
   const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
   const { body, status } = await fetchy_util.post(Pathes.element(sessionId), JSON.stringify(bodyRequest), options)
-  console.log(body, '-=-=-=-=')
+
   assertStatus(status, body)
   return body
 }
@@ -371,7 +371,7 @@ async function killSession(sessionId, options) {
   return body
 }
 
-async function setScriptTimeout(sessionId, type = "page load", ms = 250000, options) {
+async function setScriptTimeout(sessionId, type = "page load", ms = 2500, options) {
   const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
   // 'script', 'implicit', 'page load'

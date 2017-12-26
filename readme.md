@@ -8,7 +8,7 @@ Install [Node.js](http://nodejs.org/) and install framework
 
 
 ## Improvement plan
- * [x] Run selenium server from a client instance method (now only for OSX* systems)
+ * [x] Run selenium server from a client instance method (now only for OSX* and windows x64 systems)
  * [x] Add possibility find element by xpath (done)
  * [ ] Develop error handler system 
  * [ ] Develop and improve enviroment installer for every OS (unix, windows)
@@ -17,11 +17,11 @@ Install [Node.js](http://nodejs.org/) and install framework
 ```sh
 $ npm i --SD wd-interface
 ```
-Drivers installation (now only for OSX* systems)
+Drivers installation 
 ```sh
 $ wd-interface standalone chrome gecko
 ```
-Run driver selenium-standalone-server or chrome driver (now only for OSX* systems)
+Run driver selenium-standalone-server or chrome driver 
 ```sh
 $ wd-interface start standalone  #for standalone
 $ wd-interface start chrome  #for chromedriver 
@@ -75,6 +75,7 @@ describe('Google base example', () => {
 ## Api
 - [Browser](#browser)
   * [chrome](#chrome)
+  * [switchToFrame](#switchtoframe)
   * [goTo](#goto)
   * [closeCurrentTab](#closecurrenttab)
   * [getTitle](#gettitle)
@@ -135,6 +136,14 @@ describe('Google base example', () => {
    * will close current tab 
    * if opened tabs length more than 1
    * /
+```
+## switchToFrame
+```js 
+  const browser = client.chrome() 
+  await browser.switchToFrame('#myFrame')
+  /* 
+   * arg css selector (id , class or some atribute)
+   * / 
 ```
 ## getTitle
 ```js
