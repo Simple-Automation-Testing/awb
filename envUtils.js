@@ -7,6 +7,8 @@ const resolvePath = (path) => resolve(__dirname, path)
 const urlChrome = (ver) => {
     if (os.arch() === 'x64' && os.platform() === 'win32') {
         return `http://chromedriver.storage.googleapis.com/${ver}/chromedriver_win32.zip`
+    } else if (os.arch() === 'x64' && os.platform() === 'linux') {
+        return `http://chromedriver.storage.googleapis.com/${ver}/chromedriver_linux64.zip`
     } else {
         return `http://chromedriver.storage.googleapis.com/${ver}/chromedriver_mac64.zip`
     }
@@ -14,6 +16,8 @@ const urlChrome = (ver) => {
 const urlGecko = (ver) => {
     if (os.arch() === 'x64' && os.platform() === 'win32') {
         return `https://github.com/mozilla/geckodriver/releases/download/v${ver}/geckodriver-v${ver}-win64.zip`
+    } else if  (os.arch() === 'x64' && os.platform() === 'linux') {
+        return `https://github.com/mozilla/geckodriver/releases/download/v${ver}/geckodriver-v${ver}-linux64.tar.gz`
     } else {
         return `https://github.com/mozilla/geckodriver/releases/download/v${ver}/geckodriver-v${ver}-macos.tar.gz`
     }

@@ -26,10 +26,10 @@ describe('client', () => {
 
     before(async () => {
       browser = client().chrome()
-      // await browser.startSelenium()
+      await browser.startSelenium()
     })
     after(async () => {
-      // await browser.stopSelenium()
+      await browser.stopSelenium()
     })
 
     beforeEach(async () => {
@@ -46,27 +46,27 @@ describe('client', () => {
       await browser.closeBrowser()
     })
 
-    // it('send case', async () => {
-    //   const inputValue = '!#!#!@#!'
-    //   {
-    //     const body = await elementInput.sendKeys(inputValue)
-    //     expect(body).to.be.exist
-    //     expect(body.sessionId).to.be.exist
-    //   }
-    //   {
-    //     const value = await elementInput.getAttribute('value')
-    //     expect(value).to.be.exist
-    //     expect(value).to.eql(inputValue)
-    //   }
-    // })
+    it('send case', async () => {
+      const inputValue = '!#!#!@#!'
+      {
+        const body = await elementInput.sendKeys(inputValue)
+        expect(body).to.be.exist
+        expect(body.sessionId).to.be.exist
+      }
+      {
+        const value = await elementInput.getAttribute('value')
+        expect(value).to.be.exist
+        expect(value).to.eql(inputValue)
+      }
+    })
 
-    // it('get title and url', async () => {
-    //   {
-    //     const currentUrl = await browser.getUrl()
-    //     expect(currentUrl).to.eql(`${baseURL}/`)
-    //   }
-    // })
-
+    it('get title and url', async () => {
+      {
+        const currentUrl = await browser.getUrl()
+        expect(currentUrl).to.eql(`${baseURL}/`)
+      }
+    })
+/*
     it('to frame', async () => {
       await elementOpenFrame.click()
       await browser.switchToFrame('#myId')
@@ -75,6 +75,7 @@ describe('client', () => {
       await elements(playbutton).get(0)
       // await browser.sleep(10000)
     })
+*/
   })
 
   describe('firefox', () => {
