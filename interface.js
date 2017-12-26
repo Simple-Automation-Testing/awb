@@ -1,8 +1,7 @@
 const { elements, element } = require('./interface/element')
 const browser = require('./interface/client')
 
-const { spawnStandalone, killProc } = require('./macOSinstaller')
-
+const { spawnStandalone, killProc } = require('./installer')
 
 module.exports = {
     element,
