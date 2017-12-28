@@ -52,13 +52,18 @@ describe('Google base example', () => {
   const inputSearch = element(inputsearch)
   const resultSearch = element(resultsearch)
 
+    after(async () => {
+     
+    })
   before(async () => {
     browser = client().chrome() // for dirrect connection to chromedriver client().chrome(true)
+    await browser.startSelenium()
     await browser.goTo(baseURL)
   })
 
   after(async () => {
     await browser.closeBrowser()
+    await browser.stopSelenium()
   })
 
   it('search git hub potapovDim', async () => {
@@ -75,6 +80,8 @@ describe('Google base example', () => {
 ## Api
 - [Browser](#browser)
   * [chrome](#chrome)
+  * [startSelenium](#startselenium)
+  * [stopselenium](#stopselenium)
   * [switchToFrame](#switchtoframe)
   * [goTo](#goto)
   * [closeCurrentTab](#closecurrenttab)
@@ -126,6 +133,24 @@ describe('Google base example', () => {
   await browser.goTo('https://google.com')
   /* args url
    * type string
+   * /
+```
+## startSelenium
+```js
+  const browser = client.chrome() 
+  await browser.startSelenium()
+  /* 
+   * it will start selenium process 
+   * if selenium standalone chromedriver geckdriver was install 
+   * /
+```
+## stopSelenium
+```js
+  const browser = client.chrome() 
+  await browser.stopSelenium()
+  /* 
+   * it will stop selenium process 
+   * if it was runned by previous command
    * /
 ```
 ## closeCurrentTab
