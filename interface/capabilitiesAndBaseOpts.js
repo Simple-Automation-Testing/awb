@@ -1,3 +1,5 @@
+let timeout = 12000
+
 const defaultChromeCapabilities = {
     desiredCapabilities: {
         browserName: 'chrome',
@@ -6,6 +8,7 @@ const defaultChromeCapabilities = {
         platform: 'ANY'
     }
 }
+
 const defaultFirefoxCapabilities = {
     desiredCapabilities: {
         browserName: "firefox",
@@ -16,6 +19,7 @@ const defaultFirefoxCapabilities = {
         platform: 'ANY'
     }
 }
+
 const baseOptionsStandAlone = {
     hostname: 'localhost',
     port: 4444,
@@ -23,7 +27,7 @@ const baseOptionsStandAlone = {
     headers: {
         'Content-Type': 'application/json'
     },
-    timeout: 12000
+    timeout
 }
 
 const baseOptionsChrome = {
@@ -33,7 +37,7 @@ const baseOptionsChrome = {
     headers: {
         'Content-Type': 'application/json'
     },
-    timeout: 12000
+    timeout
 }
 
 const baseOptionsFirefox = {
@@ -43,10 +47,11 @@ const baseOptionsFirefox = {
     headers: {
         'Content-Type': 'application/json'
     },
-    timeout: 12000
+    timeout
 }
 
 module.exports = {
+    timeout,
     baseOptionsStandAlone,
     baseOptionsChrome,
     baseOptionsFirefox,

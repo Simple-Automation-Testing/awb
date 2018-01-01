@@ -1,6 +1,7 @@
 const {
     defaultChromeCapabilities,
-    defaultFirefoxCapabilities
+    defaultFirefoxCapabilities,
+    timeout
 } = require('./capabilitiesAndBaseOpts')
 
 const {
@@ -20,7 +21,8 @@ const {
     clickElement,
     setScriptTimeout,
     findElement,
-    toFrame
+    toFrame,
+
   } = require('./core')
 
 const path = require('path')
@@ -61,10 +63,14 @@ function WaitProcStop(proc, parentProc) {
 
 class Browser {
 
-    constructor(capabilities) {
+    constructor(capabilities, timeouts) {
         this.sessionId = null
         this.capabilities = capabilities
         this.seleniumProc = null
+        this.timeouts = timeouts
+        if (timeouts && timeouts['request']) {
+            timeout = timeouts['request']
+        }
     }
 
     async startSelenium() {
@@ -83,9 +89,11 @@ class Browser {
 
     async getSession() {
         const { sessionId } = await initSession(this.capabilities)
-        await setScriptTimeout(sessionId)
         this.sessionId = sessionId
         global.___sessionId = this.sessionId
+        if (this.sessionId) {
+            await setScriptTimeout(this.sessionId, timeouts)
+        }
     }
 
     async closeCurrentTab() {
@@ -168,13 +176,13 @@ class Initiator {
         this.opts = null
         this.caps = null
     }
-    chrome(directToChrome = false, capabilities = JSON.stringify(defaultChromeCapabilities)) {
+    chrome(directToChrome = false, timeouts = null, capabilities = JSON.stringify(defaultChromeCapabilities)) {
         global.__provider.__chrome = directToChrome
-        return new Browser(capabilities)
+        return new Browser(capabilities, timeouts)
     }
-    firefox(directToGecko = false, capabilities = JSON.stringify(defaultFirefoxCapabilities)) {
+    firefox(directToGecko = false, timeouts, capabilities = JSON.stringify(defaultFirefoxCapabilities)) {
         global.__provider.__firefox = directToGecko
-        return new Browser(capabilities)
+        return new Browser(capabilities, timeouts)
     }
 }
 

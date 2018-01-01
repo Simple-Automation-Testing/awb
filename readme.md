@@ -80,6 +80,7 @@ describe('Google base example', () => {
 ## Api
 - [Browser](#browser)
   * [chrome](#chrome)
+  * [firefox](#firefox)
   * [startSelenium](#startselenium)
   * [stopselenium](#stopselenium)
   * [switchToFrame](#switchtoframe)
@@ -121,13 +122,22 @@ describe('Google base example', () => {
 # Browser
 ```js
   const {client} = require('wd-interface')
-  const browser = client.chrome() 
-
+  const browserChrome = client().chrome() // for chrome browser
+  const browserFirefox = client().firefox() //for firefox browser
   /* return browser api instance
-   * args directConnect
-   * true - conncect direct to chromedriver port 9515 without selenium standalone
+   * args directConnect bool true to chrome or gecko driver , false for connect to standalone server
+   * timeouts = {
+   *   'script': 5000,    // Sets the amount of time to wait for an asynchronous script to finish execution before throwing an error.
+   *   'implicit': 5000,  // Specifies the amount of time the driver should wait when searching for an element if it is not immediately present.
+   *   'page load': 5000, // Sets the amount of time to wait for a page load to complete before throwing an error.
+   *   'request': 1000    // Sets the amount of time to wait for a response from driver.
+   * }
+   * 
    * any, false , undefined - conncect to standalone server port 4444
-   * /
+   * 
+   */
+   const fireFoxWithPageLoadNineSecondsAndConnectToStandalone = client().firefox(false, { 'page load': 9000 })
+   const chromeWithDirrectConnectToChromeDriverAndScriptWaitTenSeconds = client().chrome(true, { 'script': 10000 })
 ```
 ## goTo
 ```js

@@ -287,8 +287,10 @@ async function findElement(sessionId, selector, options) {
   const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
   const { body, status } = await fetchy_util.post(Pathes.element(sessionId), JSON.stringify(bodyRequest), options)
-
   assertStatus(status, body)
+
+  body.value = { ELEMENT: body.value[Object.keys(body.value)[0]] }
+
   return body
 }
 
@@ -322,7 +324,12 @@ async function findElements(sessionId, selector, options) {
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(Pathes.elements(sessionId), JSON.stringify(bodyRequest), options)
+  assertStatus(status, body)
 
+  body.value = body.value.map(respPart => {
+    return { ELEMENT: respPart[Object.keys(respPart)[0]] }
+  })
+  console.log(body)
   return body
 }
 
@@ -355,7 +362,7 @@ async function sendKeys(sessionId, elementId, keysToSend, options) {
     text,
     value: keysToSend
   }), options)
-
+  console.log(body)
   assertStatus(status, body)
   return body
 }
@@ -371,24 +378,19 @@ async function killSession(sessionId, options) {
   return body
 }
 
-async function setScriptTimeout(sessionId, type = "page load", ms = 2500, options) {
+async function setScriptTimeout(sessionId, timeouts, options) {
   const { Pathes, baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
-  // 'script', 'implicit', 'page load'
-  const { status, body } = await fetchy_util.post(Pathes.timeouts(sessionId), JSON.stringify({
-    type,
-    ms
-  }), options)
-  await fetchy_util.post(Pathes.timeouts(sessionId), JSON.stringify({
-    type: "script",
-    ms
-  }), options)
-  await fetchy_util.post(Pathes.timeouts(sessionId), JSON.stringify({
-    type: "implicit",
-    ms
-  }), options)
-  assertStatus(status, body)
-  return body
+  //'script', 'implicit', 'page load'
+  const keys = Object.keys(timeouts)
+
+  for (const key of keys) {
+    const { status, body } = await fetchy_util.post(Pathes.timeouts(sessionId), JSON.stringify({
+      type: key,
+      ms: timeouts[key]
+    }), options)
+    assertStatus(status, body)
+  }
 }
 
 async function getAttribute(sessionId, elementId, attribute, options) {
@@ -402,10 +404,11 @@ async function getAttribute(sessionId, elementId, attribute, options) {
   /**
    * NEED EUGENE SUPPORT FOR THIS ISSUE
    */
-  if (!elementId.match(elementIDregexp)) {
-    const body = await findElement(sessionId, elementId)
-    elementId = body.value.ELEMENT
-  }
+  // if (!elementId.match(elementIDregexp)) {
+  //   console.log(sessionId, elementId, attribute, '------------------------')
+  //   const body = await findElement(sessionId, elementId)
+  //   elementId = body.value.ELEMENT
+  // }
 
   const { status, body } = await fetchy_util.get(Pathes.attribute(sessionId, elementId, attribute), null, options)
 

@@ -8,7 +8,7 @@ const {
 } = require('../../interface/element')
 
 
-describe.only('Element', () => {
+describe('Element', () => {
   //parts
   let sessionId = null
   let elementButton = null

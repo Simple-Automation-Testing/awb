@@ -110,6 +110,7 @@ class Element {
     !this.elementId
       && await this.getTthisElement()
     const { value } = await getAttribute(this.sessionId, this.elementId, attribute)
+
     return value
   }
 
@@ -260,4 +261,3 @@ module.exports = {
   elementInstance: Element,
   elementsInstance: Elements
 }
-
