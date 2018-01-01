@@ -80,7 +80,6 @@ class Browser {
 
     async switchToFrame(selector) {
         const body = await toFrame(this.sessionId, selector)
-        console.log(body)
     }
 
     async stopSelenium() {
@@ -91,8 +90,8 @@ class Browser {
         const { sessionId } = await initSession(this.capabilities)
         this.sessionId = sessionId
         global.___sessionId = this.sessionId
-        if (this.sessionId) {
-            await setScriptTimeout(this.sessionId, timeouts)
+        if (this.timeouts) {
+            await setScriptTimeout(this.sessionId, this.timeouts)
         }
     }
 

@@ -95,14 +95,12 @@ describe('Google base example', () => {
   * [sleep](#sleep)
   * [getUrl](#geturl)
 - [Elements](#elements)
-  * [Constructor](consctructor-elements)
   * [waitForElements](#waitforelements)
   * [map](#map)
   * [forEach](#foreach)
   * [filter](#filter)
   * [get](#get)
 - [Element](#element)
-  * [Constructor](#consctructor-element)
   * [sendKeys](#sendkeys)
   * [cliear](#clear)
   * [getElementHTML](#getelementhtml)
@@ -136,8 +134,16 @@ describe('Google base example', () => {
    * any, false , undefined - conncect to standalone server port 4444
    * 
    */
-   const fireFoxWithPageLoadNineSecondsAndConnectToStandalone = client().firefox(false, { 'page load': 9000 })
+```
+## chrome
+```js
    const chromeWithDirrectConnectToChromeDriverAndScriptWaitTenSeconds = client().chrome(true, { 'script': 10000 })
+   const defaultChrome = client().chrome()
+```
+## firefox
+```js
+const fireFoxWithPageLoadNineSecondsAndConnectToStandalone = client().firefox(false, { 'page load': 9000 })
+const defaultFireFox = client().firefox()
 ```
 ## goTo
 ```js
@@ -246,7 +252,7 @@ describe('Google base example', () => {
   /* return current tab url*/
 ```
 # Element
-## Constructor element
+## ConstructorElement
 ```js
   const elementDiv = element('div')
   /* 

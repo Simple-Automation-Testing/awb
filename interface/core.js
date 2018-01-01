@@ -329,7 +329,6 @@ async function findElements(sessionId, selector, options) {
   body.value = body.value.map(respPart => {
     return { ELEMENT: respPart[Object.keys(respPart)[0]] }
   })
-  console.log(body)
   return body
 }
 
