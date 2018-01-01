@@ -94,6 +94,8 @@ describe('Google base example', () => {
   * [sleep](#sleep)
   * [getUrl](#geturl)
 - [Elements](#elements)
+  * [Constructor](consctructor-elements)
+  * [waitForElements](#waitforelements)
   * [map](#map)
   * [forEach](#foreach)
   * [filter](#filter)
@@ -365,15 +367,25 @@ describe('Google base example', () => {
   */
 ```
 # Elements
+## Constructor elements
 ```js
-const {elements} = require('wd-interface')
-// by css selector
-const elementsSpan = elements('span')
-// by xpath 
-const elementsDiv = elements('xpath: /html/body/div[1]/div/div/div/div[1]/div[2]/div[2]/div/div')
+  const elementDiv = elements('div')
+  const {elements} = require('wd-interface')
+  // by css selector
+  const elementsSpan = elements('span')
+  // by xpath 
+  const elementsDiv = elements('xpath: /html/body/div[1]/div/div/div/div[1]/div[2]/div[2]/div/div')
  /* 
-  *  args css selector or xpath format xpath: /html/body/div (for example)
+  *  args css selector for example '#id', '[name="name"]', '.class' or xpath format xpath: /html/body/div (for example)
   *  return array Element instaces
+  */
+```
+## waitForElement
+```js
+  const elementDiv = elements('div')
+  await elementDiv.waitForElements(1000)
+  /* 
+  * will wait for first element with selector mount to DOM node
   */
 ```
 ### map

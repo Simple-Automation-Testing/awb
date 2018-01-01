@@ -20,13 +20,10 @@ class Element {
 
   async waitForElement(time) {
     this.sessionId = this.sessionId || global.___sessionId
-
-    const result = await waitElementPresent(findElement, this.sessionId, this.selector, time)
-    if (result.ELEMENT) {
-      this.elementId = result.ELEMENT
-    } else if (result.message.includes('no such element: Unable to locate elemen')) {
-      throw new InterfaceError(result.message, __filename)
-    }
+    const { error, value } = await waitElementPresent(findElement, this.sessionId, this.selector, time)
+    if (error) throw new InterfaceError(error)
+    this.elementId = value.ELEMENT
+    return this
   }
 
   async clear() {
@@ -216,6 +213,17 @@ class Elements {
       }
     }
     return values
+  }
+
+  async waitForElements(time) {
+    this.sessionId = this.sessionId || global.___sessionId
+    const { error, value } = await waitElementPresent(findElements, this.sessionId, this.selector, time)
+    if (error) throw new InterfaceError(error)
+    this.elements = []
+    value.forEach(({ ELEMENT }) => {
+      this.elements.push(new Element(this.selector, this.sessionId, ELEMENT))
+    })
+    return this
   }
 
   async getElements() {

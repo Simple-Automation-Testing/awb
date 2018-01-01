@@ -8,7 +8,7 @@ const {
 } = require('../../interface/element')
 
 
-describe('Element', () => {
+describe.only('Element', () => {
   //parts
   let sessionId = null
   let elementButton = null
@@ -37,7 +37,7 @@ describe('Element', () => {
     await goToUrl(sessionId, 'http://localhost:9090')
     elementButton = element(addnewname, sessionId)
     elementDropZone = element(dropzone, sessionId)
-    elementInput = element(firstname, sessionId)
+    elementInput = element(firstname)
     elementBottomDiv = element(bottomdiv, sessionId)
     elementDisplayNoneDiv = element(dispaynonediv, sessionId)
     elementHandle = element(handleswiper, sessionId)
@@ -137,6 +137,12 @@ describe('Element', () => {
       const value = await elementInput.getAttribute('value')
       expect(value).to.be.exist
       expect(value).to.eql(inputValue)
+    }
+    {
+      await elementInput.clear()
+      const value = await elementInput.getAttribute('value')
+      expect(value).to.be.exist
+      expect(value).to.eql('')
     }
   })
 

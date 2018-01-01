@@ -1,3 +1,4 @@
+const { InterfaceError } = require('./interfaceError')
 const parseJson = (data) => {
   try {
     return JSON.parse(data)
@@ -51,7 +52,7 @@ function waitCondition(conditionFn, time, conditionTarget) {
 
 function waitElementPresent(conditionFn, session, selector, time) {
   let callCount = time
-
+  const now = +Date.now()
   const callTime = 1
 
   function dummyAsyncCall(callback, timeout) {
@@ -60,21 +61,30 @@ function waitElementPresent(conditionFn, session, selector, time) {
     }, timeout)
   }
 
-  function recursiveCall(resolve, reject) {
+  function recursiveCall(resolve) {
+    const timeDiffState = (+Date.now() - now) < time
     dummyAsyncCall(function (data) {
       data.then((resp) => {
-        if (callCount > 0 && (resp.value.message && resp.value.message.includes('no such element: Unable to locate elemen'))) {
-          recursiveCall(resolve, reject)
+        if (
+          (callCount > 0 && timeDiffState) &&
+          (((resp.value.message && resp.value.message.includes('no such element: Unable to locate elemen')))
+            || (resp.value && !resp.value.length))
+        ) {
+          recursiveCall(resolve)
+        } else if (callCount === 0 || !timeDiffState) {
+          const errMessage =
+            (resp.value.hasOwnProperty('message') && resp.value.message.includes('no such element: Unable to locate elemen')) ?
+              resp.value.message : `Element with selector ${selector} does not present`
+          resolve({ error: errMessage })
         } else {
-          resolve(resp.value)
+          resolve({ value: resp.value })
         }
-      }).catch((e) => console.log(e.toString()))
+      })
     }, callTime)
-
     callCount--
   }
-  return new Promise(function (resolve, reject) {
-    recursiveCall(resolve, reject)
+  return new Promise(function (resolve) {
+    recursiveCall(resolve)
   })
 }
 
