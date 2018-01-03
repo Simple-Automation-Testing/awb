@@ -88,6 +88,7 @@ describe('Google base example', () => {
   * [closeCurrentTab](#closecurrenttab)
   * [getTitle](#gettitle)
   * [executeScript](#executescript)
+  * [executeScriptAsync](#executescriptasync)
   * [switchToTab](#switchtotab)
   * [closeBrowser](#closebrowser)
   * [getCurrentBrowserTab](#getcurrentbrowsertab)
@@ -207,6 +208,21 @@ const defaultFireFox = client().firefox()
    * if function return value it will be returned
    * /
 ```
+
+## executeScriptAsync
+```js
+  const browser = client.chrome() 
+  const currentTitle = await browser.executeScriptAsync(function () {
+    const [callback] = arguments
+      fetch('http://localhost:8085/bar', {
+        node: 'no-cors'
+      }).then(resp => resp.json()).then(callback)
+  })
+  /* first arg is function or string function ,for example 'return arguments[0]'
+   * if function return value it will be returned
+   * /
+```
+
 ## switchToTab
 ```js
   const browser = client.chrome() 

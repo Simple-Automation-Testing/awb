@@ -2,6 +2,7 @@ const { expect } = require('chai')
 
 const client = require('../../interface/client')
 const { element, elements } = require('../../interface/element')
+const { fakeServer } = require('../util')
 
 describe('client', () => {
   describe.only('chrome', () => {
@@ -25,12 +26,14 @@ describe('client', () => {
     const playButton = element(playbutton)
 
     before(async () => {
+      fakeServer.start()
       browser = client().chrome()
       await browser.startSelenium()
     })
-    
+
     after(async () => {
       await browser.stopSelenium()
+      fakeServer.stop()
     })
 
     beforeEach(async () => {
@@ -65,6 +68,18 @@ describe('client', () => {
       {
         const currentUrl = await browser.getUrl()
         expect(currentUrl).to.eql(`${baseURL}/`)
+      }
+    })
+
+    it('execute async script', async () => {
+      {
+        const val = await browser.executeScriptAsync(
+          function (callback) {
+            fetch('http://localhost:8085/bar', {
+              node: 'no-cors'
+            }).then(resp => resp.json()).then(callback)
+          })
+        expect(val).to.eql({ bar: 'bar' })
       }
     })
     /*
@@ -118,8 +133,8 @@ describe('client', () => {
       }
       {
         const value = await elementInput.getAttribute('value')
-      //   expect(value).to.be.exist
-      //   expect(value).to.eql(inputValue)
+        //   expect(value).to.be.exist
+        //   expect(value).to.eql(inputValue)
       }
     })
 

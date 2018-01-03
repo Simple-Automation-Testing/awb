@@ -22,7 +22,7 @@ const {
     setScriptTimeout,
     findElement,
     toFrame,
-
+    executeScriptAsync
   } = require('./core')
 
 const path = require('path')
@@ -78,6 +78,7 @@ class Browser {
         this.timeouts = timeouts
         if (timeouts && timeouts['request']) {
             timeout = timeouts['request']
+            Reflect.deleteProperty(timeouts, 'request')
         }
     }
 
@@ -109,6 +110,13 @@ class Browser {
 
     async executeScript(script, args) {
         const result = await executeScript(this.sessionId, script, args)
+        if (result.value) {
+            return result.value
+        }
+    }
+
+    async executeScriptAsync(script, args) {
+        const result = await executeScriptAsync(this.sessionId, script, args)
         if (result.value) {
             return result.value
         }
