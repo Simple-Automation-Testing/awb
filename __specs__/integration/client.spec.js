@@ -3,7 +3,7 @@ const { expect } = require('chai')
 const client = require('../../interface/client')
 const { element, elements } = require('../../interface/element')
 
-describe.only('client', () => {
+describe('client', () => {
   describe('chrome', () => {
     let browser = null
 

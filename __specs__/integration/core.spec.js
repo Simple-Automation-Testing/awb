@@ -4,9 +4,9 @@ const { Keys } = require('../../interface/event/keys')
 
 const { resizeWindow, initSession, killSession, findElements, findElement, goToUrl, getUrl, setScriptTimeout } = require('../../interface/core')
 const { getTitle, clickElement, sendKeys, getAttribute, executeScript, sleep, syncWithDOM, clearElementText } = require('../../interface/core')
-const { getElementText, moveTo, mouseDown, elementFromElement, elementsFromElement, present, displayed } = require('../../interface/core')
+const { getElementText, moveTo, mouseDown, elementFromElement, elementsFromElement, present, displayed, executeScriptAsync } = require('../../interface/core')
 
-describe('core function positive scenario', () => {
+describe.only('core function positive scenario', () => {
   //test variables
 
   let sessionId = null
@@ -30,12 +30,6 @@ describe('core function positive scenario', () => {
       expect(body.status).to.eql(0)
       expect(body.sessionId).to.be.exist
       sessionId = body.sessionId
-    }
-    {
-      const body = await setScriptTimeout(sessionId)
-      expect(body.status).to.eql(0)
-      expect(body.sessionId).to.eql(sessionId)
-      expect(body.value).to.be.null
     }
   })
 
@@ -96,7 +90,7 @@ describe('core function positive scenario', () => {
     const body = await findElements(sessionId, addnewname)
     expect(body.status).to.eql(0)
     expect(body.sessionId).to.eql(sessionId)
-    expect(body.value.length).to.eql(10)
+    expect(body.value.length).to.eql(11)
     expect(body.value[0].ELEMENT).to.be.exist
     expect(body.value[0].ELEMENT).to.eql(elementButton)
   })
@@ -183,7 +177,16 @@ describe('core function positive scenario', () => {
     }
   })
 
-  it('mouse down move up', async () => {
+  it('execute script async', async () => {
+    const body = await executeScriptAsync(sessionId, function (callback) {
+      fetch('http://localhost:8085/bar', {
+        node: 'no-cors'
+      }).then(resp => resp.json()).then(callback)
+    })
+    expect(body.value).to.eql({bar: 'bar'})
+  })
+
+  it.skip('mouse down move up', async () => {
     let initialStyle = null
     let changedStyleValue = null
     {
