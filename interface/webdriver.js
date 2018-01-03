@@ -5,13 +5,13 @@ const { spawn } = require('child_process')
 const { GECKO_PATH, CHROME_PATH, STANDALONE_PATH, resolvePath } = require('../envUtils')
 
 const START_SUCCESS_STACK = 'INFO - Selenium Server is up and running'
+
 const ALREADY_IN_USE = 'java.lang.RuntimeException: java.net.BindException: Address already in use'
 
 const DEFAULT_PORT = 4444
 const DEFAULT_HOST = '127.0.0.1'
 
-
-class SeleniumServer {
+class ServerProvider {
 
   constructor(settings, callback) {
     this.settings = settings
@@ -23,7 +23,7 @@ class SeleniumServer {
     this.process = null
   }
 
-  start() {
+  startStandAlone() {
     const self = this
     return new Promise((resolve) => {
 
@@ -59,8 +59,9 @@ class SeleniumServer {
       })
 
       self.process.stdout.on('data', (data) => {
-        var output = data.toString()
+        let output = data.toString()
         this.output += output
+
         const isStarted = this.output.includes(START_SUCCESS_STACK)
 
         if (isStarted) {
@@ -75,17 +76,17 @@ class SeleniumServer {
       self.process.stderr.on('data', (data) => {
         const output = data.toString()
         self.output += output
-        const isStarted = this.output.includes(START_SUCCESS_STACK)
 
         const isAddressInUse = this.output.includes(ALREADY_IN_USE)
 
+        const isStarted = this.output.includes(START_SUCCESS_STACK)
+
         if (isAddressInUse) {
-          self.startCb('Selenium already started on port 444')
+          self.startCb('selenium already started on port 4444')
           resolve(true)
         }
 
         if (isStarted) {
-
           const exitHandler = self.exit
 
           self.process.removeListener('exit', exitHandler)
@@ -130,25 +131,31 @@ class SeleniumServer {
 }
 
 let sendCount = 1
+let server = null
 
-const server = new SeleniumServer({
-  standAlonePath: `${STANDALONE_PATH}`,
-  host: "127.0.0.1",
-  port: 4444,
-  browserDrivers: {
-    chrome: `${CHROME_PATH}`
+process.on('message', ({ msg }) => {
+  if (msg === 'startStandalone') {
+
+    server = new ServerProvider({
+      standAlonePath: `${STANDALONE_PATH}`,
+      host: "127.0.0.1",
+      port: 4444,
+      browserDrivers: {
+        chrome: `${CHROME_PATH}`
+      }
+    }, (status) => {
+      if (status.includes('started success') && sendCount) {
+        sendCount--
+        process.send({ msg: 'server started' })
+      } else if (status.includes('selenium already') && sendCount) {
+        sendCount--
+        process.send({ msg: 'selenium already started on port 4444' })
+      }
+    })
+
+    server.startStandAlone()
   }
-}, (status) => {
-  if (status.includes('started success') && sendCount) {
-    sendCount--
-    process.send({ msg: 'server started' })
-  }
-})
-
-server.start()
-
-process.on('message', (msg) => {
-  if (msg === 'stop') {
+  else if (msg === 'stop') {
     server.stop()
     process.send('server stoped')
   }

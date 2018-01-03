@@ -3,8 +3,8 @@ const { expect } = require('chai')
 const client = require('../../interface/client')
 const { element, elements } = require('../../interface/element')
 
-describe.only('client', () => {
-  describe('chrome', () => {
+describe('client', () => {
+  describe.only('chrome', () => {
     let browser = null
 
     const baseURL = 'http://localhost:9090'
@@ -26,10 +26,11 @@ describe.only('client', () => {
 
     before(async () => {
       browser = client().chrome()
-      // await browser.startSelenium()
+      await browser.startSelenium()
     })
+    
     after(async () => {
-      // await browser.stopSelenium()
+      await browser.stopSelenium()
     })
 
     beforeEach(async () => {
