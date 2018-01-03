@@ -27,15 +27,23 @@ const {
 
 const path = require('path')
 
-function StartSesion() {
+function StartProvider() {
     const { fork } = require('child_process')
+    const path = require('path')
+
     const forked = fork(path.resolve(__dirname, './webdriver.js'))
+
+    forked.send({ msg: 'startStandalone' })
 
     return new Promise((resolve) => {
         forked.on('message', ({ msg }) => {
             if (msg === 'server started') {
                 resolve(forked)
+            } else if (msg === 'selenium already started on port 4444') {
+                forked.kill()
+                console.log('selenium already started on port 4444')
             }
+            resolve()
         })
     }).then((proc) => {
         if (proc) {
@@ -49,7 +57,7 @@ function StartSesion() {
     })
 }
 
-function WaitProcStop(proc, parentProc) {
+function WaitProviderStop(proc, parentProc) {
     return new Promise((resolve) => {
 
         proc.on('message', (msg) => {
@@ -57,7 +65,7 @@ function WaitProcStop(proc, parentProc) {
                 resolve()
             }
         })
-        proc.send('stop')
+        proc.send({ msg: 'stop' })
     })
 }
 
@@ -74,7 +82,7 @@ class Browser {
     }
 
     async startSelenium() {
-        const proc = await StartSesion()
+        const proc = await StartProvider()
         this.seleniumProc = proc
     }
 
@@ -83,7 +91,7 @@ class Browser {
     }
 
     async stopSelenium() {
-        await WaitProcStop(this.seleniumProc, process)
+        await WaitProviderStop(this.seleniumProc, process)
     }
 
     async getSession() {

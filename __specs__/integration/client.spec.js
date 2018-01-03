@@ -4,7 +4,7 @@ const client = require('../../interface/client')
 const { element, elements } = require('../../interface/element')
 
 describe('client', () => {
-  describe('chrome', () => {
+  describe.only('chrome', () => {
     let browser = null
 
     const baseURL = 'http://localhost:9090'
@@ -26,10 +26,11 @@ describe('client', () => {
 
     before(async () => {
       browser = client().chrome()
-      // await browser.startSelenium()
+      await browser.startSelenium()
     })
+    
     after(async () => {
-      // await browser.stopSelenium()
+      await browser.stopSelenium()
     })
 
     beforeEach(async () => {

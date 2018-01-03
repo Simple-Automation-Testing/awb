@@ -24,7 +24,6 @@ const {
   baseOptionsFirefox
 } = require('./capabilitiesAndBaseOpts')
 
-const { requestInterface } = require('./request')
 const { InterfaceError } = require('./interfaceError')
 
 const assertStatus = (status, body) => {
@@ -213,9 +212,8 @@ async function refreshCurrentPage(sessionId, options) {
   const { baseOptions, fetchy_util } = getLocalEnv()
 
   if (!options) options = { ...baseOptions }
-  options.method = 'POST'
-  options.path = urlPathes.refresh(sessionId)
-  const { body, status } = await requestInterface(options)
+
+  const { body, status } = await fetchy_util.post(urlPathes.refresh(sessionId), undefined, options)
   assertStatus(status, body)
   return body
 }
