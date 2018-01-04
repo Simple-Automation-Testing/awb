@@ -1,8 +1,10 @@
+const capabilitiesAndBaseOpts = require('./capabilitiesAndBaseOpts')
+
 const {
   defaultChromeCapabilities,
-  defaultFirefoxCapabilities,
-  timeout
-} = require('./capabilitiesAndBaseOpts')
+  defaultFirefoxCapabilities
+} = capabilitiesAndBaseOpts
+
 const { InterfaceError } = require('./interfaceError')
 
 const {
@@ -77,10 +79,12 @@ class Browser {
     this.sessionId = null
     this.capabilities = capabilities
     this.seleniumProc = null
-    this.timeouts = timeouts
     if (timeouts && timeouts['request']) {
-      timeout = timeouts['request']
+      capabilitiesAndBaseOpts.baseOptionsStandAlone.timeout = timeouts['request']
+      // console.log(capabilitiesAndBaseOpts.timeout, capabilitiesAndBaseOpts)
       Reflect.deleteProperty(timeouts, 'request')
+      this.timeouts = timeouts
+      console.log(capabilitiesAndBaseOpts.baseOptionsStandAlone)
     }
   }
 

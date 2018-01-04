@@ -5,7 +5,7 @@ const { element, elements } = require('../../interface/element')
 const { fakeServer } = require('../util')
 
 describe('client', () => {
-  describe('chrome', () => {
+  describe.only('chrome', () => {
     let browser = null
 
     const baseURL = 'http://localhost:9090'
@@ -27,12 +27,15 @@ describe('client', () => {
 
     before(async () => {
       // fakeServer.start()
-      browser = client().chrome()
-      await browser.startSelenium()
+      browser = client().chrome(false, {
+        'request': 1000,
+        // 'page load': 1
+      })
+      // await browser.startSelenium()
     })
 
     after(async () => {
-      await browser.stopSelenium()
+      // await browser.stopSelenium()
       // fakeServer.stop()
     })
 
@@ -71,7 +74,7 @@ describe('client', () => {
       }
     })
 
-    it('execute async script', async () => {
+    it.skip('execute async script', async () => {
       {
         const val = await browser.executeScriptAsync(
           function (callback) {

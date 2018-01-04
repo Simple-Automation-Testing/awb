@@ -7,7 +7,7 @@ const { getTitle, clickElement, sendKeys, getAttribute, executeScript, sleep, sy
 const { getElementText, moveTo, mouseDown, elementFromElement, elementsFromElement, present, displayed, executeScriptAsync } = require('../../interface/core')
 const { maximizeWindow, minimizeWindow, getScreenshot } = require('../../interface/core')
 
-describe.only('core function positive scenario', () => {
+describe('core function positive scenario', () => {
   //test variables
 
   let sessionId = null
