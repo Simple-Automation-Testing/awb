@@ -51,27 +51,22 @@ function waitCondition(conditionFn, time, conditionTarget) {
 }
 
 function waitElementPresent(conditionFn, session, selector, time) {
-  let callCount = time
   const now = +Date.now()
-  const callTime = 1
+  const callTime = 50
 
   function dummyAsyncCall(callback, timeout) {
     setTimeout(function () {
       return callback(conditionFn(session, selector))
-    }, timeout)
+    }, callTime)
   }
 
   function recursiveCall(resolve) {
     const timeDiffState = (+Date.now() - now) < time
     dummyAsyncCall(function (data) {
       data.then((resp) => {
-        if (
-          (callCount > 0 && timeDiffState) &&
-          (((resp.value.message && resp.value.message.includes('no such element: Unable to locate elemen')))
-            || (resp.value && !resp.value.length))
-        ) {
+        if (timeDiffState && resp.value.message) {
           recursiveCall(resolve)
-        } else if (callCount === 0 || !timeDiffState) {
+        } else if (!timeDiffState) {
           const errMessage =
             (resp.value.hasOwnProperty('message') && resp.value.message.includes('no such element: Unable to locate elemen')) ?
               resp.value.message : `Element with selector ${selector} does not present`
@@ -81,7 +76,6 @@ function waitElementPresent(conditionFn, session, selector, time) {
         }
       })
     }, callTime)
-    callCount--
   }
   return new Promise(function (resolve) {
     recursiveCall(resolve)
