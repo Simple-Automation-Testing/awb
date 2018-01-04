@@ -5,8 +5,9 @@ const { Keys } = require('../../interface/event/keys')
 const { resizeWindow, initSession, killSession, findElements, findElement, goToUrl, getUrl, setScriptTimeout } = require('../../interface/core')
 const { getTitle, clickElement, sendKeys, getAttribute, executeScript, sleep, syncWithDOM, clearElementText } = require('../../interface/core')
 const { getElementText, moveTo, mouseDown, elementFromElement, elementsFromElement, present, displayed, executeScriptAsync } = require('../../interface/core')
+const { maximizeWindow, minimizeWindow, getScreenshot } = require('../../interface/core')
 
-describe('core function positive scenario', () => {
+describe.only('core function positive scenario', () => {
   //test variables
 
   let sessionId = null
@@ -40,6 +41,27 @@ describe('core function positive scenario', () => {
     expect(body.value).to.eql(null)
   })
 
+  it.skip('minimize window', async () => {
+    const body = await minimizeWindow(sessionId)
+    expect(body.status).to.eql(0)
+    expect(body.sessionId).to.eql(sessionId)
+    expect(body.value).to.eql(null)
+  })
+
+  it('maximize window', async () => {
+    const body = await maximizeWindow(sessionId)
+    expect(body.status).to.eql(0)
+    expect(body.sessionId).to.eql(sessionId)
+    expect(body.value).to.eql(null)
+  })
+
+  it('resize window', async () => {
+    const body = await resizeWindow(sessionId, { width: 1200, height: 900 })
+    expect(body.status).to.eql(0)
+    expect(body.sessionId).to.eql(sessionId)
+    expect(body.value).to.eql(null)
+  })
+
   it('go to url', async () => {
     const body = await goToUrl(sessionId, baseURL)
     expect(body.sessionId).to.eql(sessionId)
@@ -52,6 +74,47 @@ describe('core function positive scenario', () => {
     expect(body.sessionId).to.eql(sessionId)
     expect(body.status).to.eql(0)
     expect(body.value).to.eql(`${baseURL}/`)
+  })
+
+  it('take screen', async () => {
+    const body = await getScreenshot(sessionId)
+    require('fs').writeFileSync('test.png', new Buffer(body.value, 'base64'))
+  })
+
+  it('mouse down move up', async () => {
+    let initialStyle = null
+    let changedStyleValue = null
+    let bar3ElementId = null
+    {
+      const { value: { ELEMENT } } = await findElement(sessionId, bar3)
+      expect(ELEMENT).to.be.exist
+      bar3ElementId = ELEMENT
+    }
+    {
+      //get initial style
+      const body = await getAttribute(sessionId, bar3ElementId, 'style')
+      expect(body.status).to.eql(0)
+      expect(body.sessionId).to.eql(sessionId)
+      expect(body.value).to.be.exist
+      initialStyle = body.value
+    }
+    {
+      //mouse down mouse move mouse up
+      const { value: { ELEMENT } } = await findElement(sessionId, handler)
+      const bodyMouseMoveTo = await moveTo(sessionId, { element: ELEMENT })
+      const bodyMouseDown = await mouseDown(sessionId, handler)
+      const bodyMouseMove = await moveTo(sessionId, { x: 60, y: 0 })
+    }
+    {
+      const body = await getAttribute(sessionId, bar3ElementId, 'style')
+      expect(body.status).to.eql(0)
+      expect(body.sessionId).to.eql(sessionId)
+      expect(body.value).to.be.exist
+      changedStyleValue = body.value
+    }
+    {
+      expect(changedStyleValue).to.not.eql(initialStyle)
+    }
   })
 
   it('get title', async () => {
@@ -177,43 +240,13 @@ describe('core function positive scenario', () => {
     }
   })
 
-  it('execute script async', async () => {
+  it.skip('execute script async', async () => {
     const body = await executeScriptAsync(sessionId, function (callback) {
       fetch('http://localhost:8085/bar', {
         node: 'no-cors'
       }).then(resp => resp.json()).then(callback)
     })
-    expect(body.value).to.eql({bar: 'bar'})
-  })
-
-  it.skip('mouse down move up', async () => {
-    let initialStyle = null
-    let changedStyleValue = null
-    {
-      //get initial style
-      const body = await getAttribute(sessionId, bar3, 'style')
-      expect(body.status).to.eql(0)
-      expect(body.sessionId).to.eql(sessionId)
-      expect(body.value).to.be.exist
-      initialStyle = body.value
-    }
-    {
-      //mouse down mouse move mouse up
-      const { value: { ELEMENT } } = await findElement(sessionId, handler)
-      const bodyMouseMoveTo = await moveTo(sessionId, { element: ELEMENT })
-      const bodyMouseDown = await mouseDown(sessionId, handler)
-      const bodyMouseMove = await moveTo(sessionId, { x: 60, y: 0 })
-    }
-    {
-      const body = await getAttribute(sessionId, bar3, 'style')
-      expect(body.status).to.eql(0)
-      expect(body.sessionId).to.eql(sessionId)
-      expect(body.value).to.be.exist
-      changedStyleValue = body.value
-    }
-    {
-      expect(changedStyleValue).to.not.eql(initialStyle)
-    }
+    expect(body.value).to.eql({ bar: 'bar' })
   })
 
   it('send keys with enter', async () => {
