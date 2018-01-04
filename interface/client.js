@@ -195,6 +195,7 @@ class Browser {
 
   async closeBrowser() {
     if (this.sessionId) {
+      if (this.sessionId === global.___sessionId) global.___sessionId = null
       const { status } = await killSession(this.sessionId)
       this.sessionId = null
     }
