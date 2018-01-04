@@ -63,9 +63,10 @@ function getLocalEnv() {
   return { baseOptions, fetchy_util }
 }
 
+const { baseOptions, fetchy_util } = getLocalEnv()
+
 async function syncWithDOM(sessionId, timeout, options) {
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const waitState = function () {
@@ -87,7 +88,6 @@ async function syncWithDOM(sessionId, timeout, options) {
 
 async function executeScript(sessionId, script, args = [], options) {
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
   if (assertFunction(script)) {
     script = `const args = Array.prototype.slice.call(arguments,0)
               return ${script.toString()}.apply(window, args)`
@@ -111,7 +111,6 @@ async function executeScript(sessionId, script, args = [], options) {
 
 async function executeScriptAsync(sessionId, script, args = [], options) {
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
   if (assertFunction(script)) {
     script = `const args = Array.prototype.slice.call(arguments,0)
               return ${script.toString()}.apply(window, args)`
@@ -135,8 +134,6 @@ async function executeScriptAsync(sessionId, script, args = [], options) {
 
 async function getCurrentWindowHandle(sessionId, options) {
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
-
   if (!options) options = { ...baseOptions }
   const { body, status } = await fetchy_util.get(urlPathes.windowHandle(sessionId), null, options)
   assertStatus(status, body)
@@ -144,8 +141,6 @@ async function getCurrentWindowHandle(sessionId, options) {
 }
 
 async function getCurrentWindowHandles(sessionId, options) {
-
-  const { baseOptions, fetchy_util } = getLocalEnv()
 
   if (!options) options = { ...baseOptions }
 
@@ -155,8 +150,6 @@ async function getCurrentWindowHandles(sessionId, options) {
 }
 
 async function openTab(sessionId, nameHandle, options) {
-
-  const { baseOptions, fetchy_util } = getLocalEnv()
 
   if (!options) options = { ...baseOptions }
 
@@ -168,7 +161,6 @@ async function openTab(sessionId, nameHandle, options) {
 }
 
 async function closeCurrentTab(sessionId, options) {
-  const { baseOptions, fetchy_util } = getLocalEnv()
 
   if (!options) options = { ...baseOptions }
 
@@ -188,7 +180,6 @@ async function getScreenshot(sessionId, options) {
 
 async function forwardHistory(sessionId, options) {
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(urlPathes.forward(sessionId), undefined, options)
@@ -199,7 +190,6 @@ async function forwardHistory(sessionId, options) {
 
 async function backHistory(sessionId, options) {
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(urlPathes.back(sessionId), undefined, options)
@@ -208,8 +198,6 @@ async function backHistory(sessionId, options) {
 }
 
 async function refreshCurrentPage(sessionId, options) {
-
-  const { baseOptions, fetchy_util } = getLocalEnv()
 
   if (!options) options = { ...baseOptions }
 
@@ -220,7 +208,6 @@ async function refreshCurrentPage(sessionId, options) {
 
 async function resizeWindow(sessionId, rect, options) {
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(urlPathes.currentSize(sessionId), JSON.stringify(rect), options)
@@ -228,9 +215,27 @@ async function resizeWindow(sessionId, rect, options) {
   return body
 }
 
+async function maximizeWindow(sessionId, rect, options) {
+
+  if (!options) options = { ...baseOptions }
+
+  const { body, status } = await fetchy_util.post(urlPathes.maximize(sessionId), undefined, options)
+  assertStatus(status, body)
+  return body
+}
+
+async function minimizeWindow(sessionId, rect, options) {
+
+  if (!options) options = { ...baseOptions }
+
+  // have issue with selenium
+  const { body, status } = await fetchy_util.post(urlPathes.minimize(sessionId), undefined, options)
+  assertStatus(status, body)
+  return body
+}
+
 async function getUrl(sessionId, options) {
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.get(urlPathes.url(sessionId), undefined, options)
@@ -240,7 +245,6 @@ async function getUrl(sessionId, options) {
 
 async function clickElement(sessionId, elementId, options) {
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(urlPathes.click(sessionId, elementId), JSON.stringify({ button: 0 }), options)
@@ -250,7 +254,6 @@ async function clickElement(sessionId, elementId, options) {
 
 async function submitElement(sessionId, elementId, options) {
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(urlPathes.submit(sessionId, elementId), undefined, options)
@@ -260,7 +263,6 @@ async function submitElement(sessionId, elementId, options) {
 
 async function clearElementText(sessionId, elementId, options) {
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(urlPathes.clear(sessionId, elementId), undefined, options)
@@ -271,7 +273,6 @@ async function clearElementText(sessionId, elementId, options) {
 
 async function getElementText(sessionId, elementId, options) {
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.get(urlPathes.text(sessionId, elementId), undefined, options)
@@ -282,7 +283,6 @@ async function getElementText(sessionId, elementId, options) {
 
 async function getTitle(sessionId, options) {
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.get(urlPathes.title(sessionId), undefined, options)
@@ -293,7 +293,6 @@ async function getTitle(sessionId, options) {
 
 async function goToUrl(sessionId, url, options) {
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
   const { body, status } = await fetchy_util.post(urlPathes.url(sessionId), JSON.stringify({
     url
@@ -316,7 +315,6 @@ async function findElement(sessionId, selector, options) {
     bodyRequest = { using: 'css selector', value: selector }
   }
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
   const { body, status } = await fetchy_util.post(urlPathes.element(sessionId), JSON.stringify(bodyRequest), options)
   assertStatus(status, body)
@@ -333,7 +331,7 @@ async function toFrame(sessionId, selector, options) {
     const { value: { ELEMENT } } = await findElement(sessionId, selector, options)
     elementId = ELEMENT;
   }
-  const { baseOptions, fetchy_util } = getLocalEnv()
+
   if (!options) options = { ...baseOptions }
 
   const requestBody = elementId ? { id: { [WEB_EMENET_ID]: elementId, ELEMENT: elementId } } : { id: null }
@@ -352,7 +350,7 @@ async function findElements(sessionId, selector, options) {
   } else {
     bodyRequest = { using: 'css selector', value: selector }
   }
-  const { baseOptions, fetchy_util } = getLocalEnv()
+
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(urlPathes.elements(sessionId), JSON.stringify(bodyRequest), options)
@@ -366,7 +364,6 @@ async function findElements(sessionId, selector, options) {
 
 async function initSession(data, options) {
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
   if (!data) data = JSON.stringify(defaultChromeCapabilities)
   if (!options) options = { ...baseOptions }
 
@@ -378,7 +375,6 @@ async function initSession(data, options) {
 
 async function sendKeys(sessionId, elementId, keysToSend, options) {
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
   let text = null
   if (!options) options = { ...baseOptions }
 
@@ -400,7 +396,6 @@ async function sendKeys(sessionId, elementId, keysToSend, options) {
 
 async function killSession(sessionId, options) {
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { status, body } = await fetchy_util.del(urlPathes.killSession(sessionId), undefined, options)
@@ -410,7 +405,7 @@ async function killSession(sessionId, options) {
 }
 
 async function setScriptTimeout(sessionId, timeouts = {}, options) {
-  const { baseOptions, fetchy_util } = getLocalEnv()
+
   if (!options) options = { ...baseOptions }
   //'script', 'implicit', 'page load'
   const keys = Object.keys(timeouts)
@@ -426,7 +421,6 @@ async function setScriptTimeout(sessionId, timeouts = {}, options) {
 
 async function getAttribute(sessionId, elementId, attribute, options) {
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
   // console.log(elementId.match(/s/), typeof elementId)
   // console.log(elementId.toString())
@@ -450,7 +444,6 @@ async function getAttribute(sessionId, elementId, attribute, options) {
 //move buttonup buttondown
 async function mouseDown(sessionId, element/*element can be css selector or elementId*/, position, options) {
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
   element = { button: 0 }
   if (!options) options = { ...baseOptions }
 
@@ -465,10 +458,7 @@ function sleep(timeout) {
 
 async function moveTo(sessionId, elementOrPosition, options) {
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
-  options.method = 'POST'
-  options.path = urlPathes.moveto(sessionId)
 
   if (elementOrPosition.x || elementOrPosition.x) {
     elementOrPosition = { xoffset: elementOrPosition.x, yoffset: elementOrPosition.y }
@@ -481,7 +471,6 @@ async function moveTo(sessionId, elementOrPosition, options) {
 
 async function pressKeys(sessionId, keys, options) {
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   if (!Array.isArray(keys)) {
@@ -494,7 +483,6 @@ async function pressKeys(sessionId, keys, options) {
 
 async function elementFromElement(sessionId, elementId, selector, options) {
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
   options.method = 'POST'
   options.path = urlPathes.elementFromElement(sessionId, elementId)
@@ -509,8 +497,8 @@ async function elementFromElement(sessionId, elementId, selector, options) {
 
 async function elementsFromElement(sessionId, elementId, selector, options) {
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
+
   const { body, status } = await fetchy_util.post(urlPathes.elementsFromElement(sessionId, elementId), JSON.stringify({
     using: 'css selector', value: selector
   }), options)
@@ -520,7 +508,6 @@ async function elementsFromElement(sessionId, elementId, selector, options) {
 
 async function buttonUp(sessionId, button = { button: 0 }, options) {
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(urlPathes.pressKeys(sessionId), JSON.stringify({ button }), options)
@@ -529,7 +516,7 @@ async function buttonUp(sessionId, button = { button: 0 }, options) {
 
 async function displayed(sessionId, elementId, options) {
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
+
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.get(urlPathes.displayed(sessionId, elementId), null, options)
@@ -539,7 +526,6 @@ async function displayed(sessionId, elementId, options) {
 
 async function present(sessionId, elementId, options) {
 
-  const { baseOptions, fetchy_util } = getLocalEnv()
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.get(urlPathes.present(sessionId, elementId), null, options)
@@ -551,6 +537,7 @@ module.exports = {
   sendKeys,
   displayed,
   toFrame,
+  getScreenshot,
   present,
   elementFromElement,
   elementsFromElement,
@@ -577,5 +564,7 @@ module.exports = {
   executeScript,
   executeScriptAsync,
   clearElementText,
-  setScriptTimeout
+  setScriptTimeout,
+  minimizeWindow,
+  maximizeWindow
 }

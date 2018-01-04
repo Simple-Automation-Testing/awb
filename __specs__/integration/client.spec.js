@@ -2,10 +2,10 @@ const { expect } = require('chai')
 
 const client = require('../../interface/client')
 const { element, elements } = require('../../interface/element')
-const { fakeServer } = require('../util')
+// const { fakeServer } = require('../util')
 
 describe('client', () => {
-  describe.only('chrome', () => {
+  describe('chrome', () => {
     let browser = null
 
     const baseURL = 'http://localhost:9090'
@@ -26,14 +26,14 @@ describe('client', () => {
     const playButton = element(playbutton)
 
     before(async () => {
-      fakeServer.start()
+      // fakeServer.start()
       browser = client().chrome()
       await browser.startSelenium()
     })
 
     after(async () => {
       await browser.stopSelenium()
-      fakeServer.stop()
+      // fakeServer.stop()
     })
 
     beforeEach(async () => {
@@ -136,6 +136,11 @@ describe('client', () => {
         //   expect(value).to.be.exist
         //   expect(value).to.eql(inputValue)
       }
+    })
+
+    it('take screenshot', async () => {
+      const screenshot = await browser.takeScreenshot()
+      require('fs').writeFileSync('firefox.png', new Buffer(screenshot, 'base64'))
     })
 
     it('get title and url', async () => {
