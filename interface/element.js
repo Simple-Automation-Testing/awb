@@ -5,6 +5,7 @@ const { returnStringType, waitElementPresent } = require('./util')
 
 const { InterfaceError } = require('./interfaceError')
 
+const { browserInstance } = require('./client')
 
 const WEB_EMENET_ID = 'element-6066-11e4-a52e-4f735466cecf'
 
@@ -12,6 +13,11 @@ const WEB_EMENET_ID = 'element-6066-11e4-a52e-4f735466cecf'
 class Element {
 
   constructor(selector, sessionId = null, elementId = null, baseElement = null) {
+
+    if (sessionId instanceof browserInstance) {
+      sessionId = sessionId.sessionId
+    }
+
     this.selector = selector
     this.sessionId = sessionId
     this.elementId = elementId
@@ -95,7 +101,7 @@ class Element {
   }
 
   getElements(selector) {
-    return new Elements(selector, this)
+    return new Elements(selector, this.sessionId, this)
   }
 
   async sendKeys(keys) {
@@ -160,7 +166,10 @@ class Element {
 
 class Elements {
 
-  constructor(selector, baseElement = null, sessionId = null) {
+  constructor(selector, sessionId = null, baseElement = null) {
+    if (sessionId instanceof browserInstance) {
+      sessionId = sessionId.sessionId
+    }
     this.baseElement = baseElement
     this.selector = selector
     this.sessionId = sessionId

@@ -3,7 +3,6 @@ const {
   defaultFirefoxCapabilities,
   timeout
 } = require('./capabilitiesAndBaseOpts')
-
 const { InterfaceError } = require('./interfaceError')
 
 const {
@@ -86,6 +85,8 @@ class Browser {
   }
 
   async takeScreenshot() {
+    !this.sessionId
+      && await this.getSession()
     const data = await getScreenshot(this.sessionId)
     return data.value
   }
@@ -94,6 +95,8 @@ class Browser {
     if (typeof width !== 'number' || typeof height !== 'number') {
       throw new InterfaceError('Width and height should be a number')
     }
+    !this.sessionId
+      && await this.getSession()
     await resizeWindow(this.sessionId, { width, height })
   }
 
@@ -113,7 +116,10 @@ class Browser {
   async getSession() {
     const { sessionId } = await initSession(this.capabilities)
     this.sessionId = sessionId
-    global.___sessionId = this.sessionId
+    if (!global.___sessionId) {
+      global.___sessionId = this.sessionId
+    }
+
     if (this.timeouts) {
       await setScriptTimeout(this.sessionId, this.timeouts)
     }
@@ -162,8 +168,6 @@ class Browser {
       && await this.getSession()
 
     await goToUrl(this.sessionId, url)
-    // const { value: { ELEMENT } } = await findElement(this.sessionId, 'body')
-    // await clickElement(this.sessionId, ELE)
   }
 
   async getBrowserTabs() {
@@ -190,10 +194,9 @@ class Browser {
   }
 
   async closeBrowser() {
-    if (this.sessionId && global.___sessionId) {
+    if (this.sessionId) {
       const { status } = await killSession(this.sessionId)
       this.sessionId = null
-      global.___sessionId = null
     }
   }
 }

@@ -9,6 +9,8 @@ style.css
 a.js
 selenium*
 chromedriver*
+test-app
+examples
 .idea
 .DS_Store
 .vscode
