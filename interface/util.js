@@ -64,7 +64,7 @@ function waitElementPresent(conditionFn, session, selector, time) {
     const timeDiffState = (+Date.now() - now) < time
     dummyAsyncCall(function (data) {
       data.then((resp) => {
-        if (timeDiffState && resp.value.message) {
+        if (timeDiffState && resp.status !== 0) {
           recursiveCall(resolve)
         } else if (!timeDiffState) {
           const errMessage =
