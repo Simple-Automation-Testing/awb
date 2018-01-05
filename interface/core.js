@@ -307,7 +307,6 @@ async function findElement(sessionId, selector, options) {
   if (!options) options = { ...baseOptions }
   const { body, status } = await fetchy_util.post(urlPathes.element(sessionId), JSON.stringify(bodyRequest), options)
 
-
   body.value = { ELEMENT: body.value[Object.keys(body.value)[0]] }
 
   return body
@@ -480,6 +479,10 @@ async function elementFromElement(sessionId, elementId, selector, options) {
     using: 'css selector', value: selector
   }), options)
 
+  if (body.value[WEB_EMENET_ID]) {
+    body.value['ELEMENT'] = body.value[WEB_EMENET_ID]
+    Reflect.deleteProperty(body.value, WEB_EMENET_ID)
+  }
 
   return body
 }
@@ -491,6 +494,13 @@ async function elementsFromElement(sessionId, elementId, selector, options) {
   const { body, status } = await fetchy_util.post(urlPathes.elementsFromElement(sessionId, elementId), JSON.stringify({
     using: 'css selector', value: selector
   }), options)
+
+
+  if (body.value.length) {
+    body.value = body.value.map(element => {
+      return { ELEMENT: element[WEB_EMENET_ID] }
+    })
+  }
 
   return body
 }

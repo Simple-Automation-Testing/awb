@@ -49,9 +49,9 @@ describe('client chrome', () => {
     expect(browser.sessionId).to.not.undefined
   })
 
-  afterEach(async () => {
-    await browser.closeBrowser()
-  })
+  // afterEach(async () => {
+  //   await browser.closeBrowser()
+  // })
 
   it('send case', async () => {
     const inputValue = '!#!#!@#!'

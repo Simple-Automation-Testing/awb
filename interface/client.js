@@ -7,6 +7,8 @@ const {
 
 const { InterfaceError } = require('./interfaceError')
 
+const SELENIUM_STATUSES = require('./reponseSeleniumStatus')
+
 const {
   resizeWindow,
   killSession,

@@ -3,11 +3,15 @@ const { clickElement, sendKeys, getAttribute, executeScript, waitCondition, find
 
 const { returnStringType, waitElementPresent } = require('./util')
 
-const { InterfaceError } = require('./interfaceError')
+const { InterfaceError, handledErrors } = require('./interfaceError')
 
 const { browserInstance } = require('./client')
 
+const { STATUS_FROM_DRIVER } = require('./reponseSeleniumStatus')
+
 const WEB_EMENET_ID = 'element-6066-11e4-a52e-4f735466cecf'
+
+
 
 
 class Element {
@@ -33,15 +37,16 @@ class Element {
   }
 
   async clear() {
-    await clearElementText(this.sessionId, this.elementId)
+    const { status } = await clearElementText(this.sessionId, this.elementId)
+
+
+    handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId, this.selector)
   }
 
   async waitForElementPresent(time) {
     await this.waitForElement(time)
     const isPresent = await this.isPresent()
-    if (!isPresent) {
-      throw new InterfaceError(`elemen does not present`, __filename)
-    }
+
   }
 
   async waitForElementVisible(time) {
@@ -57,11 +62,14 @@ class Element {
     if (this.baseElement) {
       if (!this.baseElement.elementId) {
         await this.baseElement.getTthisElement()
-        const { value: { ELEMENT } } = await elementFromElement(this.sessionId, this.baseElement.elementId, this.selector)
+        const { status, value: { ELEMENT } } = await elementFromElement(this.sessionId, this.baseElement.elementId, this.selector)
+        handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]]()
         this.elementId = ELEMENT
       }
     } else {
-      const { value: { ELEMENT } } = await findElement(this.sessionId, this.selector)
+      const { status, value: { ELEMENT } } = await findElement(this.sessionId, this.selector)
+      console.log(status, ELEMENT)
+      handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId)
       this.elementId = ELEMENT
     }
   }
@@ -130,7 +138,7 @@ class Element {
   async isPresent() {
     !this.elementId
       && await this.getTthisElement()
-    const { value } = await present(this.sessionId, this.elementId)
+    const { value, status } = await present(this.sessionId, this.elementId)
     return value
   }
 

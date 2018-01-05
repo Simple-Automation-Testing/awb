@@ -68,7 +68,7 @@ describe('core function positive scenario', () => {
       expect(body.value).to.eql(null)
     })
 
-    it('go to url', async () => {
+    it.only('go to url', async () => {
       const body = await goToUrl(sessionId, baseURL)
       expect(body.sessionId).to.eql(sessionId)
       expect(body.status).to.eql(0)
@@ -318,13 +318,15 @@ describe('core function positive scenario', () => {
       }
     })
 
-    it('elements from element', async () => {
+    it.only('elements from element', async () => {
       const dropZoneSelector = '.dropzone'
       const dropItemSelector = '[draggable="true"]'
       let dropZone = null
       let dropItem = null
       {
+        await sleep(3500)
         const body = await findElement(sessionId, dropZoneSelector)
+        console.log(body, sessionId)
         expect(body.status).to.eql(0)
         expect(body.sessionId).to.eql(sessionId)
         expect(body.value.ELEMENT).to.be.exist
@@ -336,6 +338,9 @@ describe('core function positive scenario', () => {
         expect(body.sessionId).to.eql(sessionId)
         expect(body.value.length).to.eql(8)
         dropItem = body.value[0].ELEMENT
+      }
+      {
+        const a = await getElementText(sessionId, dropItem)
       }
       {
         const body = await getAttribute(sessionId, dropItem, 'style')
@@ -434,7 +439,7 @@ describe('core function positive scenario', () => {
     })
   })
 
-  describe.only('negative', () => {
+  describe('negative', () => {
     let sessionId
     let sessionIdFireFox
     let sessionIdSafari
@@ -570,7 +575,7 @@ describe('core function positive scenario', () => {
         const respText = await getElementText(sessionId, el.value.ELEMENT)
         expect(respText.status).to.eql(10)
         const respAttribute = await getAttribute(sessionId, el.value.ELEMENT, 'id')
-        expect(respText.status).to.eql(10) 
+        expect(respText.status).to.eql(10)
       }
     })
 
