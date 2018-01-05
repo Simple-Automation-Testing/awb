@@ -1,11 +1,13 @@
 const { expect } = require('chai')
 
-const { resizeWindow, initSession, killSession, findElements, findElement, goToUrl, getUrl } = require('../../interface/core')
+const { resizeWindow, initSession, killSession, findElements, findElement, goToUrl, getUrl } = require('../../../interface/core')
+
+const { defaultFirefoxCapabilities, defaultSafariCapabilities } = require('../../../interface/capabilitiesAndBaseOpts')
 
 const {
   element, elementInstance: Element,
   elements, elementsInstance: Elements
-} = require('../../interface/element')
+} = require('../../../interface/element')
 
 
 describe('Element', () => {
@@ -29,7 +31,7 @@ describe('Element', () => {
   const bar = '.bar.bar-0'
 
   before(async () => {
-    const body = await initSession()
+    const body = await initSession(defaultFirefoxCapabilities)
     expect(body.status).to.eql(0)
     expect(body.sessionId).to.be.exist
     sessionId = body.sessionId

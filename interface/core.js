@@ -26,17 +26,6 @@ const {
 
 const { InterfaceError } = require('./interfaceError')
 
-const assertStatus = (status, body) => {
-  if (
-    !(status < 300) ||
-    (body.value && typeof body.value === 'string' && body.value.includes('error')) ||
-    (body.value && body.value.message && body.value.message.includes('stale element reference')) ||
-    (body.value && body.value.message && body.value.message.includes('invalid'))
-  ) {
-    throw new InterfaceError(JSON.stringify(body))
-  }
-}
-
 function getLocalEnv() {
   const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
 
@@ -105,7 +94,7 @@ async function executeScript(sessionId, script, args = [], options) {
     args
   }), options)
 
-  assertStatus(status, body)
+
   return body
 }
 
@@ -128,7 +117,7 @@ async function executeScriptAsync(sessionId, script, args = [], options) {
     args
   }), options)
 
-  assertStatus(status, body)
+
   return body
 }
 
@@ -136,7 +125,7 @@ async function getCurrentWindowHandle(sessionId, options) {
 
   if (!options) options = { ...baseOptions }
   const { body, status } = await fetchy_util.get(urlPathes.windowHandle(sessionId), null, options)
-  assertStatus(status, body)
+
   return body
 }
 
@@ -145,7 +134,7 @@ async function getCurrentWindowHandles(sessionId, options) {
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.get(urlPathes.windowHandles(sessionId), null, options)
-  assertStatus(status, body)
+
   return body
 }
 
@@ -156,7 +145,7 @@ async function openTab(sessionId, nameHandle, options) {
   const { body, status } = await fetchy_util.post(urlPathes.window(sessionId), JSON.stringify({
     name: nameHandle, handle: nameHandle
   }), options)
-  assertStatus(status, body)
+
   return body
 }
 
@@ -165,7 +154,7 @@ async function closeCurrentTab(sessionId, options) {
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.del(urlPathes.window(sessionId), undefined, options)
-  assertStatus(status, body)
+
   return body
 }
 
@@ -174,7 +163,7 @@ async function getScreenshot(sessionId, options) {
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.get(urlPathes.screenshot(sessionId), null, options)
-  assertStatus(status, body)
+
   return body
 }
 
@@ -184,7 +173,7 @@ async function forwardHistory(sessionId, options) {
 
   const { body, status } = await fetchy_util.post(urlPathes.forward(sessionId), undefined, options)
 
-  assertStatus(status, body)
+
   return body
 }
 
@@ -193,7 +182,7 @@ async function backHistory(sessionId, options) {
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(urlPathes.back(sessionId), undefined, options)
-  assertStatus(status, body)
+
   return body
 }
 
@@ -202,7 +191,7 @@ async function refreshCurrentPage(sessionId, options) {
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(urlPathes.refresh(sessionId), undefined, options)
-  assertStatus(status, body)
+
   return body
 }
 
@@ -211,7 +200,7 @@ async function resizeWindow(sessionId, rect, options) {
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(urlPathes.currentSize(sessionId), JSON.stringify(rect), options)
-  assertStatus(status, body)
+
   return body
 }
 
@@ -220,7 +209,7 @@ async function maximizeWindow(sessionId, rect, options) {
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(urlPathes.maximize(sessionId), undefined, options)
-  assertStatus(status, body)
+
   return body
 }
 
@@ -230,7 +219,7 @@ async function minimizeWindow(sessionId, rect, options) {
 
   // have issue with selenium
   const { body, status } = await fetchy_util.post(urlPathes.minimize(sessionId), undefined, options)
-  assertStatus(status, body)
+
   return body
 }
 
@@ -239,7 +228,7 @@ async function getUrl(sessionId, options) {
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.get(urlPathes.url(sessionId), undefined, options)
-  assertStatus(status, body)
+
   return body
 }
 
@@ -248,7 +237,7 @@ async function clickElement(sessionId, elementId, options) {
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(urlPathes.click(sessionId, elementId), JSON.stringify({ button: 0 }), options)
-  assertStatus(status, body)
+
   return body
 }
 
@@ -257,7 +246,7 @@ async function submitElement(sessionId, elementId, options) {
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(urlPathes.submit(sessionId, elementId), undefined, options)
-  assertStatus(status, body)
+
   return body
 }
 
@@ -267,7 +256,7 @@ async function clearElementText(sessionId, elementId, options) {
 
   const { body, status } = await fetchy_util.post(urlPathes.clear(sessionId, elementId), undefined, options)
 
-  assertStatus(status, body)
+
   return body
 }
 
@@ -277,7 +266,7 @@ async function getElementText(sessionId, elementId, options) {
 
   const { body, status } = await fetchy_util.get(urlPathes.text(sessionId, elementId), undefined, options)
 
-  assertStatus(status, body)
+
   return body
 }
 
@@ -287,7 +276,7 @@ async function getTitle(sessionId, options) {
 
   const { body, status } = await fetchy_util.get(urlPathes.title(sessionId), undefined, options)
 
-  assertStatus(status, body)
+
   return body
 }
 
@@ -297,7 +286,7 @@ async function goToUrl(sessionId, url, options) {
   const { body, status } = await fetchy_util.post(urlPathes.url(sessionId), JSON.stringify({
     url
   }), options)
-  assertStatus(status, body)
+
   return body
 }
 /**
@@ -317,7 +306,7 @@ async function findElement(sessionId, selector, options) {
 
   if (!options) options = { ...baseOptions }
   const { body, status } = await fetchy_util.post(urlPathes.element(sessionId), JSON.stringify(bodyRequest), options)
-  assertStatus(status, body)
+
 
   body.value = { ELEMENT: body.value[Object.keys(body.value)[0]] }
 
@@ -337,7 +326,7 @@ async function toFrame(sessionId, selector, options) {
   const requestBody = elementId ? { id: { [WEB_EMENET_ID]: elementId, ELEMENT: elementId } } : { id: null }
 
   const { body, status } = await fetchy_util.post(urlPathes.frame(sessionId), JSON.stringify(requestBody), options)
-  assertStatus(status, body)
+
   return body
 }
 
@@ -354,7 +343,7 @@ async function findElements(sessionId, selector, options) {
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(urlPathes.elements(sessionId), JSON.stringify(bodyRequest), options)
-  assertStatus(status, body)
+
 
   body.value = body.value.map(respPart => {
     return { ELEMENT: respPart[Object.keys(respPart)[0]] }
@@ -369,7 +358,7 @@ async function initSession(data, options) {
 
   const { body, status } = await fetchy_util.post(urlPathes.getSession(), data, options).catch(console.log)
 
-  assertStatus(status, body)
+
   return body
 }
 
@@ -390,7 +379,7 @@ async function sendKeys(sessionId, elementId, keysToSend, options) {
     value: keysToSend
   }), options)
 
-  assertStatus(status, body)
+
   return body
 }
 
@@ -400,7 +389,7 @@ async function killSession(sessionId, options) {
 
   const { status, body } = await fetchy_util.del(urlPathes.killSession(sessionId), undefined, options)
 
-  assertStatus(status, body)
+
   return body
 }
 
@@ -415,7 +404,7 @@ async function setScriptTimeout(sessionId, timeouts = {}, options) {
       type: key,
       ms: timeouts[key]
     }), options)
-    assertStatus(status, body)
+
   }
 }
 
@@ -437,7 +426,7 @@ async function getAttribute(sessionId, elementId, attribute, options) {
 
   const { status, body } = await fetchy_util.get(urlPathes.attribute(sessionId, elementId, attribute), null, options)
 
-  assertStatus(status, body)
+
   return body
 }
 
@@ -448,7 +437,7 @@ async function mouseDown(sessionId, element/*element can be css selector or elem
   if (!options) options = { ...baseOptions }
 
   const { status, body } = await fetchy_util.post(urlPathes.buttonDown(sessionId), JSON.stringify({ element }), options)
-  assertStatus(status, body)
+
   return body
 }
 
@@ -465,7 +454,7 @@ async function moveTo(sessionId, elementOrPosition, options) {
   }
   const { status, body } = await fetchy_util.post(urlPathes.moveto(sessionId), JSON.stringify({ ...elementOrPosition }), options)
 
-  assertStatus(status, body)
+
   return body
 }
 
@@ -477,7 +466,7 @@ async function pressKeys(sessionId, keys, options) {
     keys = [keys]
   }
   const { body, status } = await fetchy_util(urlPathes.pressKeys(sessionId), JSON.stringify({ value: keys }), options)
-  assertStatus(status, body)
+
   return body
 }
 
@@ -491,7 +480,7 @@ async function elementFromElement(sessionId, elementId, selector, options) {
     using: 'css selector', value: selector
   }), options)
 
-  assertStatus(status, body)
+
   return body
 }
 
@@ -502,7 +491,7 @@ async function elementsFromElement(sessionId, elementId, selector, options) {
   const { body, status } = await fetchy_util.post(urlPathes.elementsFromElement(sessionId, elementId), JSON.stringify({
     using: 'css selector', value: selector
   }), options)
-  assertStatus(status, body)
+
   return body
 }
 
@@ -511,7 +500,7 @@ async function buttonUp(sessionId, button = { button: 0 }, options) {
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.post(urlPathes.pressKeys(sessionId), JSON.stringify({ button }), options)
-  assertStatus(status, body)
+
 }
 
 async function displayed(sessionId, elementId, options) {
@@ -520,7 +509,7 @@ async function displayed(sessionId, elementId, options) {
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.get(urlPathes.displayed(sessionId, elementId), null, options)
-  assertStatus(status, body)
+
   return body
 }
 
@@ -529,7 +518,7 @@ async function present(sessionId, elementId, options) {
   if (!options) options = { ...baseOptions }
 
   const { body, status } = await fetchy_util.get(urlPathes.present(sessionId, elementId), null, options)
-  assertStatus(status, body)
+
   return body
 }
 
