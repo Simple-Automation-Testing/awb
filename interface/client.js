@@ -83,10 +83,8 @@ class Browser {
     this.seleniumProc = null
     if (timeouts && timeouts['request']) {
       capabilitiesAndBaseOpts.baseOptionsStandAlone.timeout = timeouts['request']
-      // console.log(capabilitiesAndBaseOpts.timeout, capabilitiesAndBaseOpts)
       Reflect.deleteProperty(timeouts, 'request')
       this.timeouts = timeouts
-      console.log(capabilitiesAndBaseOpts.baseOptionsStandAlone)
     }
   }
 

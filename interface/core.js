@@ -498,7 +498,7 @@ async function elementsFromElement(sessionId, elementId, selector, options) {
 
   if (body.value.length) {
     body.value = body.value.map(element => {
-      return { ELEMENT: element[WEB_EMENET_ID] }
+      return element[WEB_EMENET_ID] ? { ELEMENT: element[WEB_EMENET_ID] } : element
     })
   }
 

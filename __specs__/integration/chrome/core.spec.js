@@ -324,9 +324,7 @@ describe('core function positive scenario', () => {
       let dropZone = null
       let dropItem = null
       {
-        await sleep(3500)
         const body = await findElement(sessionId, dropZoneSelector)
-        console.log(body, sessionId)
         expect(body.status).to.eql(0)
         expect(body.sessionId).to.eql(sessionId)
         expect(body.value.ELEMENT).to.be.exist
