@@ -9,6 +9,15 @@ const defaultChromeCapabilities = {
     }
 }
 
+const defaultSafariCapabilities = {
+    desiredCapabilities: {
+        browserName: 'safari',
+        javascriptEnabled: true,
+        acceptSslCerts: true,
+        platform: 'ANY'
+    }
+}
+
 const defaultFirefoxCapabilities = {
     desiredCapabilities: {
         browserName: "firefox",
@@ -55,6 +64,8 @@ module.exports = {
     baseOptionsStandAlone,
     baseOptionsChrome,
     baseOptionsFirefox,
+
+    defaultSafariCapabilities,
     defaultChromeCapabilities,
     defaultFirefoxCapabilities
 }

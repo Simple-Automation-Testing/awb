@@ -1,8 +1,8 @@
 const { expect } = require('chai')
 
-const { resizeWindow, initSession, killSession, findElements, findElement, goToUrl, getUrl } = require('../../interface/core')
+const { resizeWindow, initSession, killSession, findElements, findElement, goToUrl, getUrl } = require('../../../interface/core')
 
-const { elements, element } = require('../../interface/element')
+const { elements, element } = require('../../../interface/element')
 // const Elements = elements.elementsInstance
 
 describe('Elements', () => {

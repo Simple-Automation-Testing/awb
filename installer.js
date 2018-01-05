@@ -132,6 +132,7 @@ async function spawnStandalone() {
       const nodeProc = spawn('java', [
         `-Dwebdriver.chrome.driver=${CHROME_PATH}`,
         `-Dwebdriver.gecko.driver=${GECKO_PATH}`,
+        '-Dwebdriver.safari.driver=/usr/bin/safaridriver',
         '-jar',
         `${STANDALONE_PATH}`], {
           stdio: ['pipe', process.stdout, process.stderr]

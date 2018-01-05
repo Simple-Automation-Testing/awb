@@ -3,9 +3,11 @@ const { clickElement, sendKeys, getAttribute, executeScript, waitCondition, find
 
 const { returnStringType, waitElementPresent } = require('./util')
 
-const { InterfaceError } = require('./interfaceError')
+const { InterfaceError, handledErrors } = require('./interfaceError')
 
 const { browserInstance } = require('./client')
+
+const { STATUS_FROM_DRIVER } = require('./reponseSeleniumStatus')
 
 const WEB_EMENET_ID = 'element-6066-11e4-a52e-4f735466cecf'
 
@@ -33,15 +35,16 @@ class Element {
   }
 
   async clear() {
-    await clearElementText(this.sessionId, this.elementId)
+    const { status } = await clearElementText(this.sessionId, this.elementId)
+
+
+    handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId, this.selector)
   }
 
   async waitForElementPresent(time) {
     await this.waitForElement(time)
     const isPresent = await this.isPresent()
-    if (!isPresent) {
-      throw new InterfaceError(`elemen does not present`, __filename)
-    }
+
   }
 
   async waitForElementVisible(time) {
@@ -57,11 +60,13 @@ class Element {
     if (this.baseElement) {
       if (!this.baseElement.elementId) {
         await this.baseElement.getTthisElement()
-        const { value: { ELEMENT } } = await elementFromElement(this.sessionId, this.baseElement.elementId, this.selector)
+        const { status, value: { ELEMENT } } = await elementFromElement(this.sessionId, this.baseElement.elementId, this.selector)
+        handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]]()
         this.elementId = ELEMENT
       }
     } else {
-      const { value: { ELEMENT } } = await findElement(this.sessionId, this.selector)
+      const { status, value: { ELEMENT } } = await findElement(this.sessionId, this.selector)
+      handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId)
       this.elementId = ELEMENT
     }
   }
@@ -70,13 +75,15 @@ class Element {
     !this.elementId
       && await this.getTthisElement()
 
-    const { value } = await executeScript(this.sessionId, function () {
+    const { status, value } = await executeScript(this.sessionId, function () {
       const [element] = arguments
       return element.outerHTML
     }, {
         ELEMENT: this.elementId,
         [WEB_EMENET_ID]: this.elementId
       })
+
+    handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId, this.selector)
 
     return value
   }
@@ -85,7 +92,7 @@ class Element {
     !this.elementId
       && await this.getTthisElement()
 
-    const body = await executeScript(this.sessionId, function () {
+    const { status, value } = await executeScript(this.sessionId, function () {
       const [element] = arguments
       return element.innerText
     }, {
@@ -93,7 +100,8 @@ class Element {
         [WEB_EMENET_ID]: this.elementId
       })
 
-    return body.value
+    handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId, this.selector)
+    return value
   }
 
   getElement(selector) {
@@ -107,46 +115,48 @@ class Element {
   async sendKeys(keys) {
     !this.elementId
       && await this.getTthisElement()
-    const body = await sendKeys(this.sessionId, this.elementId, keys)
-
-    return body
+    const { status, value } = await sendKeys(this.sessionId, this.elementId, keys)
+    handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId, this.selector)
   }
 
   async getAttribute(attribute) {
     !this.elementId
       && await this.getTthisElement()
-    const { value } = await getAttribute(this.sessionId, this.elementId, attribute)
-
+    const { status, value } = await getAttribute(this.sessionId, this.elementId, attribute)
+    handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId, this.selector)
     return value
   }
 
   async click() {
     !this.elementId
       && await this.getTthisElement()
-    const body = await clickElement(this.sessionId, this.elementId)
-    return body
+    const { status, value } = await clickElement(this.sessionId, this.elementId)
+    handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId, this.selector)
   }
 
   async isPresent() {
     !this.elementId
       && await this.getTthisElement()
-    const { value } = await present(this.sessionId, this.elementId)
+    const { value, status } = await present(this.sessionId, this.elementId)
+    handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId, this.selector)
     return value
   }
 
   async toElement() {
     !this.elementId
       && await this.getTthisElement()
-    const { value } = await executeScript(this.sessionId, 'arguments[0].scrollIntoView()', {
+    const { value, status } = await executeScript(this.sessionId, 'arguments[0].scrollIntoView()', {
       ELEMENT: this.elementId,
       [WEB_EMENET_ID]: this.elementId
     })
+    handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId, this.selector)
   }
 
   async isDisplayed() {
     !this.elementId
       && await this.getTthisElement()
-    const { value } = await displayed(this.sessionId, this.elementId)
+    const { status, value } = await displayed(this.sessionId, this.elementId)
+    handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId, this.selector)
     return value
   }
 
@@ -159,7 +169,8 @@ class Element {
       ELEMENT: this.elementId,
       [WEB_EMENET_ID]: this.elementId
     })
-    const body = await moveTo(this.sessionId, { x, y })
+    const { value, status } = await moveTo(this.sessionId, { x, y })
+    handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId, this.selector)
   }
 }
 
@@ -241,7 +252,10 @@ class Elements {
       this.sessionId = this.sessionId || global.___sessionId
     }
     if (!this.baseElement) {
-      const { value } = await findElements(this.sessionId, this.selector)
+      const { status, value } = await findElements(this.sessionId, this.selector)
+
+      handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId, this.selector)
+
       if (!this.elements && value.length) {
         this.elements = []
       }

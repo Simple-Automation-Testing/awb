@@ -1,7 +1,9 @@
 const urlPathes = {
   getSession:                   () =>                                `session`,
-  executeAsync:                 (sessionId) =>                       `session/${sessionId}/execute/async`,
-  executeSync:                  (sessionId) =>                       `session/${sessionId}/execute/sync`,
+  // executeAsync:                 (sessionId) =>                       `session/${sessionId}/execute/async`,
+  executeAsync:                 (sessionId) =>                       `session/${sessionId}/execute_async`,
+  // executeSync:                  (sessionId) =>                       `session/${sessionId}/execute/sync`,
+  executeSync:                  (sessionId) =>                       `session/${sessionId}/execute`,
   windowHandle:                 (sessionId) =>                       `session/${sessionId}/window_handle`,
   windowHandles:                (sessionId) =>                       `session/${sessionId}/window_handles`,
   screenshot:                   (sessionId) =>                       `session/${sessionId}/screenshot`,
