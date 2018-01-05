@@ -17,9 +17,8 @@ class Element {
   constructor(selector, sessionId = null, elementId = null, baseElement = null) {
 
     if (sessionId instanceof browserInstance) {
-      sessionId = sessionId.sessionId
+      this.browserSessionId = sessionId.sessionId
     }
-
     this.selector = selector
     this.sessionId = sessionId
     this.elementId = elementId
@@ -27,7 +26,7 @@ class Element {
   }
 
   async waitForElement(time) {
-    this.sessionId = this.sessionId || global.___sessionId
+    this.sessionId = this.browserSessionId || global.___sessionId
     const { error, value } = await waitElementPresent(findElement, this.sessionId, this.selector, time)
     if (error) throw new InterfaceError(error)
     this.elementId = value.ELEMENT
@@ -36,7 +35,6 @@ class Element {
 
   async clear() {
     const { status } = await clearElementText(this.sessionId, this.elementId)
-
 
     handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId, this.selector)
   }
@@ -56,7 +54,7 @@ class Element {
   }
 
   async getTthisElement() {
-    this.sessionId = this.sessionId || global.___sessionId
+    this.sessionId = this.browserSessionId || global.___sessionId
     if (this.baseElement) {
       if (!this.baseElement.elementId) {
         await this.baseElement.getTthisElement()
@@ -72,6 +70,7 @@ class Element {
   }
 
   async getElementHTML() {
+    this.sessionId = this.browserSessionId || global.___sessionId
     !this.elementId
       && await this.getTthisElement()
 
@@ -89,6 +88,8 @@ class Element {
   }
 
   async getText() {
+    this.sessionId = this.browserSessionId || global.___sessionId
+
     !this.elementId
       && await this.getTthisElement()
 
@@ -179,7 +180,7 @@ class Elements {
 
   constructor(selector, sessionId = null, baseElement = null) {
     if (sessionId instanceof browserInstance) {
-      sessionId = sessionId.sessionId
+      this.sessionId = sessionId.sessionId
     }
     this.baseElement = baseElement
     this.selector = selector
@@ -237,7 +238,7 @@ class Elements {
   }
 
   async waitForElements(time) {
-    this.sessionId = this.sessionId || global.___sessionId
+    this.sessionId = this.browserSessionId || global.___sessionId
     const { error, value } = await waitElementPresent(findElements, this.sessionId, this.selector, time)
     if (error) throw new InterfaceError(error)
     this.elements = []
@@ -249,7 +250,7 @@ class Elements {
 
   async getElements() {
     if (!this.sessionId) {
-      this.sessionId = this.sessionId || global.___sessionId
+      this.sessionId = this.browserSessionId || global.___sessionId
     }
     if (!this.baseElement) {
       const { status, value } = await findElements(this.sessionId, this.selector)
