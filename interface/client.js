@@ -133,14 +133,14 @@ class Browser {
     const resp = await closeCurrentTab(this.sessionId)
   }
 
-  async executeScript(script, args) {
+  async executeScript(script, ...args) {
     const result = await executeScript(this.sessionId, script, args)
     if (result.value) {
       return result.value
     }
   }
 
-  async executeScriptAsync(script, args) {
+  async executeScriptAsync(script, ...args) {
     const result = await executeScriptAsync(this.sessionId, script, args)
     if (result.value) {
       return result.value

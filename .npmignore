@@ -9,6 +9,7 @@ style.css
 a.js
 selenium*
 chromedriver*
+geckodriver*
 test-app
 examples
 .idea

@@ -34,6 +34,7 @@ class Element {
   }
 
   async clear() {
+    this.sessionId = this.browserSessionId || global.___sessionId
     const { status } = await clearElementText(this.sessionId, this.elementId)
 
     handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId, this.selector)
@@ -162,6 +163,7 @@ class Element {
   }
 
   async mouseDownAndMove({ x, y }) {
+    this.sessionId = this.browserSessionId || global.___sessionId
     //mouse down mouse move mouse up
     !this.elementId
       && await this.getTthisElement()
@@ -249,9 +251,9 @@ class Elements {
   }
 
   async getElements() {
-    if (!this.sessionId) {
-      this.sessionId = this.browserSessionId || global.___sessionId
-    }
+
+    this.sessionId = this.browserSessionId || global.___sessionId
+
     if (!this.baseElement) {
       const { status, value } = await findElements(this.sessionId, this.selector)
 
