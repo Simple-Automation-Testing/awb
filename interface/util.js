@@ -20,21 +20,25 @@ const assertObject = arg => arg !== null && typeof arg === 'object'
 
 function waitCondition(conditionFn, time, conditionTarget) {
   let condition = null
-  let callCount = 100
+  const now = +Date.now()
 
-  const callTime = time / 1000
+  const callTime = 1
 
-  function dummyAsyncCall(callback, timeout) {
+  function asyncCall(callback, timeout) {
     setTimeout(function () {
       callback(conditionFn())
     }, timeout)
   }
 
   function recursiveCall(resolve, reject) {
-    dummyAsyncCall(function (data) {
+    const timeDiffState = (+Date.now() - now) < time
+    asyncCall(function (data) {
       data.then((resp) => {
         condition = resp.body.value
-        if (callCount > 0 && !condition && (conditionTarget && (!conditionTarget === condition))) {
+        if (typeof conditionTarget === 'function') {
+          condition = conditionTarget(condition)
+        }
+        if (timeDiffState && !condition && (conditionTarget && (!conditionTarget === condition))) {
           recursiveCall(resolve, reject)
         } else {
           resolve(condition)
@@ -52,9 +56,9 @@ function waitCondition(conditionFn, time, conditionTarget) {
 
 function waitElementPresent(conditionFn, session, selector, time) {
   const now = +Date.now()
-  const callTime = 50
+  const callTime = 1
 
-  function dummyAsyncCall(callback, timeout) {
+  function asyncCall(callback, timeout) {
     setTimeout(function () {
       return callback(conditionFn(session, selector))
     }, callTime)
@@ -62,7 +66,7 @@ function waitElementPresent(conditionFn, session, selector, time) {
 
   function recursiveCall(resolve) {
     const timeDiffState = (+Date.now() - now) < time
-    dummyAsyncCall(function (data) {
+    asyncCall(function (data) {
       data.then((resp) => {
         if (timeDiffState && resp.status !== 0) {
           recursiveCall(resolve)

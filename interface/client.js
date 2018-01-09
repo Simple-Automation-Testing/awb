@@ -7,6 +7,8 @@ const {
 
 const { InterfaceError } = require('./interfaceError')
 
+const { Keys } = require('./event/keys')
+
 const SELENIUM_STATUSES = require('./reponseSeleniumStatus')
 
 const {
@@ -78,6 +80,7 @@ function WaitProviderStop(proc, parentProc) {
 class Browser {
 
   constructor(capabilities, timeouts) {
+    this.Keys = Keys
     this.sessionId = null
     this.capabilities = capabilities
     this.seleniumProc = null
@@ -93,6 +96,12 @@ class Browser {
       && await this.getSession()
     const data = await getScreenshot(this.sessionId)
     return data.value
+  }
+
+  async waitForUrlIncludes(url, time) {
+    !this.sessionId
+      && await this.getSession()
+    const condition = await waitCondition(getUrl.bind(this, this.sessionId), time)
   }
 
   async resizeWindow(width, height) {

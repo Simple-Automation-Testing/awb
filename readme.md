@@ -81,6 +81,8 @@ describe('Google base example', () => {
 - [Browser](#browser)
   * [chrome](#chrome)
   * [firefox](#firefox)
+  * [Keys](#keys)
+  * [waitForUrlIncludes](#waitforurlincludes)
   * [startSelenium](#startselenium)
   * [stopselenium](#stopselenium)
   * [switchToFrame](#switchtoframe)
@@ -154,6 +156,12 @@ const defaultFireFox = client().firefox()
    * type string
    * /
 ```
+## Keys
+```js
+  const browser = client.chrome() 
+  const el = element('.test.class')
+  await el.sendKeys('test name', browser.Keys.ENTER) // for submit
+```
 ## startSelenium
 ```js
   const browser = client.chrome() 
@@ -179,6 +187,14 @@ const defaultFireFox = client().firefox()
   /* 
    * will close current tab 
    * if opened tabs length more than 1
+   * /
+```
+## waitForUrlIncludes
+```js
+  const browser = client.chrome() 
+  await browser.waitForUrlIncludes('test', 1000)
+  /* 
+   * will wait 1000ms for url includes test 
    * /
 ```
 ## switchToFrame
