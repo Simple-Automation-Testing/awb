@@ -13,7 +13,7 @@ const { getTitle, clickElement, sendKeys, getAttribute, executeScript, sleep, sy
 const { getElementText, moveTo, mouseDown, elementFromElement, elementsFromElement, present, displayed, executeScriptAsync } = require('../../../interface/core')
 const { maximizeWindow, minimizeWindow, getScreenshot } = require('../../../interface/core')
 
-describe('core function positive scenario', () => {
+describe.only('core function positive scenario', () => {
   //test variables
   describe('positive', () => {
     let sessionId = null
@@ -68,7 +68,7 @@ describe('core function positive scenario', () => {
       expect(body.value).to.eql(null)
     })
 
-    it.only('go to url', async () => {
+    it('go to url', async () => {
       const body = await goToUrl(sessionId, baseURL)
       expect(body.sessionId).to.eql(sessionId)
       expect(body.status).to.eql(0)
@@ -318,7 +318,7 @@ describe('core function positive scenario', () => {
       }
     })
 
-    it.only('elements from element', async () => {
+    it('elements from element', async () => {
       const dropZoneSelector = '.dropzone'
       const dropItemSelector = '[draggable="true"]'
       let dropZone = null
@@ -441,8 +441,8 @@ describe('core function positive scenario', () => {
     let sessionId
     let sessionIdFireFox
     let sessionIdSafari
-
-    let unitURL1 = 'file:///Users/dpot/Documents/interface-webdriver/__specs__/util.html'
+    //Users/potapopweblium/Documents/interface-webdriver/__specs__/util.html
+    let unitURL1 = 'file:///Users/potapopweblium/Documents/interface-webdriver/__specs__/util.html'
 
     before('get session', async () => {
       {
@@ -568,6 +568,13 @@ describe('core function positive scenario', () => {
         await goToUrl(sessionId, unitURL1)
         await sleep(500)
         const el = await findElement(sessionId, 'button')
+
+        console.log(el)
+
+        const exec = await executeScript(sessionId, "return document.querySelector('button')")
+
+        console.log(exec)
+
         expect(el.status).to.eql(SELENIUM_STATUSES.SUCCESS)
         await sleep(2000)
         const respText = await getElementText(sessionId, el.value.ELEMENT)

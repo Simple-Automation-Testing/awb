@@ -203,9 +203,7 @@ class Elements {
   }
 
   async get(index) {
-    if (!this.elements) {
-      await this.getElements()
-    }
+    await this.getElements()
     return this.elements[index]
   }
 
@@ -252,16 +250,13 @@ class Elements {
 
   async getElements() {
 
+    this.elements = []
     this.sessionId = this.browserSessionId || global.___sessionId
 
     if (!this.baseElement) {
       const { status, value } = await findElements(this.sessionId, this.selector)
 
       handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId, this.selector)
-
-      if (!this.elements && value.length) {
-        this.elements = []
-      }
       value.forEach(({ ELEMENT }) => {
         this.elements.push(new Element(this.selector, this.sessionId, ELEMENT))
       })
@@ -271,9 +266,6 @@ class Elements {
         await this.baseElement.getTthisElement()
       }
       const { value } = await elementsFromElement(this.sessionId, this.baseElement.elementId, this.selector)
-      if (!this.elements && value.length) {
-        this.elements = []
-      }
       value.forEach(({ ELEMENT }) => {
         this.elements.push(new Element(this.selector, this.sessionId, ELEMENT))
       })

@@ -4,7 +4,7 @@ const client = require('../../../interface/client')
 const { element, elements } = require('../../../interface/element')
 const { fakeServer } = require('../../util')
 
-describe.only('client chrome', () => {
+describe('client chrome', () => {
 
   let browser = null
 
