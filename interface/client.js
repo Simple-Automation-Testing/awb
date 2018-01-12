@@ -30,7 +30,10 @@ const {
   findElement,
   toFrame,
   getScreenshot,
-  executeScriptAsync
+  executeScriptAsync,
+  forwardHistory,
+  backHistory,
+  refreshCurrentPage
   } = require('./core')
 
 const path = require('path')
@@ -89,6 +92,18 @@ class Browser {
       Reflect.deleteProperty(timeouts, 'request')
       this.timeouts = timeouts
     }
+  }
+
+  async refresh() {
+    await refreshCurrentPage(this.sessionId)
+  }
+
+  async back() {
+    await backHistory(this.sessionId)
+  }
+
+  async forward() {
+    await forwardHistory(this.sessionId)
   }
 
   async takeScreenshot() {

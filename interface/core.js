@@ -565,5 +565,8 @@ module.exports = {
   clearElementText,
   setScriptTimeout,
   minimizeWindow,
-  maximizeWindow
+  maximizeWindow,
+  refreshCurrentPage,
+  backHistory,
+  forwardHistory 
 }
