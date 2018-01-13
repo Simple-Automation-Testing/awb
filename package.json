@@ -1,6 +1,6 @@
 {
     "name": "wd-interface",
-    "version": "0.0.19",
+    "version": "0.0.20",
     "description": "simple light weight interface for selenium webdriver (node js)",
     "main": "./interface.js",
     "bin": {

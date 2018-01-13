@@ -86,6 +86,9 @@ describe('Google base example', () => {
   * [startSelenium](#startselenium)
   * [stopselenium](#stopselenium)
   * [switchToFrame](#switchtoframe)
+  * [refresh](#refresh)
+  * [back](#back)
+  * [forward](#forward)
   * [goTo](#goto)
   * [closeCurrentTab](#closecurrenttab)
   * [getTitle](#gettitle)
@@ -203,6 +206,30 @@ const defaultFireFox = client().firefox()
   await browser.switchToFrame('#myFrame')
   /* 
    * arg css selector (id , class or some atribute)
+   * / 
+```
+## refresh
+```js 
+  const browser = client.chrome() 
+  await browser.refresh()
+  /* 
+   * refresh browser current page
+   * / 
+```
+## back
+```js 
+  const browser = client.chrome() 
+  await browser.back()
+  /* 
+   * browser histor go back 
+   * / 
+```
+## forward
+```js 
+  const browser = client.chrome() 
+  await browser.forward()
+  /* 
+   * browser histor go forward 
    * / 
 ```
 ## getTitle

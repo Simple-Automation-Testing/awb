@@ -208,9 +208,7 @@ class Elements {
   }
 
   async count() {
-    if (!this.elements) {
-      await this.getElements()
-    }
+    await this.getElements()
     return this.elements.length
   }
 
