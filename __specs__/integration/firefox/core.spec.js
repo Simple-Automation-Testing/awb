@@ -461,6 +461,7 @@ describe('core function positive scenario', () => {
         expect(resp.status).to.eql(SELENIUM_STATUSES.INVALID_SESSION_ID)
       }
     })
+
     it('element not found', async () => {
       // css selector
       {
@@ -478,42 +479,27 @@ describe('core function positive scenario', () => {
       // css selector
       {
         const resp = await findElement(sessionId, '#@#Q$@!')
+        console.log(resp)
         expect(resp.status).to.eql(SELENIUM_STATUSES.INVALID_SELECTOR)
       }
-      // {
-      //   const resp = await findElement(sessionIdSafari, '#@#Q$@!')
-      //   expect(resp.status).to.eql(SELENIUM_STATUSES.ELEMENT_NOT_FOUND) //safari still unique BROWSER 
-      // }
+
       //xpath selector
       {
         const resp = await findElement(sessionId, 'xpath: \\\CXZCBXZMCBXMZNBCMZ')
         expect(resp.status).to.eql(SELENIUM_STATUSES.INVALID_SELECTOR)
       }
-      // {
-      //   const resp = await findElement(sessionIdSafari, 'xpath: \\\CXZCBXZMCBXMZNBCMZ')
-      //   expect(resp.status).to.eql(SELENIUM_STATUSES.XPATH_ERROR) //safari still unique BROWSER 
-      // }
+
     })
 
-    it('java script not valid', async () => {
+    it.only('java script not valid', async () => {
       {
         const resp = await executeScript(sessionId, function (params) {
           return a.b.c
         })
+        console.log(resp)
         expect(resp.status).to.eql(SELENIUM_STATUSES.JS_EXECUTE_ERROR)
       }
-      // {
-      //   const resp = await await executeScript(sessionIdFireFox, function (params) {
-      //     return a.b.c
-      //   })
-      //   expect(resp.status).to.eql(SELENIUM_STATUSES.COMMAND_NOT_FOUND)
-      // }
-      // {
-      //   const resp = await await executeScript(sessionIdSafari, function (params) {
-      //     return a.b.c
-      //   })
-      //   // The command 'POST /session/3784B3AE-4E03-4243-8939-2E37E7A8B7EE/execute/sync' was not found. //safari still unique BROWSER 
-      // }
+
     })
 
     it('element disappears chrome', async () => {
@@ -529,16 +515,5 @@ describe('core function positive scenario', () => {
         expect(respText.status).to.eql(10)
       }
     })
-
-    // it('element disappears firefox', async () => {
-    //   {
-    //     await goToUrl(sessionIdSafari, unitURL1)
-    //     await sleep(1500)
-    //     const el = await findElement(sessionId, 'button')
-    //     console.log(el)
-    //     expect(el.status).to.eql(SELENIUM_STATUSES.SUCCESS)
-    //     await sleep()
-    //   }
-    // })
   })
 })

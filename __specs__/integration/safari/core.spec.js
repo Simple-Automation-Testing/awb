@@ -477,6 +477,7 @@ describe('core function positive scenario', () => {
         expect(resp.status).to.eql(SELENIUM_STATUSES.INVALID_SESSION_ID)
       }
     })
+
     it('element not found', async () => {
       // css selector
       {
@@ -494,6 +495,7 @@ describe('core function positive scenario', () => {
       // css selector
       {
         const resp = await findElement(sessionId, '#@#Q$@!')
+        console.log(resp)
         expect(resp.status).to.eql(SELENIUM_STATUSES.INVALID_SELECTOR)
       }
       //xpath selector
@@ -501,22 +503,16 @@ describe('core function positive scenario', () => {
         const resp = await findElement(sessionId, 'xpath: \\\CXZCBXZMCBXMZNBCMZ')
         expect(resp.status).to.eql(SELENIUM_STATUSES.INVALID_SELECTOR)
       }
-      // {
-      //   const resp = await findElement(sessionIdFireFox, 'xpath: \\\CXZCBXZMCBXMZNBCMZ')
-      //   expect(resp.status).to.eql(SELENIUM_STATUSES.INVALID_SELECTOR)
-      // }
-      // {
-      //   const resp = await findElement(sessionIdSafari, 'xpath: \\\CXZCBXZMCBXMZNBCMZ')
-      //   expect(resp.status).to.eql(SELENIUM_STATUSES.XPATH_ERROR) //safari still unique BROWSER 
-      // }
     })
 
-    it('java script not valid', async () => {
+    it.only('java script not valid', async () => {
       {
         const resp = await executeScript(sessionId, function (params) {
           return a.b.c
         })
-        expect(resp.status).to.eql(SELENIUM_STATUSES.UNKNOWN_ERROR)
+        console.log(resp)
+        expect(resp.status).to.eql(SELENIUM_STATUSES.JS_EXECUTE_ERROR)
+        // The command 'POST /session/3784B3AE-4E03-4243-8939-2E37E7A8B7EE/execute/sync' was not found. //safari still unique BROWSER 
       }
     })
 

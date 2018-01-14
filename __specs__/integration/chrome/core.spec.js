@@ -462,17 +462,7 @@ describe.only('core function positive scenario', () => {
         expect(body.sessionId).to.be.exist
         sessionId = body.sessionId
       }
-      // {
-      //   const body = await initSession(defaultFirefoxCapabilities)
-      //   expect(body.status).to.eql(0)
-      //   sessionIdFireFox = body.sessionId
-      // }
-      // {
-      //   const body = await initSession(defaultSafariCapabilities)
-      //   expect(body.status).to.eql(0)
-      //   expect(body.sessionId).to.be.exist
-      //   sessionIdSafari = body.sessionId
-      // }
+
     })
 
     after('kill session ', async () => {
@@ -486,14 +476,6 @@ describe.only('core function positive scenario', () => {
         const resp = await getTitle(sessionId)
         expect(resp.status).to.eql(SELENIUM_STATUSES.INVALID_SESSION_ID)
       }
-      // {
-      //   const body = await killSession(sessionIdFireFox)
-      //   expect(body.status).to.eql(0)
-      // }
-      // {
-      //   const body = await killSession(sessionIdSafari)
-      //   expect(body.status).to.eql(0)
-      // }
     })
     it('element not found', async () => {
       // css selector
@@ -501,77 +483,33 @@ describe.only('core function positive scenario', () => {
         const resp = await findElement(sessionId, '.not.found.element')
         expect(resp.status).to.eql(SELENIUM_STATUSES.ELEMENT_NOT_FOUND)
       }
-      // {
-      //   const resp = await findElement(sessionIdFireFox, '.not.found.element')
-      //   expect(resp.status).to.eql(SELENIUM_STATUSES.ELEMENT_NOT_FOUND)
-      // }
-      // {
-      //   const resp = await findElement(sessionIdSafari, '.not.found.element')
-      //   expect(resp.status).to.eql(SELENIUM_STATUSES.ELEMENT_NOT_FOUND)
-      // }
       //xpath selector
       {
         const resp = await findElement(sessionId, 'xpath: /html/body/div[2]/div/div/div[2]/div/div[1]/div/div/div[2]/div/div/div/div/div[6]/div/a')
         expect(resp.status).to.eql(SELENIUM_STATUSES.ELEMENT_NOT_FOUND)
       }
-      // {
-      //   const resp = await findElement(sessionIdFireFox, 'xpath: /html/body/div[2]/div/div/div[2]/div/div[1]/div/div/div[2]/div/div/div/div/div[6]/div/a')
-      //   expect(resp.status).to.eql(SELENIUM_STATUSES.ELEMENT_NOT_FOUND)
-      // }
-      // {
-      //   const resp = await findElement(sessionIdSafari, 'xpath: /html/body/div[2]/div/div/div[2]/div/div[1]/div/div/div[2]/div/div/div/div/div[6]/div/a')
-      //   expect(resp.status).to.eql(SELENIUM_STATUSES.ELEMENT_NOT_FOUND)
-      // }
     })
 
     it('not valid selectors', async () => {
       // css selector
       {
         const resp = await findElement(sessionId, '#@#Q$@!')
+        console.log(resp)
         expect(resp.status).to.eql(SELENIUM_STATUSES.INVALID_SELECTOR)
       }
-      // {
-      //   const resp = await findElement(sessionIdFireFox, '#@#Q$@!')
-      //   expect(resp.status).to.eql(SELENIUM_STATUSES.INVALID_SELECTOR)
-      // }
-      // {
-      //   const resp = await findElement(sessionIdSafari, '#@#Q$@!')
-      //   expect(resp.status).to.eql(SELENIUM_STATUSES.ELEMENT_NOT_FOUND) //safari still unique BROWSER 
-      // }
       //xpath selector
       {
         const resp = await findElement(sessionId, 'xpath: \\\CXZCBXZMCBXMZNBCMZ')
         expect(resp.status).to.eql(SELENIUM_STATUSES.INVALID_SELECTOR)
       }
-      // {
-      //   const resp = await findElement(sessionIdFireFox, 'xpath: \\\CXZCBXZMCBXMZNBCMZ')
-      //   expect(resp.status).to.eql(SELENIUM_STATUSES.INVALID_SELECTOR)
-      // }
-      // {
-      //   const resp = await findElement(sessionIdSafari, 'xpath: \\\CXZCBXZMCBXMZNBCMZ')
-      //   expect(resp.status).to.eql(SELENIUM_STATUSES.XPATH_ERROR) //safari still unique BROWSER 
-      // }
     })
 
-    it('java script not valid', async () => {
+    it.only('java script not valid', async () => {
       {
-        const resp = await executeScript(sessionId, function (params) {
-          return a.b.c
-        })
+        const resp = await executeScript(sessionId, function (params) { return a.b.c })
+        console.log(resp)
         expect(resp.status).to.eql(SELENIUM_STATUSES.UNKNOWN_ERROR)
       }
-      // {
-      //   const resp = await await executeScript(sessionIdFireFox, function (params) {
-      //     return a.b.c
-      //   })
-      //   expect(resp.status).to.eql(SELENIUM_STATUSES.COMMAND_NOT_FOUND)
-      // }
-      // {
-      //   const resp = await await executeScript(sessionIdSafari, function (params) {
-      //     return a.b.c
-      //   })
-      //   // The command 'POST /session/3784B3AE-4E03-4243-8939-2E37E7A8B7EE/execute/sync' was not found. //safari still unique BROWSER 
-      // }
     })
 
     it('element disappears chrome', async () => {
@@ -594,29 +532,5 @@ describe.only('core function positive scenario', () => {
         expect(respText.status).to.eql(10)
       }
     })
-
-    // it('element disappears firefox', async () => {
-    //   {
-    //     // trouble with firefox 
-    //     await goToUrl(sessionIdFireFox, unitURL1)
-    //     await sleep(500)
-    //     const el = await findElement(sessionId, 'button')
-    //     console.log(el)
-    //     expect(el.status).to.eql(SELENIUM_STATUSES.SUCCESS)
-    //     await sleep(2000)
-    //     console.log(el)
-    //   }
-    // })
-
-    // it('element disappears firefox', async () => {
-    //   {
-    //     await goToUrl(sessionIdSafari, unitURL1)
-    //     await sleep(1500)
-    //     const el = await findElement(sessionId, 'button')
-    //     console.log(el)
-    //     expect(el.status).to.eql(SELENIUM_STATUSES.SUCCESS)
-    //     await sleep()
-    //   }
-    // })
   })
 })
