@@ -435,10 +435,11 @@ describe('core function positive scenario', () => {
     })
   })
 
-  describe('negative', () => {
+  describe.only('negative', () => {
     let sessionId
-
-    let unitURL1 = 'file:///Users/dpot/Documents/interface-webdriver/__specs__/util.html'
+    'file:///Users/potapopweblium/Documents/interface-webdriver/__specs__/util.html'
+    // let unitURL1 = 'file:///Users/dpot/Documents/interface-webdriver/__specs__/util.html'
+    let unitURL1 = 'file:///Users/potapopweblium/Documents/interface-webdriver/__specs__/util.html'
 
     before('get session', async () => {
       {

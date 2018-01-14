@@ -96,6 +96,8 @@
         "integration-chrome:watch": "mocha --timeout 60000 -w --harmony --trace-deprecation $(find ./__specs__/integration/chrome -path '*.spec.js')",
         "integration-firefox": "mocha --timeout 60000 $(find ./__specs__/integration/firefox -path '*.spec.js')",
         "integration-firefox:watch": "mocha --timeout 60000 -w $(find ./__specs__/integration/firefox -path '*.spec.js')",
+        "integration-safari": "mocha --timeout 60000 $(find ./__specs__/integration/safari -path '*.spec.js')",
+        "integration-safari:watch": "mocha --timeout 60000 -w $(find ./__specs__/integration/safari -path '*.spec.js')",
         "unit": "mocha --timeout 60000 -w $(find ./__specs__/units -path '*.spec.js')",
         "google-exapmle": "mocha --timeout 10000 ./examples/google.example.js",
         "start-test-app": "NODE_ENV=test-app webpack-dev-server ./webpack.test.app.js",
