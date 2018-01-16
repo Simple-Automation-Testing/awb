@@ -29,16 +29,6 @@ const { InterfaceError } = require('./interfaceError')
 function getLocalEnv() {
   const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
 
-  const getPort = () => {
-    if (!global.__provider) {
-      return SELENIUM_PORT
-    } else if (global.__provider.__chrome) {
-      return CHROMEDRIVER_PORT
-    } else if (global.__provider.__firefox) {
-      return GECKODRIVER_PORT
-    }
-  } // this is useless function
-
   const portPath = () => {
     if (global.__provider && global.__provider.__chrome) {
       return `${CHROMEDRIVER_PORT}/`
@@ -410,21 +400,8 @@ async function setScriptTimeout(sessionId, timeouts = {}, options) {
 async function getAttribute(sessionId, elementId, attribute, options) {
 
   if (!options) options = { ...baseOptions }
-  // console.log(elementId.match(/s/), typeof elementId)
-  // console.log(elementId.toString())
-  // const elId = elementIDregexp.test(elementId)
-  // console.log([elementIDregexp.test(elementId), elId], elementId, elementId.match(elementIDregexp))
-  /**
-   * NEED EUGENE SUPPORT FOR THIS ISSUE
-   */
-  // if (!elementId.match(elementIDregexp)) {
-  //   console.log(sessionId, elementId, attribute, '------------------------')
-  //   const body = await findElement(sessionId, elementId)
-  //   elementId = body.value.ELEMENT
-  // }
 
   const { status, body } = await fetchy_util.get(urlPathes.attribute(sessionId, elementId, attribute), null, options)
-
 
   return body
 }
@@ -453,7 +430,6 @@ async function moveTo(sessionId, elementOrPosition, options) {
   }
   const { status, body } = await fetchy_util.post(urlPathes.moveto(sessionId), JSON.stringify({ ...elementOrPosition }), options)
 
-
   return body
 }
 
@@ -472,8 +448,6 @@ async function pressKeys(sessionId, keys, options) {
 async function elementFromElement(sessionId, elementId, selector, options) {
 
   if (!options) options = { ...baseOptions }
-  options.method = 'POST'
-  options.path = urlPathes.elementFromElement(sessionId, elementId)
 
   const { body, status } = await fetchy_util.post(urlPathes.elementFromElement(sessionId, elementId), JSON.stringify({
     using: 'css selector', value: selector
@@ -514,7 +488,6 @@ async function buttonUp(sessionId, button = { button: 0 }, options) {
 }
 
 async function displayed(sessionId, elementId, options) {
-
 
   if (!options) options = { ...baseOptions }
 

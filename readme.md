@@ -52,9 +52,6 @@ describe('Google base example', () => {
   const inputSearch = element(inputsearch)
   const resultSearch = element(resultsearch)
 
-    after(async () => {
-     
-    })
   before(async () => {
     browser = client().chrome() // for dirrect connection to chromedriver client().chrome(true)
     await browser.startSelenium()
