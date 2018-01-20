@@ -464,7 +464,7 @@ const defaultFireFox = client().firefox()
 ```js
   // by css selector
   const elementsSpan = elements('span')
-  const textArr = await elementsSpan.mappy(async (element) => {
+  const textArr = await elementsSpan.map(async (element) => {
         return await element.getText()
       })
   /* 
