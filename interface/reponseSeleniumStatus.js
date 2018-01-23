@@ -32,7 +32,6 @@ const codeToStatus = {
 const codeToStatusWithUnsuported = new Proxy(codeToStatus, {
   get: function (target, name) {
     if (name === '0' || name === 0) return null
-
     return name in target ? target[name] : 'UNSUPORTED_ERROR'
   }
 })
