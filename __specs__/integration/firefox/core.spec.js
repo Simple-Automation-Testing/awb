@@ -491,7 +491,7 @@ describe('core function positive scenario', () => {
 
     })
 
-    it.only('java script not valid', async () => {
+    it('java script not valid', async () => {
       {
         const resp = await executeScript(sessionId, function (params) {
           return a.b.c

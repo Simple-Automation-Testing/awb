@@ -6,139 +6,27 @@ const {
   assertNumber,
   waitCondition,
   elementIDregexp
-} = require('./util')
-
-const SELENIUM_PORT = 4444
-const CHROMEDRIVER_PORT = 9515
-const GECKODRIVER_PORT = 9516
-
-const fetchyInitializator = require('./fetchy')
+} = require('../util')
 
 const WEB_EMENET_ID = 'element-6066-11e4-a52e-4f735466cecf'
 
-const { urlPathes } = require('./path')
+const { urlPathes } = require('../path')
 
 const {
   defaultChromeCapabilities,
   baseOptionsChrome,
   baseOptionsStandAlone,
   baseOptionsFirefox
-} = require('./capabilitiesAndBaseOpts')
+} = require('../capabilitiesAndBaseOpts')
 
-const { InterfaceError } = require('./interfaceError')
+const { InterfaceError } = require('../interfaceError')
 
-function getLocalEnv() {
-  const baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
-
-  const portPath = () => {
-    if (global.__provider && global.__provider.__chrome) {
-      return `${CHROMEDRIVER_PORT}/`
-    } else {
-      return `${SELENIUM_PORT}/wd/hub/`
-    }
-  }
-
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${portPath()}`)
-
-  return { baseOptions, fetchy_util }
-}
+const getLocalEnv = require('./env')
 
 const { baseOptions, fetchy_util } = getLocalEnv()
 
-async function syncWithDOM(sessionId, timeout, options) {
-
-  if (!options) options = { ...baseOptions }
-
-  const waitState = function () {
-    return document.readyState === 'complete'
-  }
-
-  const fn = `const passedArgs = Array.prototype.slice.call(arguments,0);
-      return ${waitState.toString()}.apply(window, passedArgs);`
-
-  const requestDomState = () => fetchy_util.post(urlPathes.executeSync(sessionId), JSON.stringify({
-    script: fn,
-    args: []
-  }), options)
-  const result = await waitCondition(requestDomState, 3000)
-  if (!result) {
-    throw new InterfaceError('DOM mount does not complete')
-  }
-}
-
-async function executeScript(sessionId, script, args = [], options) {
-
-  if (assertFunction(script)) {
-    script = `const args = Array.prototype.slice.call(arguments,0)
-              return ${script.toString()}.apply(window, args)`
-  }
-  if (!assertArray(args)) {
-    if (assertObject(args) || assertFunction(args) || assertNumber(args) || assertString(args)) {
-      args = [args]
-    }
-  }
-
-  if (!options) options = { ...baseOptions }
-
-  const { body, status } = await fetchy_util.post(urlPathes.executeSync(sessionId), JSON.stringify({
-    script,
-    args
-  }), options)
 
 
-  return body
-}
-
-async function executeScriptAsync(sessionId, script, args = [], options) {
-
-  if (assertFunction(script)) {
-    script = `const args = Array.prototype.slice.call(arguments,0)
-              return ${script.toString()}.apply(window, args)`
-  }
-  if (!assertArray(args)) {
-    if (assertObject(args) || assertFunction(args) || assertNumber(args) || assertString(args)) {
-      args = [args]
-    }
-  }
-
-  if (!options) options = { ...baseOptions }
-
-  const { body, status } = await fetchy_util.post(urlPathes.executeAsync(sessionId), JSON.stringify({
-    script,
-    args
-  }), options)
-
-
-  return body
-}
-
-async function getCurrentWindowHandle(sessionId, options) {
-
-  if (!options) options = { ...baseOptions }
-  const { body, status } = await fetchy_util.get(urlPathes.windowHandle(sessionId), null, options)
-
-  return body
-}
-
-async function getCurrentWindowHandles(sessionId, options) {
-
-  if (!options) options = { ...baseOptions }
-
-  const { body, status } = await fetchy_util.get(urlPathes.windowHandles(sessionId), null, options)
-
-  return body
-}
-
-async function openTab(sessionId, nameHandle, options) {
-
-  if (!options) options = { ...baseOptions }
-
-  const { body, status } = await fetchy_util.post(urlPathes.window(sessionId), JSON.stringify({
-    name: nameHandle, handle: nameHandle
-  }), options)
-
-  return body
-}
 
 async function closeCurrentTab(sessionId, options) {
 
@@ -542,5 +430,5 @@ module.exports = {
   maximizeWindow,
   refreshCurrentPage,
   backHistory,
-  forwardHistory 
+  forwardHistory
 }

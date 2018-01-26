@@ -448,7 +448,7 @@ describe.only('core function positive scenario', () => {
     })
   })
 
-  describe.only('negative', () => {
+  describe('negative', () => {
     let sessionId
     let sessionIdFireFox
     let sessionIdSafari
@@ -504,7 +504,7 @@ describe.only('core function positive scenario', () => {
       }
     })
 
-    it.only('java script not valid', async () => {
+    it('java script not valid', async () => {
       {
         const resp = await executeScript(sessionId, function (params) { return a.b.c })
         console.log(resp)
