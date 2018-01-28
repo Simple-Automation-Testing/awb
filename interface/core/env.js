@@ -5,6 +5,8 @@ const {
   baseOptionsFirefox
 } = require('../capabilitiesAndBaseOpts')
 
+const { urlPathes } = require('../path')
+
 const fetchyInitializator = require('../fetchy')
 
 const SELENIUM_PORT = 4444
@@ -26,5 +28,5 @@ module.exports = function (baseOptions) {
 
   const { fetchy_util } = fetchyInitializator(`http://localhost:${portPath()}`)
 
-  return { baseOptions, fetchy_util }
+  return { baseOptions, fetchy_util, urlPathes }
 }

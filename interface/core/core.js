@@ -25,123 +25,15 @@ const getLocalEnv = require('./env')
 
 const { baseOptions, fetchy_util } = getLocalEnv()
 
-async function closeCurrentTab(sessionId, options) {
-
-  if (!options) options = { ...baseOptions }
-
-  const { body, status } = await fetchy_util.del(urlPathes.window(sessionId), undefined, options)
-
-  return body
-}
 
 
-async function maximizeWindow(sessionId, rect, options) {
-
-  if (!options) options = { ...baseOptions }
-
-  const { body, status } = await fetchy_util.post(urlPathes.maximize(sessionId), undefined, options)
-
-  return body
-}
-
-async function minimizeWindow(sessionId, rect, options) {
-
-  if (!options) options = { ...baseOptions }
-
-  // have issue with selenium
-  const { body, status } = await fetchy_util.post(urlPathes.minimize(sessionId), undefined, options)
-
-  return body
-}
-
-async function getUrl(sessionId, options) {
-
-  if (!options) options = { ...baseOptions }
-
-  const { body, status } = await fetchy_util.get(urlPathes.url(sessionId), undefined, options)
-
-  return body
-}
-
-async function clickElement(sessionId, elementId, options) {
-
-  if (!options) options = { ...baseOptions }
-
-  const { body, status } = await fetchy_util.post(urlPathes.click(sessionId, elementId), JSON.stringify({ button: 0 }), options)
-
-  return body
-}
-
-async function submitElement(sessionId, elementId, options) {
-
-  if (!options) options = { ...baseOptions }
-
-  const { body, status } = await fetchy_util.post(urlPathes.submit(sessionId, elementId), undefined, options)
-
-  return body
-}
-
-async function clearElementText(sessionId, elementId, options) {
-
-  if (!options) options = { ...baseOptions }
-
-  const { body, status } = await fetchy_util.post(urlPathes.clear(sessionId, elementId), undefined, options)
 
 
-  return body
-}
-
-async function getElementText(sessionId, elementId, options) {
-
-  if (!options) options = { ...baseOptions }
-
-  const { body, status } = await fetchy_util.get(urlPathes.text(sessionId, elementId), undefined, options)
 
 
-  return body
-}
-
-async function getTitle(sessionId, options) {
-
-  if (!options) options = { ...baseOptions }
-
-  const { body, status } = await fetchy_util.get(urlPathes.title(sessionId), undefined, options)
 
 
-  return body
-}
 
-async function goToUrl(sessionId, url, options) {
-
-  if (!options) options = { ...baseOptions }
-  const { body, status } = await fetchy_util.post(urlPathes.url(sessionId), JSON.stringify({
-    url
-  }), options)
-
-  return body
-}
-/**
-   * @param {string} sessionId .
-   * @param {string} selector css selector.
-   * @param {object} options options.
- */
-async function findElement(sessionId, selector, options) {
-  let bodyRequest
-
-  if (selector.includes('xpath: ')) {
-    selector = selector.replace('xpath: ', '')
-    bodyRequest = { using: 'xpath', value: selector }
-  } else {
-    bodyRequest = { using: 'css selector', value: selector }
-  }
-
-  if (!options) options = { ...baseOptions }
-  const { body, status } = await fetchy_util.post(urlPathes.element(sessionId), JSON.stringify(bodyRequest), options)
-
-  body.value = { ELEMENT: body.value[Object.keys(body.value)[0]] }
-
-  return body
-}
 
 async function toFrame(sessionId, selector, options) {
   let elementId;
@@ -320,31 +212,6 @@ async function elementsFromElement(sessionId, elementId, selector, options) {
   return body
 }
 
-async function buttonUp(sessionId, button = { button: 0 }, options) {
-
-  if (!options) options = { ...baseOptions }
-
-  const { body, status } = await fetchy_util.post(urlPathes.pressKeys(sessionId), JSON.stringify({ button }), options)
-
-}
-
-async function displayed(sessionId, elementId, options) {
-
-  if (!options) options = { ...baseOptions }
-
-  const { body, status } = await fetchy_util.get(urlPathes.displayed(sessionId, elementId), null, options)
-
-  return body
-}
-
-async function present(sessionId, elementId, options) {
-
-  if (!options) options = { ...baseOptions }
-
-  const { body, status } = await fetchy_util.get(urlPathes.present(sessionId, elementId), null, options)
-
-  return body
-}
 
 module.exports = {
   sendKeys,
