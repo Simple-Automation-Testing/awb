@@ -25,9 +25,6 @@ const getLocalEnv = require('./env')
 
 const { baseOptions, fetchy_util } = getLocalEnv()
 
-
-
-
 async function closeCurrentTab(sessionId, options) {
 
   if (!options) options = { ...baseOptions }
@@ -37,51 +34,6 @@ async function closeCurrentTab(sessionId, options) {
   return body
 }
 
-async function getScreenshot(sessionId, options) {
-
-  if (!options) options = { ...baseOptions }
-
-  const { body, status } = await fetchy_util.get(urlPathes.screenshot(sessionId), null, options)
-
-  return body
-}
-
-async function forwardHistory(sessionId, options) {
-
-  if (!options) options = { ...baseOptions }
-
-  const { body, status } = await fetchy_util.post(urlPathes.forward(sessionId), undefined, options)
-
-
-  return body
-}
-
-async function backHistory(sessionId, options) {
-
-  if (!options) options = { ...baseOptions }
-
-  const { body, status } = await fetchy_util.post(urlPathes.back(sessionId), undefined, options)
-
-  return body
-}
-
-async function refreshCurrentPage(sessionId, options) {
-
-  if (!options) options = { ...baseOptions }
-
-  const { body, status } = await fetchy_util.post(urlPathes.refresh(sessionId), undefined, options)
-
-  return body
-}
-
-async function resizeWindow(sessionId, rect, options) {
-
-  if (!options) options = { ...baseOptions }
-
-  const { body, status } = await fetchy_util.post(urlPathes.currentSize(sessionId), JSON.stringify(rect), options)
-
-  return body
-}
 
 async function maximizeWindow(sessionId, rect, options) {
 
