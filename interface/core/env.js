@@ -1,9 +1,11 @@
-const {
-  defaultChromeCapabilities,
-  baseOptionsChrome,
-  baseOptionsStandAlone,
-  baseOptionsFirefox
-} = require('../capabilitiesAndBaseOpts')
+// const {
+//   defaultChromeCapabilities,
+//   baseOptionsChrome,
+//   baseOptionsStandAlone,
+//   baseOptionsFirefox
+// } = require('../capabilitiesAndBaseOpts')
+
+const defaultCapsAndBaseOptions = require('../capabilitiesAndBaseOpts')
 
 const { urlPathes } = require('../path')
 
@@ -14,6 +16,12 @@ const CHROMEDRIVER_PORT = 9515
 const GECKODRIVER_PORT = 9516
 
 module.exports = function (baseOptions) {
+  const {
+    defaultChromeCapabilities,
+    baseOptionsChrome,
+    baseOptionsStandAlone,
+    baseOptionsFirefox
+   } = defaultCapsAndBaseOptions
   if (!baseOptions) {
     baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
   }
@@ -28,5 +36,5 @@ module.exports = function (baseOptions) {
 
   const { fetchy_util } = fetchyInitializator(`http://localhost:${portPath()}`)
 
-  return { baseOptions, fetchy_util, urlPathes }
+  return { baseOptions, fetchy_util, urlPathes, defaultCapsAndBaseOptions }
 }

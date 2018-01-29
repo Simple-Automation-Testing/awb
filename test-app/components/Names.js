@@ -17,7 +17,8 @@ class Names extends React.Component {
     state = {
         sortOption: 'First name',
         keyPressValue: null,
-        showNewComponent: false
+        showNewComponent: false,
+        newInputChanger: ''
     }
 
     componentWillMount() {
@@ -52,11 +53,13 @@ class Names extends React.Component {
 
     render() {
         const { names: { names }, addName, removeName, addItem } = this.props
-        const { keyPressValue, showNewComponent, url, showFrame } = this.state
+        const { keyPressValue, showNewComponent, url, showFrame, newInputChanger } = this.state
 
         return (
             <div>{!url.includes('new-tab') ? < div > <button className="asyncform handler"
                 onClick={() => this.setState({ showNewComponent: !showNewComponent })}>Go to async form</button>
+                <p className="new input p">{!!newInputChanger ? newInputChanger : null}</p>
+                <input className="new input changer" onChange={(e) => this.setState({ newInputChanger: e.target.value })} />
                 {!showNewComponent
                     ? <div> {keyPressValue && <div className="apear disapear" style={{ border: '10px', borderColor: 'red', borderStyle: 'solid' }}>{keyPressValue}</div>}
                         <input

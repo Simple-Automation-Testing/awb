@@ -1,6 +1,6 @@
-const getLocalEnv = require('../env')
+const getLocalEnv = require('./env')
 
-const { baseOptions, fetchy_util } = getLocalEnv()
+const { baseOptions, fetchy_util, urlPathes } = getLocalEnv()
 
 module.exports = async function (sessionId, elementId, options) {
 

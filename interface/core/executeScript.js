@@ -2,6 +2,8 @@ const getLocalEnv = require('./env')
 
 const { baseOptions, fetchy_util, urlPathes } = getLocalEnv()
 
+const { assertArray, assertObject, assertFunction, assertString, assertNumber } = require('../util')
+
 module.exports = async function (sessionId, script, args = [], options) {
 
   if (assertFunction(script)) {

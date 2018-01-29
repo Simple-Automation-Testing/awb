@@ -8,7 +8,7 @@ const {
   elementIDregexp
 } = require('../util')
 
-const WEB_EMENET_ID = 'element-6066-11e4-a52e-4f735466cecf'
+
 
 const { urlPathes } = require('../path')
 
@@ -31,40 +31,40 @@ function sleep(timeout) {
 }
 
 module.exports = {
-  sendKeys,
-  displayed,
-  toFrame,
-  getScreenshot,
-  present,
-  elementFromElement,
-  elementsFromElement,
-  resizeWindow,
-  moveTo,
+  sendKeys: require('./sendKeys'),
+  displayed: require('./displayed'),
+  toFrame: require('./toFrame'),
+  getScreenshot: require('./getScreenshot'),
+  present: require('./present'),
+  elementFromElement: require('./elementFromElement'),
+  elementsFromElement: require('./elementsFromElement'),
+  resizeWindow: require('./resizeWindow'),
+  moveTo: require('./moveTo'),
   sleep,
-  openTab,
-  killSession,
-  initSession,
-  mouseDown,
-  findElements,
-  findElement,
-  goToUrl,
-  getUrl,
-  closeCurrentTab,
-  getTitle,
-  clickElement,
-  syncWithDOM,
-  getElementText,
+  openTab: require('./openTab'),
+  killSession: require('./killSession'),
+  initSession: require('./initSession'),
+  mouseDown: require('./mouseDown'),
+  findElements: require('./findElements'),
+  findElement: require('./findElement'),
+  goToUrl: require('./goTo'),
+  getUrl: require('./getUrl'),
+  closeCurrentTab: require('./closeCurrentTab'),
+  getTitle: require('./getTitle'),
+  clickElement: require('./clickElement'),
+  syncWithDOM: require('./syncWithDOM'),
+  getElementText: require('./getText'),
   waitCondition,
-  getCurrentWindowHandles,
-  getCurrentWindowHandle,
-  getAttribute,
-  executeScript,
-  executeScriptAsync,
-  clearElementText,
-  setScriptTimeout,
-  minimizeWindow,
-  maximizeWindow,
-  refreshCurrentPage,
-  backHistory,
-  forwardHistory
+  getCurrentWindowHandles: require('./getCurrentWindowHandles'),
+  getCurrentWindowHandle: require('./getCurrentWindowHandle'),
+  getAttribute: require('./getAttribute'),
+  executeScript: require('./executeScript'),
+  executeScriptAsync: require('./executeScriptAsync'),
+  clearElementText: require('./clearElement'),
+  setScriptTimeout: require('./setTimeout'),
+  minimizeWindow: require('./minimizeWindow'),
+  maximizeWindow: require('./maximizeWindow'),
+  refreshCurrentPage: require('./resizeWindow'),
+  backHistory: require('./backHistory'),
+  forwardHistory: require('./forwardHistory')
 }

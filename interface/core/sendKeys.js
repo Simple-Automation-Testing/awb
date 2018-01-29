@@ -1,5 +1,5 @@
 const getLocalEnv = require('./env')
-
+const { assertArray, assertNumber } = require('../util')
 const { baseOptions, fetchy_util, urlPathes } = getLocalEnv()
 
 module.exports = async function (sessionId, elementId, keysToSend, options) {
@@ -7,7 +7,12 @@ module.exports = async function (sessionId, elementId, keysToSend, options) {
   let text = null
   if (!options) options = { ...baseOptions }
 
-  if (!Array.isArray(keysToSend)) {
+
+  if (assertNumber(keysToSend)) {
+    text = keysToSend.toString()
+    keysToSend = keysToSend.toString().split('')
+  }
+  else if (!assertArray(keysToSend)) {
     text = keysToSend
     keysToSend = keysToSend.split('')
   } else {

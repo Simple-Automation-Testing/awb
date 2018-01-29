@@ -8,6 +8,8 @@ const parseJson = (data) => {
   }
 }
 
+const WEB_EMENET_ID = 'element-6066-11e4-a52e-4f735466cecf'
+
 const elementIDregexp = /^(\d.)(\d+)(-)(\d)+$/gi
 
 const returnStringType = arg => Object.prototype.toString.call(arg)
@@ -97,5 +99,6 @@ module.exports = {
   assertString,
   assertFunction,
   waitCondition,
-  elementIDregexp
+  elementIDregexp,
+  WEB_EMENET_ID
 }

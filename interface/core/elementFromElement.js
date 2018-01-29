@@ -1,3 +1,5 @@
+const { WEB_EMENET_ID } = require('../util')
+
 const getLocalEnv = require('./env')
 
 const { baseOptions, fetchy_util, urlPathes } = getLocalEnv()
