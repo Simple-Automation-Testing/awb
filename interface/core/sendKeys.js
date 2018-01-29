@@ -9,10 +9,12 @@ module.exports = async function (sessionId, elementId, keysToSend, options) {
 
 
   if (assertNumber(keysToSend)) {
+    console.log(keysToSend, '0')
     text = keysToSend.toString()
     keysToSend = keysToSend.toString().split('')
-  }
-  else if (!assertArray(keysToSend)) {
+    console.log()
+  } else if (!assertArray(keysToSend)) {
+    console.log(typeof keysToSend, assertNumber(keysToSend), '1')
     text = keysToSend
     keysToSend = keysToSend.split('')
   } else {

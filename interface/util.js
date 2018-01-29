@@ -16,7 +16,7 @@ const returnStringType = arg => Object.prototype.toString.call(arg)
 
 const assertArray = arg => returnStringType(arg) === '[object Array]'
 const assertString = arg => returnStringType(arg) === '[object String]'
-const assertNumber = arg => returnStringType(arg) === '[object String]'
+const assertNumber = arg => returnStringType(arg) === '[object Number]'
 const assertFunction = arg => returnStringType(arg) === '[object Function]'
 const assertObject = arg => arg !== null && typeof arg === 'object'
 
