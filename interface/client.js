@@ -94,6 +94,33 @@ class Browser {
     }
   }
 
+  get localStorage() {
+    return {
+      set: async (key, value) => {
+        await executeScript(this.sessionId, function (data) {
+          const [key, value] = data
+          localStorage.setItem(key, value)
+        }, [key, value])
+      },
+      get: async (key) => {
+        const data = await executeScript(this.sessionId, function (data) {
+          const [key] = data
+          return localStorage.getItem(key)
+        }, key)
+        return data
+      },
+      clear: async () => {
+        await executeScript(this.sessionId, function () { localStorage.clear() })
+      },
+      getAll: async () => {
+        const data = await executeScript(this.sessionId, function () {
+          return JSON.stringify(localStorage)
+        })
+        return JSON.parse(data)
+      }
+    }
+  }
+
   async refresh() {
     await refreshCurrentPage(this.sessionId)
   }

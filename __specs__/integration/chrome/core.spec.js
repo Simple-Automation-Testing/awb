@@ -200,8 +200,6 @@ describe('core function positive scenario', () => {
       const newInputChanger = await findElement(sessionId, '.new.input.changer')
       const { value: { ELEMENT } } = newInputChanger
       const body = await sendKeys(sessionId, ELEMENT, 123444)
-      console.log(body)
-
     })
 
     it('get value from input (2)', async () => {
@@ -242,6 +240,7 @@ describe('core function positive scenario', () => {
           })
           return elValue
         })
+        console.log(body)
         expect(body.status).to.eql(0)
         expect(body.sessionId).to.eql(sessionId)
         expect(body.value).to.be.exist

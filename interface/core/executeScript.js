@@ -5,7 +5,7 @@ const { baseOptions, fetchy_util, urlPathes } = getLocalEnv()
 const { assertArray, assertObject, assertFunction, assertString, assertNumber } = require('../util')
 
 module.exports = async function (sessionId, script, args = [], options) {
-
+  
   if (assertFunction(script)) {
     script = `const args = Array.prototype.slice.call(arguments,0)
               return ${script.toString()}.apply(window, args)`

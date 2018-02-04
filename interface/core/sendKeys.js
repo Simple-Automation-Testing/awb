@@ -7,14 +7,10 @@ module.exports = async function (sessionId, elementId, keysToSend, options) {
   let text = null
   if (!options) options = { ...baseOptions }
 
-
   if (assertNumber(keysToSend)) {
-    console.log(keysToSend, '0')
     text = keysToSend.toString()
     keysToSend = keysToSend.toString().split('')
-    console.log()
   } else if (!assertArray(keysToSend)) {
-    console.log(typeof keysToSend, assertNumber(keysToSend), '1')
     text = keysToSend
     keysToSend = keysToSend.split('')
   } else {
@@ -25,7 +21,6 @@ module.exports = async function (sessionId, elementId, keysToSend, options) {
     text,
     value: keysToSend
   }), options)
-
 
   return body
 }

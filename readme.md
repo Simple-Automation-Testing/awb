@@ -79,6 +79,11 @@ describe('Google base example', () => {
   * [chrome](#chrome)
   * [firefox](#firefox)
   * [Keys](#keys)
+  * [localStorage](#localstorage)
+    - [get](#get)
+    - [set](#set)
+    - [clear](#clear)
+    - [getAll](#getall)
   * [waitForUrlIncludes](#waitforurlincludes)
   * [startSelenium](#startselenium)
   * [stopselenium](#stopselenium)
@@ -161,6 +166,41 @@ const defaultFireFox = client().firefox()
   const browser = client.chrome() 
   const el = element('.test.class')
   await el.sendKeys('test name', browser.Keys.ENTER) // for submit
+```
+## localStorage
+```js
+ const browser = client.chrome() 
+ const localStorage = browser.localStorage //getter 
+ // return browser localStorage api 
+```
+## get
+```js
+const token = await localStorage.get('token')
+/*
+  args key = string
+  return value
+*/
+```
+## set
+```js
+ await localStorage.get('token', 'test-token')
+/*
+  args: key = string, value = string
+*/ 
+```
+## clear
+```js
+ await localStorage.clear()
+ /*
+  clear all localStorage data
+ */
+```
+## getAll
+```js
+ const data = await localStorage.getAll()
+ /*
+ return all localStorage data
+ */
 ```
 ## startSelenium
 ```js
