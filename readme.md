@@ -84,6 +84,11 @@ describe('Google base example', () => {
     - [set](#set)
     - [clear](#clear)
     - [getAll](#getall)
+  * [sessionStorage](#sessionstorage)
+    - [get](#get)
+    - [set](#set)
+    - [clear](#clear)
+    - [getAll](#getall)
   * [waitForUrlIncludes](#waitforurlincludes)
   * [startSelenium](#startselenium)
   * [stopselenium](#stopselenium)
@@ -200,6 +205,41 @@ const token = await localStorage.get('token')
  const data = await localStorage.getAll()
  /*
  return all localStorage data
+ */
+```
+## sessionStorage
+```js
+ const browser = client.chrome() 
+ const sessionStorage = browser.sessionStorage //getter 
+ // return browser sessionStorage api 
+```
+## get
+```js
+const token = await sessionStorage.get('token')
+/*
+  args key = string
+  return value
+*/
+```
+## set
+```js
+ await sessionStorage.get('token', 'test-token')
+/*
+  args: key = string, value = string
+*/ 
+```
+## clear
+```js
+ await sessionStorage.clear()
+ /*
+  clear all sessionStorage data
+ */
+```
+## getAll
+```js
+ const data = await sessionStorage.getAll()
+ /*
+ return all sessionStorage data
  */
 ```
 ## startSelenium

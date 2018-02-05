@@ -120,6 +120,32 @@ class Browser {
       }
     }
   }
+  get sessionStorage() {
+    return {
+      set: async (key, value) => {
+        await executeScript(this.sessionId, function (data) {
+          const [key, value] = data
+          sessionStorage.setItem(key, value)
+        }, [key, value])
+      },
+      get: async (key) => {
+        const data = await executeScript(this.sessionId, function (data) {
+          const [key] = data
+          return sessionStorage.getItem(key)
+        }, key)
+        return data
+      },
+      clear: async () => {
+        await executeScript(this.sessionId, function () { sessionStorage.clear() })
+      },
+      getAll: async () => {
+        const data = await executeScript(this.sessionId, function () {
+          return JSON.stringify(sessionStorage)
+        })
+        return JSON.parse(data)
+      }
+    }
+  }
 
   async refresh() {
     await refreshCurrentPage(this.sessionId)
