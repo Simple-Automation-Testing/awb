@@ -122,7 +122,6 @@ const urlPathes = {
   powerAc:                      (sessionId) =>                        `session/${sessionId}/appium/device/power_ac`, 
   touchId:                      (sessionId) =>                        `session/${sessionId}/simulator/touch_id`,
   networkSpeed:                 (sessionId) =>                        `session/${sessionId}/appium/device/network_speed`,
-  
 }
 
 module.exports = {
