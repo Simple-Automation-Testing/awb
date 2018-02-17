@@ -15,7 +15,7 @@ const { maximizeWindow, minimizeWindow, getScreenshot } = require('../../../inte
 
 describe('core function positive scenario', () => {
   //test variables
-  describe.only('positive', () => {
+  describe('positive', () => {
     let sessionId = null
     let elementButton = null
     let elementInput_firstname = null

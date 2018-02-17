@@ -65,8 +65,7 @@ describe('Google base example', () => {
 
   it('search git hub potapovDim', async () => {
     await inputSearch.sendKeys('git hub potapovDim')
-    await submitSearch.click()
-    await browser.sleep(1000)
+    await submitSearch.waitForClicable(1000).click()
     await resultSearch.waitForElement(1000)
     const allTextInSelector = await resultSearch.getText()
     expect(allTextInSelector).to.includes('potapovDim')
@@ -119,6 +118,7 @@ describe('Google base example', () => {
   * [getElementHTML](#getelementhtml)
   * [waitForElementPresent](#waitforelementpresent)
   * [waitForElementVisible](#waitforelementvisible)
+  * [waitForClicable](#waitForClicable)
   * [getText](#gettext)
   * [waitForElement](#waitforelement)
   * [getElement](#getelement)
@@ -430,24 +430,29 @@ const token = await sessionStorage.get('token')
 ```
 ## waitForElement
 ```js
-  const elementDiv = element('div')
-  await elementDiv.waitForElement(1000)
+  const elementDiv = element('div').waitForElement(1000)
+
   /* 
   * will wait for element mount to DOM node
   */
 ```
 ## waitForElementPresent
 ```js
-  const elementDiv = element('div')
-  await elementDiv.waitForElementPresent(1000)
+  const elementDiv = element('div').waitForElementPresent(1000)
+  /* 
+  * will wait for element mount to DOM node
+  */
+```
+## waitForClicable
+```js
+  const elementDiv = element('div').waitForClicable(1000)
   /* 
   * will wait for element mount to DOM node
   */
 ```
 ## waitForElementVisible
 ```js
-  const elementDiv = element('div')
-  await elementDiv.waitForElementVisible(1000)
+  const elementDiv = element('div').waitForElementVisible(1000)
   /* 
   * will wait for element visible in DOM node
   */

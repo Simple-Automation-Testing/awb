@@ -8,7 +8,7 @@ const {
 } = require('../../../interface/element')
 
 
-describe('Element', () => {
+describe.only('Element', () => {
   //parts
   let sessionId = null
   let elementButton = null
@@ -37,7 +37,7 @@ describe('Element', () => {
     await goToUrl(sessionId, 'http://localhost:9090')
     elementButton = element(addnewname, sessionId)
     elementDropZone = element(dropzone, sessionId)
-    elementInput = element(firstname)
+    elementInput = element(firstname).waitForElement(5000)
     elementBottomDiv = element(bottomdiv, sessionId)
     elementDisplayNoneDiv = element(dispaynonediv, sessionId)
     elementHandle = element(handleswiper, sessionId)
@@ -129,9 +129,7 @@ describe('Element', () => {
     expect(elementInput).to.be.instanceOf(Element)
     const inputValue = '!#!#!@#!'
     {
-      const body = await elementInput.sendKeys(inputValue)
-      expect(body).to.be.exist
-      expect(body.sessionId).to.eql(sessionId)
+      await elementInput.sendKeys(inputValue)
     }
     {
       const value = await elementInput.getAttribute('value')

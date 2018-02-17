@@ -25,34 +25,89 @@ class Element {
     this.baseElement = baseElement
   }
 
-  async waitForElement(time) {
-    this.sessionId = this.browserSessionId || global.___sessionId
-    const { error, value } = await waitElementPresent(findElement, this.sessionId, this.selector, time)
-    if (error) throw new InterfaceError(error)
-    this.elementId = value.ELEMENT
-    return this
+  waitForElement(time) {
+    const self = this
+    return new Proxy(this, {
+      get(target, action) {
+        if (action in target) {
+          return async (...args) => {
+            self.sessionId = self.browserSessionId || global.___sessionId
+            return await waitElementPresent(findElement, self.sessionId, self.selector, time)
+              .then(({ error, value }) => {
+                if (error) throw new InterfaceError(error)
+                self.elementId = value.ELEMENT
+                return true
+              }).then(() => target[action](...args))
+          }
+        }
+      }
+    })
+  }
+
+  waitForClicable(time) {
+    const self = this
+    return new Proxy(this, {
+      get(target, action) {
+        if (action in target) {
+          return async (...args) => {
+            self.sessionId = self.browserSessionId || global.___sessionId
+            return await waitElementPresent(findElement, self.sessionId, self.selector, time)
+              .then(({ error, value }) => {
+                if (error) throw new InterfaceError(error)
+                self.elementId = value.ELEMENT
+                return true
+              }).then(self.isDisplayed.bind(self)).then((isVisible) => {
+                if (isVisible) {
+                  return present(self.sessionId, self.elementId)
+                } else {
+                  throw new InterfaceError(`element does not visible`, __filename)
+                }
+              }).then(({ value, status }) => {
+                return target[action](...args)
+              })
+          }
+        }
+      }
+    })
+  }
+
+  waitForElementVisible(time) {
+    const self = this
+    return new Proxy(this, {
+      get(target, action) {
+        if (action in target) {
+          return async (...args) => {
+            self.sessionId = self.browserSessionId || global.___sessionId
+            return await waitElementPresent(findElement, self.sessionId, self.selector, time)
+              .then(({ error, value }) => {
+                if (error) throw new InterfaceError(error)
+                self.elementId = value.ELEMENT
+                return true
+              }).then(self.isDisplayed.bind(self)).then((isVisible) => {
+                if (isVisible) {
+                  return target[action](...args)
+                } else {
+                  throw new InterfaceError(`element does not visible`, __filename)
+                }
+              })
+          }
+        }
+      }
+    })
   }
 
   async clear() {
     this.sessionId = this.browserSessionId || global.___sessionId
-    const { status } = await clearElementText(this.sessionId, this.elementId)
-
+    const { status, body } = await clearElementText(this.sessionId, this.elementId)
     handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId, this.selector)
   }
 
   async waitForElementPresent(time) {
     await this.waitForElement(time)
     const isPresent = await this.isPresent()
-
   }
 
-  async waitForElementVisible(time) {
-    await this.waitForElement(time)
-    const isVisible = await this.isDisplayed()
-    if (!isVisible) {
-      throw new InterfaceError(`elemen does not visible`, __filename)
-    }
-  }
+
 
   async getTthisElement() {
     this.sessionId = this.browserSessionId || global.___sessionId
@@ -114,10 +169,10 @@ class Element {
     return new Elements(selector, this.sessionId, this)
   }
 
-  async sendKeys(keys) {
+  async sendKeys(...keys) {
     !this.elementId
       && await this.getTthisElement()
-    const { status, value } = await sendKeys(this.sessionId, this.elementId, keys)
+    const { status, value } = await sendKeys(this.sessionId, this.elementId, ...keys)
     handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId, this.selector)
   }
 
@@ -133,7 +188,8 @@ class Element {
     !this.elementId
       && await this.getTthisElement()
     const { status, value } = await clickElement(this.sessionId, this.elementId)
-    handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId, this.selector)
+    handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](
+      this.sessionId, this.selector, `error was throwed from element click function, \t ${value.message}`)
   }
 
   async isPresent() {

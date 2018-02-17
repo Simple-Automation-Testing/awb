@@ -34,7 +34,7 @@ const {
   forwardHistory,
   backHistory,
   refreshCurrentPage
-  } = require('./core')
+} = require('./core')
 
 const path = require('path')
 
@@ -247,9 +247,9 @@ class Browser {
   async goTo(url) {
     !this.sessionId
       && await this.getSession()
-
     await goToUrl(this.sessionId, url)
   }
+
 
   async getBrowserTabs() {
     !this.sessionId
@@ -291,6 +291,7 @@ class Initiator {
     this.opts = null
     this.caps = null
   }
+
   chrome(directToChrome = false, timeouts = null, capabilities = JSON.stringify(defaultChromeCapabilities)) {
     global.__provider.__chrome = directToChrome
     return new Browser(capabilities, timeouts)
@@ -298,6 +299,9 @@ class Initiator {
   firefox(directToGecko = false, timeouts, capabilities = JSON.stringify(defaultFirefoxCapabilities)) {
     global.__provider.__firefox = directToGecko
     return new Browser(capabilities, timeouts)
+  }
+  browser() {
+    
   }
 }
 

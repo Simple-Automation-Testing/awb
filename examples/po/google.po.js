@@ -1,4 +1,4 @@
-const { elements, element } = require('../../interface')
+const { elements, element, Keys } = require('../../interface')
 
 class Google {
   constructor() {
@@ -8,8 +8,8 @@ class Google {
   }
 
   async find(value) {
-    await this.inputSearch.sendKeys(value)
-    await this.submitSearch.click()
+    await this.inputSearch.sendKeys(value, /*Keys.ESCAPE */)
+    await this.submitSearch.waitForClicable(1000).click()
     await this.resultSearch.waitForElementVisible(1000)
   }
 
