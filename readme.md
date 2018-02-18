@@ -6,13 +6,11 @@ Base: lazy elements, chrome driver dirrect connection, own standalone server and
 
 Install [Node.js](http://nodejs.org/) and install framework
 
-
 ## Improvement plan
  * [x] Run selenium server from a client instance method 
  * [x] Add possibility find element by xpath (done)
  * [ ] Develop error handler system 
  * [x] Develop and improve enviroment installer for every OS 
-
 
 ```sh
 $ npm i --SD wd-interface

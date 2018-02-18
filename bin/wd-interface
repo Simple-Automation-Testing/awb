@@ -13,7 +13,7 @@ const {
   spawnStandalone,
   spawnGeckodriver,
   spawnChromedriver
- } = require('../installer')
+} = require('../drivers')
 
 // wd install
 
