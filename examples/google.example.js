@@ -12,12 +12,15 @@ describe('Google base example', () => {
   const googlePage = new Google()
 
   before(async () => {
+
     browser = client().chrome()
+    await browser.startSelenium()
     await browser.goTo(baseURL)
   })
 
   after(async () => {
     await browser.closeBrowser()
+    await browser.stopSelenium()
   })
 
   it('search git hub potapovDim', async () => {

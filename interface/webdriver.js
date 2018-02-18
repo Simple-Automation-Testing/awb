@@ -2,7 +2,7 @@ const path = require('path')
 const fs = require('fs')
 const { spawn } = require('child_process')
 
-const { GECKO_PATH, CHROME_PATH, STANDALONE_PATH, resolvePath } = require('../envUtils')
+const { GECKO_PATH, CHROME_PATH, STANDALONE_PATH, resolvePath } = require('../drivers/util')
 
 const START_SUCCESS_STACK = 'INFO - Selenium Server is up and running'
 
@@ -135,7 +135,6 @@ let server = null
 
 process.on('message', ({ msg }) => {
   if (msg === 'startStandalone') {
-
     server = new ServerProvider({
       standAlonePath: `${STANDALONE_PATH}`,
       host: "127.0.0.1",

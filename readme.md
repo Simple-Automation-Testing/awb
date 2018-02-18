@@ -19,11 +19,16 @@ Drivers installation
 ```sh
 $ wd-interface standalone chrome gecko
 ```
+
 Run driver selenium-standalone-server or chrome driver 
 ```sh
 $ wd-interface start standalone  #for standalone
 $ wd-interface start chrome  #for chromedriver 
 $ wd-interface start gecko  #for geckdriver
+```
+or postinstall, will install gecko chrome drivers and selenium standalone server
+```json
+"postinstall": "wd-interface standalone gecko chrome"
 ```
 
 Simple as a library
@@ -46,12 +51,12 @@ describe('Google base example', () => {
   const inputsearch = '#lst-ib'
   const resultsearch = '#ires .g'
   //elements
-  const submitSearch = element(submitsearch)
+  const submitSearch = element(submitsearch).waitForClicable(1000)
+  const resultSearch = element(resultsearch).waitForElement(1000)
   const inputSearch = element(inputsearch)
-  const resultSearch = element(resultsearch)
 
   before(async () => {
-    browser = client().chrome() // for dirrect connection to chromedriver client().chrome(true)
+    browser = client().chrome() 
     await browser.startSelenium()
     await browser.goTo(baseURL)
   })
@@ -63,8 +68,7 @@ describe('Google base example', () => {
 
   it('search git hub potapovDim', async () => {
     await inputSearch.sendKeys('git hub potapovDim')
-    await submitSearch.waitForClicable(1000).click()
-    await resultSearch.waitForElement(1000)
+    await submitSearch.click()
     const allTextInSelector = await resultSearch.getText()
     expect(allTextInSelector).to.includes('potapovDim')
   })
