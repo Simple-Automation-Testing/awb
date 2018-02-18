@@ -1,10 +1,3 @@
-// const {
-//   defaultChromeCapabilities,
-//   baseOptionsChrome,
-//   baseOptionsStandAlone,
-//   baseOptionsFirefox
-// } = require('../capabilitiesAndBaseOpts')
-
 const defaultCapsAndBaseOptions = require('../capabilitiesAndBaseOpts')
 
 const { urlPathes } = require('../path')
@@ -14,6 +7,7 @@ const fetchyInitializator = require('../fetchy')
 const SELENIUM_PORT = 4444
 const CHROMEDRIVER_PORT = 9515
 const GECKODRIVER_PORT = 9516
+
 
 module.exports = function (baseOptions) {
   const {

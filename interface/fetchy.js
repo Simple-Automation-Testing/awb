@@ -25,7 +25,8 @@ async function _fetchy(method, url, body, opts) {
 
 const fetchy = (method, path, body, opts) => _fetchy(method, URL + path, body, opts)
 
-module.exports = function (host) {
+
+module.exports= function (host) {
   URL = host
   return {
     fetchy_util: {

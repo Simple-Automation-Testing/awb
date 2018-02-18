@@ -11,7 +11,6 @@ const { STATUS_FROM_DRIVER } = require('./reponseSeleniumStatus')
 
 const WEB_EMENET_ID = 'element-6066-11e4-a52e-4f735466cecf'
 
-
 class Element {
 
   constructor(selector, sessionId = null, elementId = null, baseElement = null) {

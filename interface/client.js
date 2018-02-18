@@ -79,7 +79,6 @@ function WaitProviderStop(proc, parentProc) {
     proc.send({ msg: 'stop' })
   })
 }
-
 class Browser {
 
   constructor(capabilities, timeouts) {

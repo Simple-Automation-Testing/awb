@@ -2,11 +2,13 @@ const getLocalEnv = require('./env')
 
 const { baseOptions, fetchy_util, urlPathes } = getLocalEnv()
 
-module.exports = async function (sessionId, options) {
+module.exports = function name(request) {
+  return async function (sessionId, options) {
 
-  if (!options) options = { ...baseOptions }
+    if (!options) options = { ...baseOptions }
 
-  const { body, status } = await fetchy_util.get(urlPathes.windowHandles(sessionId), null, options)
+    const { body, status } = await request.get(urlPathes.windowHandles(sessionId), null, options)
 
-  return body
-}
+    return body
+  }
+} 
