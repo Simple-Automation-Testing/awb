@@ -65,7 +65,7 @@ function getDownloadLink(list) {
 async function getStandalone() {
   const downloadUrl = getDownloadLink(await getReleases())
   return new Promise((resolve, reject) => {
-    fetch(urlSelenium())
+  fetch(downloadUrl)
       .then(function (res) {
         const dest = fs.createWriteStream(resolvePath(STANDALONE_PATH))
         res.body.pipe(dest)

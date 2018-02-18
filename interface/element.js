@@ -291,15 +291,27 @@ class Elements {
     return values
   }
 
-  async waitForElements(time) {
-    this.sessionId = this.browserSessionId || global.___sessionId
-    const { error, value } = await waitElementPresent(findElements, this.sessionId, this.selector, time)
-    if (error) throw new InterfaceError(error)
-    this.elements = []
-    value.forEach(({ ELEMENT }) => {
-      this.elements.push(new Element(this.selector, this.sessionId, ELEMENT))
+  waitForElements(time) {
+    const self = this
+    return new Proxy(this, {
+      get(target, action) {
+        if (action in target) {
+          return async (...args) => {
+            self.sessionId = self.browserSessionId || global.___sessionId
+            return await waitElementPresent(findElements, self.sessionId, self.selector, time)
+              .then(({ error, value }) => {
+                if (error) throw new InterfaceError(error)
+                self.elementId = value.ELEMENT
+                self.elements = []
+                value.forEach(({ ELEMENT }) => {
+                  self.elements.push(new Element(this.selector, this.sessionId, ELEMENT))
+                })
+                return self
+              }).then(() => target[action](...args))
+          }
+        }
+      }
     })
-    return this
   }
 
   async getElements() {

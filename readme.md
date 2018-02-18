@@ -539,10 +539,9 @@ const token = await sessionStorage.get('token')
   *  return array Element instaces
   */
 ```
-## waitForElement
+## waitForElements
 ```js
-  const elementDiv = elements('div')
-  await elementDiv.waitForElements(1000)
+  const elementDiv = elements('div').waitForElements(1000)
   /* 
   * will wait for first element with selector mount to DOM node
   */
