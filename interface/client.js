@@ -1,5 +1,7 @@
 const capabilitiesAndBaseOpts = require('./capabilitiesAndBaseOpts')
 
+const fetchy = require('./fetchy')
+
 const {
   defaultChromeCapabilities,
   defaultFirefoxCapabilities
@@ -9,32 +11,7 @@ const { InterfaceError } = require('./interfaceError')
 
 const { Keys } = require('./event/keys')
 
-const SELENIUM_STATUSES = require('./reponseSeleniumStatus')
-
-const {
-  resizeWindow,
-  killSession,
-  initSession,
-  goToUrl,
-  getUrl,
-  getTitle,
-  executeScript,
-  sleep,
-  waitCondition,
-  getCurrentWindowHandles,
-  getCurrentWindowHandle,
-  openTab,
-  closeCurrentTab,
-  clickElement,
-  setScriptTimeout,
-  findElement,
-  toFrame,
-  getScreenshot,
-  executeScriptAsync,
-  forwardHistory,
-  backHistory,
-  refreshCurrentPage
-} = require('./core')
+const initializator = require('./core')
 
 const path = require('path')
 
@@ -300,12 +277,46 @@ class Initiator {
     return new Browser(capabilities, timeouts)
   }
   browser() {
-    
+
   }
 }
 
-module.exports = function (port) {
+
+const browserDefaultCaps = {
+  javascriptEnabled: true,
+  acceptSslCerts: true,
+  platform: 'ANY'
+}
+
+const defautlOpts = {
+  withStandalone: true,
+  remote: false,
+  directConnect: false,
+  browser: 'chrome',
+  hostname: 'localhost',
+  port: 4444,
+  path: '/wd/hub/session',
+  timeout: 5000
+}
+
+module.exports = function (opts = defautlOpts) {
+
+  if (!opts['browserCaps']) {
+    opts['browserCaps'] = browserDefaultCaps
+  }
+
+  let request = null
+
+  
+
+
+  const request = {
+    get: 
+  }
+
   return new Initiator(port)
+
+
 }
 
 module.exports.initiatorInstance = Initiator

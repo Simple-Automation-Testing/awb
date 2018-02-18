@@ -2,15 +2,14 @@ const { elements, element, Keys } = require('../../interface')
 
 class Google {
   constructor() {
-    this.submitSearch = element('[name="btnK"]')
+    this.submitSearch = element('[name="btnK"]').waitForClicable(1000)
     this.inputSearch = element('#lst-ib')
-    this.resultSearch = element('#ires .g')
+    this.resultSearch = element('#ires .g').waitForElementVisible(1000)
   }
 
   async find(value) {
     await this.inputSearch.sendKeys(value, /*Keys.ESCAPE */)
-    await this.submitSearch.waitForClicable(1000).click()
-    await this.resultSearch.waitForElementVisible(1000)
+    await this.submitSearch.click()
   }
 
   async getResultSearchText() {

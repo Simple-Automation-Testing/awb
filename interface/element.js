@@ -106,8 +106,6 @@ class Element {
     const isPresent = await this.isPresent()
   }
 
-
-
   async getTthisElement() {
     this.sessionId = this.browserSessionId || global.___sessionId
     if (this.baseElement) {
@@ -233,6 +231,7 @@ class Element {
 }
 
 
+
 class Elements {
 
   constructor(selector, sessionId = null, baseElement = null) {
@@ -341,6 +340,8 @@ class Elements {
 module.exports = {
   element: (...args) => new Element(...args),
   elements: (...args) => new Elements(...args),
+
+
   elementInstance: Element,
   elementsInstance: Elements
 }
