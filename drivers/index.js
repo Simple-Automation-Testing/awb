@@ -1,3 +1,8 @@
+const gecko = require('./firefox')
+const chrome = require('./chrome')
+const standalone = require('./standalone')
+const { resolvePath } = require('./util')
+
 const fs = require('fs')
 
 async function writeId(id) {
@@ -24,11 +29,6 @@ function killProc() {
     })
   })
 }
-
-
-const gecko = require('./firefox')
-const chrome = require('./chrome')
-const standalone = require('./standalone')
 
 module.exports = {
   ...gecko,

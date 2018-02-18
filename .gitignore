@@ -4,7 +4,8 @@ node_modules/
 .DS_Store
 .vscode
 chromedriver*
-selenium*
+drivers/procid
+standalone.jar*
 gecko*
 b.js
 c.js

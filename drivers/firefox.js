@@ -1,9 +1,6 @@
 const os = require('os')
 
 const {
-  urlChrome,
-  urlGecko,
-  urlSelenium,
   resolvePath,
   GECKO_PATH,
   STANDALONE_PATH

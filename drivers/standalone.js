@@ -10,20 +10,60 @@ const {
   STANDALONE_PATH
 } = require('./util')
 
-const chromedriver_ver = '2.34'
+const parseString = require('xml2js').parseString
 
 const fs = require('fs')
 const fetch = require('node-fetch')
-const unzip = require('unzip')
-const zlib = require('zlib')
-const tar = require('tar')
-const mkdirp = require('mkdirp')
 
-const { dirname, join } = require('path')
+const { spawn } = require('child_process')
 
-const { execFile, spawn, execSync } = require('child_process')
+
+const url = 'https://selenium-release.storage.googleapis.com'
+
+const getReleases = async () => {
+  const body = await fetch(url).then(resp => resp.text())
+
+  const bodyResolve = () => new Promise(resolve => {
+    parseString(body, function (err, result) {
+      resolve(result)
+    });
+  })
+  const { ListBucketResult: { Contents } } = await bodyResolve()
+  return Contents
+}
+
+function getDownloadLink(list) {
+  const osArchMap = {
+    darwinx64: 'mac64',
+    win32x64: 'win64',
+    win32x86: 'win32'
+  }
+
+  const chromeArch = osArchMap[`${os.platform()}${os.arch()}`]
+
+  const getMap = () => {
+    return list.map(release => {
+      const publishedData = +new Date(release.LastModified[0])
+      const version = release.Key[0].split('/')
+      const browser_download_url = `${url}/${release.Key[0]}`
+
+      return { publishedData, version, browser_download_url }
+
+
+    }).filter(release => release.browser_download_url.includes('standalone')).reduce((acc, val, index) => {
+      if (!index) { acc = val }
+      if (acc.publishedData < val.publishedData) {
+        acc = val
+      }
+      return acc
+    }, {})
+  }
+  const { browser_download_url } = getMap()
+  return browser_download_url
+}
 
 async function getStandalone() {
+  const downloadUrl = getDownloadLink(await getReleases())
   return new Promise((resolve, reject) => {
     fetch(urlSelenium())
       .then(function (res) {

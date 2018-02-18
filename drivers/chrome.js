@@ -7,37 +7,77 @@ const {
   STANDALONE_PATH
 } = require('./util')
 
-const chromedriver_ver = '2.34'
-const geckdriver_ver = '0.19.1'
+const parseString = require('xml2js').parseString
 
+const url = 'https://chromedriver.storage.googleapis.com'
 
 const fs = require('fs')
 const fetch = require('node-fetch')
 const unzip = require('unzip')
 const zlib = require('zlib')
 const tar = require('tar')
-const mkdirp = require('mkdirp')
-
 const { dirname, join } = require('path')
 
 const { execFile, spawn, execSync } = require('child_process')
 
-async function getChromeDriver(ver = chromedriver_ver) {
+const getReleases = async () => {
+  const body = await fetch(url).then(resp => resp.text())
+
+  const bodyResolve = () => new Promise(resolve => {
+    parseString(body, function (err, result) {
+      resolve(result)
+    });
+  })
+  const { ListBucketResult: { Contents } } = await bodyResolve()
+  return Contents
+}
+
+function getDownloadLink(list) {
+  const osArchMap = {
+    darwinx64: 'mac64',
+    win32x64: 'win64',
+    win32x86: 'win32'
+  }
+
+  const chromeArch = osArchMap[`${os.platform()}${os.arch()}`]
+
+  const getMap = () => {
+    return list.map(release => {
+      const publishedData = +new Date(release.LastModified[0])
+      const version = release.Key[0].split('/')
+      const browser_download_url = `${url}/${release.Key[0]}`
+
+
+      return { publishedData, version, browser_download_url }
+    }).filter(release => release.browser_download_url.includes(chromeArch)).reduce((acc, val, index) => {
+      if (!index) { acc = val }
+      if (acc.publishedData < val.publishedData) {
+        acc = val
+      }
+      return acc
+    }, {})
+  }
+  const { browser_download_url } = getMap()
+  return browser_download_url
+}
+
+async function getChromeDriver() {
+  const downloadUrl = getDownloadLink(await getReleases())
   return new Promise((resolve) => {
-    fetch(urlChrome(ver))
+    fetch(downloadUrl)
       .then(function (res) {
-        const dest = fs.createWriteStream(resolvePath(`./chromedriver_${ver}.zip`))
+        const dest = fs.createWriteStream(resolvePath(`./chromedriver.zip`))
         res.body.pipe(dest)
         res.body.on('end', () => {
-          const str = fs.createReadStream(resolvePath(`./chromedriver_${ver}.zip`)).pipe(unzip.Extract({ path: resolvePath('./') }))
+          const str = fs.createReadStream(resolvePath(`./chromedriver.zip`)).pipe(unzip.Extract({ path: resolvePath('./') }))
           str.on('close', () => {
             if (os.arch() === 'x64' && os.platform() === 'win32') {
-              fs.unlink(resolvePath(`./chromedriver_${ver}.zip`), (err) => {
+              fs.unlink(resolvePath(`./chromedriver.zip`), (err) => {
                 if (err) throw err
                 resolve(true)
               })
             } else {
-              fs.unlink(resolvePath(`./chromedriver_${ver}.zip`), (err) => {
+              fs.unlink(resolvePath(`./chromedriver.zip`), (err) => {
                 if (err) throw err
                 resolve(true)
               })
@@ -89,7 +129,6 @@ async function clearChrome(ver) {
     }
   }).catch(error => console.error(error.toString()))
 }
-
 
 module.exports = {
   getChromeDriver,
