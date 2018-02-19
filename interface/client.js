@@ -2,6 +2,8 @@ const capabilitiesAndBaseOpts = require('./capabilitiesAndBaseOpts')
 
 const fetchy = require('./fetchy')
 
+const LOCAL = ['localhost', '127.0.0.1']
+
 const {
   defaultChromeCapabilities,
   defaultFirefoxCapabilities
@@ -281,7 +283,6 @@ class Initiator {
   }
 }
 
-
 const browserDefaultCaps = {
   javascriptEnabled: true,
   acceptSslCerts: true,
@@ -293,30 +294,42 @@ const defautlOpts = {
   remote: false,
   directConnect: false,
   browser: 'chrome',
-  hostname: 'localhost',
+  host: 'localhost',
   port: 4444,
+
   path: '/wd/hub/session',
   timeout: 5000
 }
 
 module.exports = function (opts = defautlOpts) {
 
+  let baseRequestUrl = null
+
   if (!opts['browserCaps']) {
+    if (!opts['browser']) {
+      opts['browser'] = 'chrome'
+    }
+    browserDefaultCaps['browserName'] = opts['browser']
     opts['browserCaps'] = browserDefaultCaps
   }
 
+  const { withStandalone, remote, directConnect, browser, hostname, port, path, timeout, browserCaps } = opts
+
+  if (LOCAL.includes(hostname) && !remote) {
+    baseRequestUrl = withStandalone ? `http://127.0.0.1:${port}/wd/hub/` : `http://127.0.0.1:${port}/`
+  } else if (remote) {
+    baseRequestUrl = `${hostname}${port ? ':' + port + '/' : '/'}`
+  }
+
+
+
   let request = null
 
-  
-
-
   const request = {
-    get: 
+    // get: 
   }
 
   return new Initiator(port)
-
-
 }
 
 module.exports.initiatorInstance = Initiator
