@@ -17,4 +17,5 @@ examples
 .vscode
 node_modules
 debug.log
+*.log
 *.png
