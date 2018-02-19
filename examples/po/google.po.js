@@ -1,4 +1,4 @@
-const { elements, element, Keys } = require('../../interface')
+const { element, elements } = require('../driver')
 
 class Google {
   constructor() {

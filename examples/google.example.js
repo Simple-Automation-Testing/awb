@@ -1,6 +1,6 @@
 const { expect } = require('chai')
 
-const client = require('../interface/client')
+const { element, client, elements } = require('./driver')
 
 const Google = require('./po/google.po')
 
@@ -12,15 +12,14 @@ describe('Google base example', () => {
   const googlePage = new Google()
 
   before(async () => {
-
-    browser = client().chrome()
-    await browser.startSelenium()
+    browser = client
+    // await browser.startSelenium()
     await browser.goTo(baseURL)
   })
 
   after(async () => {
     await browser.closeBrowser()
-    await browser.stopSelenium()
+    // await browser.stopSelenium()
   })
 
   it('search git hub potapovDim', async () => {

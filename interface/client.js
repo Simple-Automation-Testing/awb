@@ -1,13 +1,8 @@
-const capabilitiesAndBaseOpts = require('./capabilitiesAndBaseOpts')
+const elementsInitializer = require('./element')
 
 const fetchy = require('./fetchy')
 
 const LOCAL = ['localhost', '127.0.0.1']
-
-const {
-  defaultChromeCapabilities,
-  defaultFirefoxCapabilities
-} = capabilitiesAndBaseOpts
 
 const { InterfaceError } = require('./interfaceError')
 
@@ -19,7 +14,6 @@ const path = require('path')
 
 function StartProvider() {
   const { fork } = require('child_process')
-  const path = require('path')
 
   const forked = fork(path.resolve(__dirname, './webdriver.js'))
 
@@ -59,20 +53,25 @@ function WaitProviderStop(proc, parentProc) {
   })
 }
 
+function initializatorClient(requests, capabilities) {
+  const {
+    resizeWindow,
+    killSession,
+    initSession,
+    goToUrl,
+    getUrl,
+    getTitle,
+    executeScript,
+    sleep,
+    waitCondition
+  } = requests
+  class Client {
 
-function initializatorClient() {
-  class Browser {
-
-    constructor(capabilities, timeouts) {
+    constructor() {
       this.Keys = Keys
       this.sessionId = null
       this.capabilities = capabilities
       this.seleniumProc = null
-      if (timeouts && timeouts['request']) {
-        capabilitiesAndBaseOpts.baseOptionsStandAlone.timeout = timeouts['request']
-        Reflect.deleteProperty(timeouts, 'request')
-        this.timeouts = timeouts
-      }
     }
 
     get localStorage() {
@@ -231,7 +230,6 @@ function initializatorClient() {
       await goToUrl(this.sessionId, url)
     }
 
-
     async getBrowserTabs() {
       !this.sessionId
         && await this.getSession()
@@ -263,29 +261,8 @@ function initializatorClient() {
       }
     }
   }
-}
 
-
-class Initiator {
-  constructor(seleniumPort = 4444) {
-    global.__provider = {}
-    this.port = seleniumPort
-    this.url = null
-    this.opts = null
-    this.caps = null
-  }
-
-  chrome(directToChrome = false, timeouts = null, capabilities = JSON.stringify(defaultChromeCapabilities)) {
-    global.__provider.__chrome = directToChrome
-    return new Browser(capabilities, timeouts)
-  }
-  firefox(directToGecko = false, timeouts, capabilities = JSON.stringify(defaultFirefoxCapabilities)) {
-    global.__provider.__firefox = directToGecko
-    return new Browser(capabilities, timeouts)
-  }
-  browser() {
-
-  }
+  return { Client }
 }
 
 const browserDefaultCaps = {
@@ -301,7 +278,7 @@ const defautlOpts = {
   browser: 'chrome',
   host: 'localhost',
   port: 4444,
-
+  requestTime: 5000,
   path: '/wd/hub/session',
   timeout: 5000
 }
@@ -318,25 +295,35 @@ module.exports = function (opts = defautlOpts) {
     opts['browserCaps'] = browserDefaultCaps
   }
 
-  const { withStandalone, remote, directConnect, browser, hostname, port, path, timeout, browserCaps } = opts
+  const { withStandalone, remote, directConnect, browser, host, port, path, timeout, browserCaps } = opts
 
-  if (LOCAL.includes(hostname) && !remote) {
+  if (LOCAL.includes(host) && !remote) {
     baseRequestUrl = withStandalone ? `http://127.0.0.1:${port}/wd/hub/` : `http://127.0.0.1:${port}/`
+    console.log('local')
   } else if (remote) {
-    baseRequestUrl = `${hostname}${port ? ':' + port + '/' : '/'}`
+    baseRequestUrl = `${host}${port ? ':' + port + '/' : '/'}`
   }
 
-
-
-
-  let request = null
-
-  const request = {
-    // get: 
+  const baseRequest = {
+    get: fetchy.bind(fetchy, "GET", baseRequestUrl, timeout),
+    post: fetchy.bind(fetchy, "POST", baseRequestUrl, timeout),
+    put: fetchy.bind(fetchy, "PUT", baseRequestUrl, timeout),
+    delete: fetchy.bind(fetchy, "DELETE", baseRequestUrl, timeout)
   }
 
-  return new Initiator(port)
+  const requests = initializator(baseRequest)
+
+  const { Client } = initializatorClient(requests, browserCaps)
+
+  const client = new Client()
+
+  const { Element, Elements } = elementsInitializer(requests, client)
+
+  return {
+    element: (...args) => new Element(...args),
+    elements: (...args) => new Elements(...args),
+    client
+  }
 }
-
-module.exports.initiatorInstance = Initiator
-module.exports.browserInstance = Browser
+// module.exports.initiatorInstance = Initiator
+// module.exports.browserInstance = Browser

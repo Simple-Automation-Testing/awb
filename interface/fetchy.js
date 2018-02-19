@@ -1,6 +1,6 @@
 const fetch = require('node-fetch')
 
-async function _fetchy(method, url, body, opts) {
+async function _fetchy(method, timeout, url, body, opts) {
 
   opts = opts || {}
   const headers = opts.headers || {}
@@ -11,7 +11,10 @@ async function _fetchy(method, url, body, opts) {
   }
 
   const response = await fetch(url, Object.assign({
-    method, headers, body: typeof body === 'object' ? JSON.stringify(body) : body
+    method,
+    headers,
+    body: typeof body === 'object' ? JSON.stringify(body) : body,
+    timeout
   }, opts))
 
   const contentType = response.headers.get("content-type")
@@ -23,7 +26,11 @@ async function _fetchy(method, url, body, opts) {
   }
 }
 
-const fetchy = (method, URL, path, body, opts) => _fetchy(method, URL + path, body, opts)
+
+const fetchy = (method, URL, timeout, path, body, opts) => {
+  console.log(method, URL, path, timeout)
+  return _fetchy(method, timeout, URL + path, body, opts)
+}
 
 // module.exports = function (host) {
 //   URL = host

@@ -4,26 +4,19 @@ const { returnStringType, waitElementPresent } = require('./util')
 
 const { InterfaceError, handledErrors } = require('./interfaceError')
 
-const { browserInstance } = require('./client')
-
 const { STATUS_FROM_DRIVER } = require('./reponseSeleniumStatus')
 
 const WEB_EMENET_ID = 'element-6066-11e4-a52e-4f735466cecf'
 
-function elementsInitializer(requests) {
+function elementsInitializer(requests, browser) {
   const { getElementText, moveTo, mouseDown, elementFromElement, elementsFromElement, present, displayed } = requests
   const { clickElement, sendKeys, getAttribute, executeScript, waitCondition, findElements, findElement, clearElementText } = requests
-
 
   class Element {
 
     constructor(selector, sessionId = null, elementId = null, baseElement = null) {
-
-      if (sessionId instanceof browserInstance) {
-        this.browserSessionId = sessionId.sessionId
-      }
       this.selector = selector
-      this.sessionId = sessionId
+      this.sessionId = browser.sessionId
       this.elementId = elementId
       this.baseElement = baseElement
     }
@@ -237,9 +230,6 @@ function elementsInitializer(requests) {
   class Elements {
 
     constructor(selector, sessionId = null, baseElement = null) {
-      if (sessionId instanceof browserInstance) {
-        this.sessionId = sessionId.sessionId
-      }
       this.baseElement = baseElement
       this.selector = selector
       this.sessionId = sessionId
@@ -342,13 +332,12 @@ function elementsInitializer(requests) {
   return { Element, Elements }
 }
 
+module.exports = elementsInitializer
+
+//   element: (...args) => new Element(...args),
+//   elements: (...args) => new Elements(...args),
 
 
-module.exports = {
-  element: (...args) => new Element(...args),
-  elements: (...args) => new Elements(...args),
-
-
-  elementInstance: Element,
-  elementsInstance: Elements
-}
+//   elementInstance: Element,
+//   elementsInstance: Elements
+// }

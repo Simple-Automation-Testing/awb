@@ -1,3 +1,5 @@
+<h1 >Another webdriver binding</h1>
+
 UI automated testing framework powered by [Node.js](http://nodejs.org/).
 Uses the [Selenium WebDriver API](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol).
 Uses the [ChromeDriver API](https://chromium.googlesource.com/chromium/src/+/master/docs/chromedriver_status.md)
@@ -13,7 +15,7 @@ Install [Node.js](http://nodejs.org/) and install framework
  * [x] Develop and improve enviroment installer for every OS 
 
 ```sh
-$ npm i --SD wd-interface
+$ npm i --SD awb
 ```
 Drivers installation 
 ```sh

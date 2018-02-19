@@ -1,10 +1,5 @@
-const { elements, element } = require('./interface/element')
-const browser = require('./interface/client')
 const { Keys } = require('./interface/event/keys')
+const awb = require('./interface/client')
 
-module.exports = {
-    element,
-    elements,
-    Keys,
-    client: browser
-}
+module.exports = awb
+module.exports.Keys = Keys

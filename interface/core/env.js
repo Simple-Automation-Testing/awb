@@ -15,7 +15,7 @@ module.exports = function (baseOptions) {
     baseOptionsChrome,
     baseOptionsStandAlone,
     baseOptionsFirefox
-   } = defaultCapsAndBaseOptions
+  } = defaultCapsAndBaseOptions
   if (!baseOptions) {
     baseOptions = global.__provider && global.__provider.__chrome ? baseOptionsChrome : baseOptionsStandAlone
   }
@@ -28,7 +28,7 @@ module.exports = function (baseOptions) {
     }
   }
 
-  const { fetchy_util } = fetchyInitializator(`http://localhost:${portPath()}`)
+  // const { fetchy_util } = fetchyInitializator(`http://localhost:${portPath()}`)
 
-  return { baseOptions, fetchy_util, urlPathes, defaultCapsAndBaseOptions }
+  return { baseOptions,/* fetchy_util ,*/ urlPathes, defaultCapsAndBaseOptions }
 }

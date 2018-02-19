@@ -8,7 +8,7 @@ module.exports = function (request) {
     if (!options) options = { ...baseOptions }
 
     // have issue with selenium
-    const { body, status } = await fetchy_util.post(urlPathes.minimize(sessionId), undefined, options)
+    const { body, status } = await request.post(urlPathes.minimize(sessionId), undefined, options)
 
     return body
   }

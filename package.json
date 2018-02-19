@@ -4,7 +4,7 @@
     "description": "simple light weight interface for selenium webdriver (node js)",
     "main": "./interface.js",
     "bin": {
-        "wd-interface": "./bin/wd-interface"
+        "awb": "./bin/awb"
     },
     "repository": {
         "type": "git",

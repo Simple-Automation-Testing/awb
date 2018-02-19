@@ -7,7 +7,7 @@ module.exports = function (request) {
 
     if (!options) options = { ...baseOptions }
 
-    const { body, status } = await fetchy_util.post(urlPathes.click(sessionId, elementId), JSON.stringify({ button: 0 }), options)
+    const { body, status } = await request.post(urlPathes.click(sessionId, elementId), JSON.stringify({ button: 0 }), options)
 
     return body
   }
