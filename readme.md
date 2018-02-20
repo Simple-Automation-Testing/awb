@@ -1,4 +1,4 @@
-<h1 >Another webdriver binding</h1>
+<h1>Another webdriver binding</h1>
 
 UI automated testing framework powered by [Node.js](http://nodejs.org/).
 Uses the [Selenium WebDriver API](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol).
@@ -19,18 +19,19 @@ $ npm i --SD awb
 ```
 Drivers installation 
 ```sh
-$ wd-interface standalone chrome gecko
+$ awb standalone chrome gecko
 ```
 
 Run driver selenium-standalone-server or chrome driver 
 ```sh
-$ wd-interface start standalone  #for standalone
-$ wd-interface start chrome  #for chromedriver 
-$ wd-interface start gecko  #for geckdriver
+$ awb start standalone  #for standalone
+$ awb start chrome  #for chromedriver 
+$ awb start gecko  #for geckdriver
 ```
 or postinstall, will install gecko chrome drivers and selenium standalone server
+
 ```json
-"postinstall": "wd-interface standalone gecko chrome"
+"postinstall": "awb standalone gecko chrome"
 ```
 
 Simple as a library
@@ -42,12 +43,13 @@ Use with [mocha](https://mochajs.org/) or other test runner
 ```js
 const { expect } = require('chai')
 
-const { client, element } = require('wd-interface')
+const awb = require('awb')
+
+const { client, element } = awb()
 
 describe('Google base example', () => {
   let browser = null
   const baseURL = 'https://www.google.com.ua/'
-
   //selectors
   const submitsearch = '[name="btnK"]'
   const inputsearch = '#lst-ib'
@@ -58,14 +60,13 @@ describe('Google base example', () => {
   const inputSearch = element(inputsearch)
 
   before(async () => {
-    browser = client().chrome() 
-    await browser.startSelenium()
-    await browser.goTo(baseURL)
+    await client.startSelenium()
+    await client.goTo(baseURL)
   })
 
   after(async () => {
-    await browser.closeBrowser()
-    await browser.stopSelenium()
+    await client.closeBrowser()
+    await client.stopSelenium()
   })
 
   it('search git hub potapovDim', async () => {
@@ -75,13 +76,12 @@ describe('Google base example', () => {
     expect(allTextInSelector).to.includes('potapovDim')
   })
 })
-```
 
+
+
+```
 ## Api
 - [Browser](#browser)
-  * [chrome](#chrome)
-  * [firefox](#firefox)
-  * [Keys](#keys)
   * [localStorage](#localstorage)
     - [get](#get)
     - [set](#set)
@@ -134,20 +134,17 @@ describe('Google base example', () => {
   * [isDisplayed](#isdisplayed)
   * [mouseDownAndMove](#mousedownandmove)
 
-# Browser
+# Client
 ```js
-  const {client} = require('wd-interface')
-  const browserChrome = client().chrome() // for chrome browser
-  const browserFirefox = client().firefox() //for firefox browser
+  const awb = require('awb')
+  
+  const config = {
+    
+  }
+
+  const {client} = awb(config)
   /* return browser api instance
    * args directConnect bool true to chrome or gecko driver , false for connect to standalone server
-   * timeouts = {
-   *   'script': 5000,    // Sets the amount of time to wait for an asynchronous script to finish execution before throwing an error.
-   *   'implicit': 5000,  // Specifies the amount of time the driver should wait when searching for an element if it is not immediately present.
-   *   'page load': 5000, // Sets the amount of time to wait for a page load to complete before throwing an error.
-   *   'request': 1000    // Sets the amount of time to wait for a response from driver.
-   * }
-   * 
    * any, false , undefined - conncect to standalone server port 4444
    * 
    */
@@ -531,7 +528,7 @@ const token = await sessionStorage.get('token')
 ## Constructor elements
 ```js
   const elementDiv = elements('div')
-  const {elements} = require('wd-interface')
+  const {elements} = require('awb')
   // by css selector
   const elementsSpan = elements('span')
   // by xpath 

@@ -1,4 +1,3 @@
-const { InterfaceError } = require('./interfaceError')
 const parseJson = (data) => {
   try {
     return JSON.parse(data)

@@ -5,12 +5,10 @@ const { baseOptions, fetchy_util, urlPathes, defaultCapsAndBaseOptions } = getLo
 module.exports = function (request) {
   return async function (data, options) {
 
-    console.log('init')
     if (!data) data = JSON.stringify(defaultCapsAndBaseOptions.defaultChromeCapabilities)
     if (!options) options = { ...baseOptions }
 
     const { body, status } = await request.post(urlPathes.getSession(), data, options).catch(console.log)
-
     return body
   }
 } 

@@ -28,7 +28,6 @@ async function _fetchy(method, timeout, url, body, opts) {
 
 
 const fetchy = (method, URL, timeout, path, body, opts) => {
-  console.log(method, URL, path, timeout)
   return _fetchy(method, timeout, URL + path, body, opts)
 }
 

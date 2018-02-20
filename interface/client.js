@@ -1,33 +1,43 @@
 const elementsInitializer = require('./element')
-
 const fetchy = require('./fetchy')
-
 const LOCAL = ['localhost', '127.0.0.1']
-
 const { InterfaceError } = require('./interfaceError')
-
 const { Keys } = require('./event/keys')
-
 const initializator = require('./core')
-
 const path = require('path')
+const RUN_PROCCESS = require('./vars')
 
-function StartProvider() {
+const mergeObjects = (target = {}, initial) => {
+  Object.keys(initial).forEach((key) => {
+    if (typeof initial[key] === 'object') { target[key] = mergeObjects(target[key], initial[key]) }
+    if (!target[key] && !(key in target)) {
+      target[key] = initial[key]
+    }
+  })
+  return target
+}
+
+
+function StartProvider(config) {
   const { fork } = require('child_process')
 
   const forked = fork(path.resolve(__dirname, './webdriver.js'))
 
-  forked.send({ msg: 'startStandalone' })
+  forked.send({ msg: 'startDriver', data: config })
 
   return new Promise((resolve) => {
     forked.on('message', ({ msg }) => {
-      if (msg === 'server started') {
+      if (msg === RUN_PROCCESS.SUCCESS_RUN) {
         resolve(forked)
-      } else if (msg === 'selenium already started on port 4444') {
+      } else if (msg === RUN_PROCCESS.ADDRESS_IS_USE) {
         forked.kill()
-        console.log('selenium already started on port 4444')
+        throw Error(RUN_PROCCESS.ADDRESS_IS_USE)
+        resolve(RUN_PROCCESS.ADDRESS_IS_USE)
+      } else if (msg === RUN_PROCCESS.UNHANDLED_EXCEPTION) {
+        forked.kill()
+        throw Error(RUN_PROCCESS.UNHANDLED_EXCEPTION)
+        resolve(RUN_PROCCESS.UNHANDLED_EXCEPTION)
       }
-      resolve()
     })
   }).then((proc) => {
     if (proc) {
@@ -53,7 +63,9 @@ function WaitProviderStop(proc, parentProc) {
   })
 }
 
-function initializatorClient(requests, capabilities) {
+function initializatorClient(requests, opts) {
+  const { browserCaps } = opts
+
   const {
     resizeWindow,
     killSession,
@@ -65,12 +77,12 @@ function initializatorClient(requests, capabilities) {
     sleep,
     waitCondition
   } = requests
-  class Client {
 
+  class Client {
     constructor() {
       this.Keys = Keys
       this.sessionId = null
-      this.capabilities = capabilities
+      this.capabilities = browserCaps
       this.seleniumProc = null
     }
 
@@ -100,6 +112,7 @@ function initializatorClient(requests, capabilities) {
         }
       }
     }
+
     get sessionStorage() {
       return {
         set: async (key, value) => {
@@ -162,7 +175,7 @@ function initializatorClient(requests, capabilities) {
     }
 
     async startSelenium() {
-      const proc = await StartProvider()
+      const proc = await StartProvider(opts)
       this.seleniumProc = proc
     }
 
@@ -283,6 +296,7 @@ const defautlOpts = {
   timeout: 5000
 }
 
+
 module.exports = function (opts = defautlOpts) {
 
   let baseRequestUrl = null
@@ -292,14 +306,17 @@ module.exports = function (opts = defautlOpts) {
       opts['browser'] = 'chrome'
     }
     browserDefaultCaps['browserName'] = opts['browser']
-    opts['browserCaps'] = browserDefaultCaps
+    opts['browserCaps'] = {
+      desiredCapabilities: {
+        ...browserDefaultCaps
+      }
+    }
   }
 
   const { withStandalone, remote, directConnect, browser, host, port, path, timeout, browserCaps } = opts
 
   if (LOCAL.includes(host) && !remote) {
     baseRequestUrl = withStandalone ? `http://127.0.0.1:${port}/wd/hub/` : `http://127.0.0.1:${port}/`
-    console.log('local')
   } else if (remote) {
     baseRequestUrl = `${host}${port ? ':' + port + '/' : '/'}`
   }
@@ -308,16 +325,18 @@ module.exports = function (opts = defautlOpts) {
     get: fetchy.bind(fetchy, "GET", baseRequestUrl, timeout),
     post: fetchy.bind(fetchy, "POST", baseRequestUrl, timeout),
     put: fetchy.bind(fetchy, "PUT", baseRequestUrl, timeout),
-    delete: fetchy.bind(fetchy, "DELETE", baseRequestUrl, timeout)
+    del: fetchy.bind(fetchy, "DELETE", baseRequestUrl, timeout)
   }
 
   const requests = initializator(baseRequest)
 
-  const { Client } = initializatorClient(requests, browserCaps)
+  const { Client } = initializatorClient(requests, opts)
 
   const client = new Client()
 
   const { Element, Elements } = elementsInitializer(requests, client)
+
+  console.log(client.goTo)
 
   return {
     element: (...args) => new Element(...args),

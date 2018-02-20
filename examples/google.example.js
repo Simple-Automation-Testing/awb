@@ -13,13 +13,13 @@ describe('Google base example', () => {
 
   before(async () => {
     browser = client
-    // await browser.startSelenium()
+    await browser.startSelenium()
     await browser.goTo(baseURL)
   })
 
   after(async () => {
     await browser.closeBrowser()
-    // await browser.stopSelenium()
+    await browser.stopSelenium()
   })
 
   it('search git hub potapovDim', async () => {
