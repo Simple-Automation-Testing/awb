@@ -1,6 +1,6 @@
 {
     "name": "awb",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "simple light weight interface for selenium webdriver (node js)",
     "main": "./interface.js",
     "bin": {
@@ -18,7 +18,7 @@
         "nodejs",
         "selenium",
         "selenium-webdriver",
-        "sebdriver",
+        "webdriver",
         "automation-testing",
         "wd-interface",
         "browser-automation-testing",
@@ -32,7 +32,9 @@
         "automation-testing",
         "wd-interface",
         "browser-automation-testing",
-        "testing"
+        "testing",
+        "webdriver-binding",
+        "awb"
     ],
     "license": "MIT",
     "bugs": {

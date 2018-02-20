@@ -17,7 +17,6 @@ const mergeObjects = (target = {}, initial) => {
   return target
 }
 
-
 function StartProvider(config) {
   const { fork } = require('child_process')
 
@@ -278,40 +277,30 @@ function initializatorClient(requests, opts) {
   return { Client }
 }
 
-const browserDefaultCaps = {
-  javascriptEnabled: true,
-  acceptSslCerts: true,
-  platform: 'ANY'
-}
-
 const defautlOpts = {
   withStandalone: true,
   remote: false,
   directConnect: false,
   browser: 'chrome',
+  browserCaps: {
+    desiredCapabilities: {
+      javascriptEnabled: true,
+      acceptSslCerts: true,
+      platform: 'ANY',
+      browserName: 'chrome'
+    }
+  },
   host: 'localhost',
   port: 4444,
-  requestTime: 5000,
-  path: '/wd/hub/session',
   timeout: 5000
 }
 
 
-module.exports = function (opts = defautlOpts) {
-
+module.exports = function (opts) {
+  if (!opts) { opts = defautlOpts }
   let baseRequestUrl = null
 
-  if (!opts['browserCaps']) {
-    if (!opts['browser']) {
-      opts['browser'] = 'chrome'
-    }
-    browserDefaultCaps['browserName'] = opts['browser']
-    opts['browserCaps'] = {
-      desiredCapabilities: {
-        ...browserDefaultCaps
-      }
-    }
-  }
+  opts = mergeObjects(opts, defautlOpts)
 
   const { withStandalone, remote, directConnect, browser, host, port, path, timeout, browserCaps } = opts
 
@@ -336,13 +325,9 @@ module.exports = function (opts = defautlOpts) {
 
   const { Element, Elements } = elementsInitializer(requests, client)
 
-  console.log(client.goTo)
-
   return {
     element: (...args) => new Element(...args),
     elements: (...args) => new Elements(...args),
     client
   }
 }
-// module.exports.initiatorInstance = Initiator
-// module.exports.browserInstance = Browser

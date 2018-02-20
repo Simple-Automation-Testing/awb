@@ -164,11 +164,8 @@ class ServerProvider {
 
         self.process.stderr.on('data', (data) => {
 
-          console.log('yyyyyy 1')
           const output = data.toString()
           self.output += output
-
-          console.log('yyyyyy 2', self.output)
 
           const isAddressInUse = this.output.includes(ALREADY_IN_USE)
           const isStarted = this.output.includes(START_SUCCESS_STACK)
