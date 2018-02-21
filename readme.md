@@ -54,11 +54,11 @@ describe('Google base example', () => {
   const resultSearch = element(resultsearch).waitForElement(1000) //lazy element with  expected condition
   const inputSearch = element(inputsearch)
   before(async () => {
-    await client.startSelenium()
+    await client.startDriver()
     await client.goTo(baseURL)
   })
   after(async () => {
-    await client.closeBrowser()
+    await client.stopDriver()
     await client.stopSelenium()
   })
   it('search git hub potapovDim', async () => {

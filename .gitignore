@@ -6,7 +6,7 @@ node_modules/
 chromedriver*
 drivers/procid
 geckodriver*
-standalone.jar*
+standalone.jar
 gecko*
 b.js
 c.js

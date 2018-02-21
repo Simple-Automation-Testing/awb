@@ -1,6 +1,6 @@
 {
     "name": "awb",
-    "version": "0.0.2",
+    "version": "0.0.4",
     "description": "simple light weight interface for selenium webdriver (node js)",
     "main": "./interface.js",
     "bin": {
@@ -102,7 +102,7 @@
         "integration-safari": "mocha --timeout 60000 $(find ./__specs__/integration/safari -path '*.spec.js')",
         "integration-safari:watch": "mocha --timeout 60000 -w $(find ./__specs__/integration/safari -path '*.spec.js')",
         "unit": "mocha --timeout 60000 -w $(find ./__specs__/units -path '*.spec.js')",
-        "google-exapmle": "mocha --timeout 10000 ./examples/google.example.js",
+        "google-exapmle": "mocha --timeout 15000 ./examples/google.example.js",
         "start-test-app": "NODE_ENV=test-app webpack-dev-server ./webpack.test.app.js",
         "kill-test-app": "kill $(ps aux | grep 'webpack' | awk '{print $2}')"
     }

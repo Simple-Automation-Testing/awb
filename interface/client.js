@@ -173,17 +173,17 @@ function initializatorClient(requests, opts) {
       await resizeWindow(this.sessionId, { width, height })
     }
 
-    async startSelenium() {
+    async startDriver() {
       const proc = await StartProvider(opts)
       this.seleniumProc = proc
     }
 
-    async switchToFrame(selector) {
-      const body = await toFrame(this.sessionId, selector)
+    async stopDriver() {
+      await WaitProviderStop(this.seleniumProc, process)
     }
 
-    async stopSelenium() {
-      await WaitProviderStop(this.seleniumProc, process)
+    async switchToFrame(selector) {
+      const body = await toFrame(this.sessionId, selector)
     }
 
     async getSession() {

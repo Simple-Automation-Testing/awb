@@ -7,7 +7,7 @@ index.html
 .babelrc
 style.css
 a.js
-standalone*
+standalone.jar
 chromedriver*
 geckodriver*
 test-app

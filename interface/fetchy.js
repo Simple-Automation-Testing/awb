@@ -1,7 +1,6 @@
 const fetch = require('node-fetch')
 
 async function _fetchy(method, timeout, url, body, opts) {
-
   opts = opts || {}
   const headers = opts.headers || {}
   if (method == "GET")

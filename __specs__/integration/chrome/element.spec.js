@@ -1,14 +1,20 @@
 const { expect } = require('chai')
+const fetchy = require('../../../interface/fetchy')
+const initializator = require('../../../interface/core')
 
-const { resizeWindow, initSession, killSession, findElements, findElement, goToUrl, getUrl } = require('../../../interface/core')
-
-const {
-  element, elementInstance: Element,
-  elements, elementsInstance: Elements
-} = require('../../../interface/element')
+const elementInitializer = require('../../../interface/element')
 
 
-describe.only('Element', () => {
+describe('Element', () => {
+
+  const baseRequest = {
+    get: fetchy.bind(fetchy, "GET", 'http://localhost:4444/wd/hub/', 1000),
+    post: fetchy.bind(fetchy, "POST", 'http://localhost:4444/wd/hub/', 1000),
+    put: fetchy.bind(fetchy, "PUT", 'http://localhost:4444/wd/hub/', 1000),
+    del: fetchy.bind(fetchy, "DELETE", 'http://localhost:4444/wd/hub/', 1000)
+  }
+  const wireJSONAPI = initializator(baseRequest)
+  const { resizeWindow, initSession, killSession, findElements, findElement, goToUrl, getUrl } = wireJSONAPI
   //parts
   let sessionId = null
   let elementButton = null
@@ -32,6 +38,10 @@ describe.only('Element', () => {
     const body = await initSession()
     expect(body.status).to.eql(0)
     expect(body.sessionId).to.be.exist
+    const {
+      Element
+    } = elementInitializer(wireJSONAPI, { sessionId: body.sessionId })
+    const element = (...args) => new Element(...args)
     sessionId = body.sessionId
     global.___sessionId = sessionId
     await goToUrl(sessionId, 'http://localhost:9090')

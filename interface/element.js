@@ -21,6 +21,7 @@ function elementsInitializer(requests, browser) {
       this.baseElement = baseElement
     }
 
+
     waitForElement(time) {
       const self = this
       return new Proxy(this, {
@@ -56,7 +57,7 @@ function elementsInitializer(requests, browser) {
                   if (isVisible) {
                     return present(self.sessionId, self.elementId)
                   } else {
-                    throw new InterfaceError(`element does not visible`, __filename)
+                    throw new InterfaceError(`${self.selector} element does not visible`, __filename)
                   }
                 }).then(({ value, status }) => {
                   return target[action](...args)
@@ -83,7 +84,7 @@ function elementsInitializer(requests, browser) {
                   if (isVisible) {
                     return target[action](...args)
                   } else {
-                    throw new InterfaceError(`element does not visible`, __filename)
+                    throw new InterfaceError(`${self.selector} element does not visible`, __filename)
                   }
                 })
             }
@@ -95,7 +96,7 @@ function elementsInitializer(requests, browser) {
     async clear() {
       this.sessionId = this.browserSessionId || global.___sessionId
       const { status, body } = await clearElementText(this.sessionId, this.elementId)
-      handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId, this.selector)
+      handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId, this.selector, body.value)
     }
 
     async waitForElementPresent(time) {
@@ -109,12 +110,12 @@ function elementsInitializer(requests, browser) {
         if (!this.baseElement.elementId) {
           await this.baseElement.getTthisElement()
           const { status, value: { ELEMENT } } = await elementFromElement(this.sessionId, this.baseElement.elementId, this.selector)
-          handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]]()
+          handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId, this.selector, ELEMENT)
           this.elementId = ELEMENT
         }
       } else {
         const { status, value: { ELEMENT } } = await findElement(this.sessionId, this.selector)
-        handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId)
+        handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId, this.selector, ELEMENT)
         this.elementId = ELEMENT
       }
     }
@@ -132,7 +133,7 @@ function elementsInitializer(requests, browser) {
           [WEB_EMENET_ID]: this.elementId
         })
 
-      handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId, this.selector)
+      handledErrors[STATUS_FROM_DRIVER[status]] && handledErrors[STATUS_FROM_DRIVER[status]](this.sessionId, this.selector, value)
 
       return value
     }

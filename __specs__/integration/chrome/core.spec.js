@@ -1,5 +1,8 @@
 const { expect } = require('chai')
 
+const fetchy = require('../../../interface/fetchy')
+const initializator = require('../../../interface/core')
+
 const { Keys } = require('../../../interface/event/keys')
 
 const SELENIUM_STATUSES = require('../../../interface/reponseSeleniumStatus')
@@ -14,6 +17,19 @@ const { getElementText, moveTo, mouseDown, elementFromElement, elementsFromEleme
 const { maximizeWindow, minimizeWindow, getScreenshot } = require('../../../interface/core')
 
 describe('core function positive scenario', () => {
+
+
+  const baseRequest = {
+    get: fetchy.bind(fetchy, "GET", 'http://localhost:4444/wd/hub/', 1000),
+    post: fetchy.bind(fetchy, "POST", 'http://localhost:4444/wd/hub/', 1000),
+    put: fetchy.bind(fetchy, "PUT", 'http://localhost:4444/wd/hub/', 1000),
+    del: fetchy.bind(fetchy, "DELETE", 'http://localhost:4444/wd/hub/', 1000)
+  }
+  const wireJSONAPI = initializator(baseRequest)
+  const { resizeWindow, initSession, killSession, findElements, findElement, goToUrl, clearElementText }      = wireJSONAPI
+  const { getTitle, clickElement, sendKeys, getAttribute, executeScript, sleep, syncWithDOM, getUrl }         = wireJSONAPI
+  const { getElementText, moveTo, mouseDown, elementFromElement, elementsFromElement, present, displayed }    = wireJSONAPI
+  const { maximizeWindow, minimizeWindow, getScreenshot, executeScriptAsync, setScriptTimeout }               = wireJSONAPI
   //test variables
   describe('positive', () => {
     let sessionId = null
@@ -34,6 +50,7 @@ describe('core function positive scenario', () => {
     before('get session', async () => {
       {
         const body = await initSession()
+        // console.log(body)
         expect(body.status).to.eql(0)
         expect(body.sessionId).to.be.exist
         sessionId = body.sessionId
@@ -517,7 +534,7 @@ describe('core function positive scenario', () => {
       }
     })
 
-    it('element disappears chrome', async () => {
+    it.skip('element disappears chrome', async () => {
       {
         await goToUrl(sessionId, unitURL1)
         await sleep(500)
