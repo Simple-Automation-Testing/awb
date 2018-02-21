@@ -59,7 +59,7 @@ describe('Google base example', () => {
   })
   after(async () => {
     await client.stopDriver()
-    await client.stopSelenium()
+    await client.stopDriver()
   })
   it('search git hub potapovDim', async () => {
     await inputSearch.sendKeys('git hub potapovDim')
@@ -83,8 +83,8 @@ describe('Google base example', () => {
     - [clear](#clear)
     - [getAll](#getall)
   * [waitForUrlIncludes](#waitforurlincludes)
-  * [startSelenium](#startselenium)
-  * [stopselenium](#stopselenium)
+  * [startDriver](#startdriver)
+  * [stopDriver](#stopdriver)
   * [switchToFrame](#switchtoframe)
   * [refresh](#refresh)
   * [back](#back)
@@ -132,8 +132,8 @@ describe('Google base example', () => {
    * config example, optional, this example config is default config
    */
   const defautlOpts = {
-    withStandalone: true, // if true will run selenium standalone server when call start startSelenium(), default true
-    remote: false, // if remote true startSelenium() will not work, default false
+    withStandalone: true, // if true will run selenium standalone server when call start startDriver(), default true
+    remote: false, // if remote true startDriver() will not work, default false
     directConnect: false, // if directConnect true directConnect() will run gecko or chrome driver without selenium standalone server, default false
     browser: 'chrome', // browser what will be runned
     host: 'localhost', // host, default 'localhost' or '127.0.0.1' or '0.0.0.0'
@@ -245,19 +245,19 @@ const token = await sessionStorage.get('token')
  return all sessionStorage data
  */
 ```
-## startSelenium
+## startDriver
 ```js
   const awb = require('awb')
   const {element, client: browser }= awb()
-  await browser.startSelenium()
+  await browser.startDriver()
   /* 
    * it will start selenium process 
    * if selenium standalone chromedriver geckdriver was install 
    * /
 ```
-## stopSelenium
+## stopDriver
 ```js
-  await browser.stopSelenium()
+  await browser.stopDriver()
   /* 
    * it will stop selenium process 
    * if it was runned by previous command
