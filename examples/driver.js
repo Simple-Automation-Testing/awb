@@ -1,3 +1,3 @@
-const awb = require('../interface')({ browser: 'chrome', directConnection: true })
+const awb = require('../awb')({ browser: 'chrome', directConnection: true })
 
 module.exports = awb
