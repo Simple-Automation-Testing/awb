@@ -1,5 +1,5 @@
-const { Keys } = require('./awb/event/keys')
-const awb = require('./awb/client')
+const { Keys } = require('./lib/event/keys')
+const awb = require('./lib/client')
 
 module.exports = awb
 module.exports.Keys = Keys
