@@ -18,8 +18,8 @@ describe('Google base example', () => {
   })
 
   after(async () => {
+    await browser.closeBrowser()
     await browser.stopDriver()
-    await browser.stopSelenium()
   })
 
   it('search git hub potapovDim', async () => {
