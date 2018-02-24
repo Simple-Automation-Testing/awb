@@ -23,6 +23,7 @@ describe('Google base example', () => {
   })
 
   it('search git hub potapovDim', async () => {
+    await googlePage.getElementRects()
     await googlePage.find('git hub potapovDim')
     expect(await googlePage.getResultSearchText()).to.includes('potapovDim')
   })

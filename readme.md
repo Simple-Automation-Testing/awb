@@ -109,6 +109,9 @@ describe('Google base example', () => {
 - [Element](#element)
   * [sendKeys](#sendkeys)
   * [cliear](#clear)
+  * [location](#location)
+  * [locationView](#locationview)
+  * [size](#size)
   * [getElementHTML](#getelementhtml)
   * [waitForElementPresent](#waitforelementpresent)
   * [waitForElementVisible](#waitforelementvisible)
@@ -423,6 +426,41 @@ const token = await sessionStorage.get('token')
   * args string or array string
   */
 ```
+## size
+```js
+  const awb = require('awb')
+  const {element, client: browser }= awb() 
+  const elementInput = element('input')
+
+  const {width, height} = await elementInput.size()
+  /* 
+  * return element`s width and height
+  */
+```
+
+## location
+```js
+  const awb = require('awb')
+  const {element, client: browser }= awb() 
+  const elementInput = element('input')
+
+  const {y, x} = await elementInput.location()
+  /* 
+  * return element`s start, x and y where element begins 
+  */
+```
+## location
+```js
+  const awb = require('awb')
+  const {element, client: browser }= awb() 
+  const elementInput = element('input')
+
+  const {x, y} = await elementInput.locationView()
+  /* 
+  * return element`s start, x and y where element begins in view port
+  */
+```
+
 ## clear
 ```js
   const awb = require('awb')
