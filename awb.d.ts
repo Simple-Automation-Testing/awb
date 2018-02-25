@@ -1,6 +1,23 @@
-export * from './lib/config';
-export * from './lib/event/Keys';
-export * from './lib/element'
+import { ElementAWB, ElementsAWB } from './lib/element'
+import { Client } from './lib/client'
+import { Config } from './lib/config'
 
-import { awb } from './lib/client'
-export default awb
+interface ElementInit {
+  (selector: string): ElementAWB;
+}
+
+interface ElementsInit {
+  (selector: string): ElementsAWB;
+}
+
+export = AWB;
+
+declare function AWB(conf: Config): { element: ElementInit, elements: ElementsInit, client: Client }
+
+declare namespace AWB {
+  export class Element extends ElementAWB {
+  }
+  export class Elements extends ElementsAWB {
+  }
+  export type Conf = Config
+}

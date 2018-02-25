@@ -58,7 +58,7 @@ describe('Google base example', () => {
     await client.goTo(baseURL)
   })
   after(async () => {
-    await client.stopDriver()
+    await client.closeBrowser()
     await client.stopDriver()
   })
   it('search git hub potapovDim', async () => {

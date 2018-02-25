@@ -1,10 +1,10 @@
-export class Element {
-  constructor(selector: string, sessionId: string | null, elementId: string | null, baseElement: Element)
+export declare class ElementAWB {
+  constructor(selector: string, sessionId: string | null, elementId: string | null, baseElement: ElementAWB)
 
-  waitForElement(time: number): ProxyHandler<Element>
-  waitForClicable(time: number): ProxyHandler<Element>
-  waitForElementVisible(time: number): ProxyHandler<Element>
-  waitForElementPresent(time: number): ProxyHandler<Element>
+  waitForElement(time: number): ElementAWB
+  waitForClicable(time: number): ElementAWB
+  waitForElementVisible(time: number): ElementAWB
+  waitForElementPresent(time: number): ElementAWB
 
   size(): Promise<{ width: number, height: number }>
   location(): Promise<{ x: number, y: number }>
@@ -12,8 +12,8 @@ export class Element {
   clear(): Promise<any>
   getElementHTML(): Promise<string>
   getText(): Promise<string>
-  element(selector: string): Element
-  elements(selector: string): Elements
+  element(selector: string): ElementAWB
+  elements(selector: string): ElementsAWB
   sendKeys(keys: string | Array<string>): Promise<any>
   getAttribute(attribute: string): Promise<string>
   click(): Promise<any>
@@ -23,12 +23,12 @@ export class Element {
 
 }
 
-export class Elements {
-  constructor(selector: string, sessionId: string | null, baseElement: Element)
+export declare class ElementsAWB {
+  constructor(selector: string, sessionId: string | null, baseElement: ElementAWB)
   get(index: number): Promise<Element>
   count(): Promise<number>
   filter(cb: Promise<any>): Promise<any>
   map(cb: Promise<any>): Promise<any>
   forEach(cb: Promise<any>): Promise<any>
-  waitForElements(time: number): ProxyHandler<Elements>
+  waitForElements(time: number): ProxyHandler<ElementsAWB>
 }

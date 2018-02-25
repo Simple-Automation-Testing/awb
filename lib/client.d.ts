@@ -1,4 +1,3 @@
-import { Element, Elements } from './element.d';
 import { Config } from './config'
 
 interface SessionLocalStorage {
@@ -36,13 +35,3 @@ declare class Client {
   switchToTab(index: number): Promise<any>
   closeBrowser(): Promise<any>
 }
-
-interface ElementInit {
-  (selector: string): Element;
-}
-
-interface ElementsInit {
-  (selector: string): Elements;
-}
-
-export function awb(opts: Config): { client: Client, element: ElementInit, elements: ElementsInit }
