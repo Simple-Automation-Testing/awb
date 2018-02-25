@@ -1,4 +1,6 @@
-export { Element, Elements } from './lib/element.d';
-export * from './lib/client'
-export * from './lib/event/keys'
-export * from './lib/config'
+export * from './lib/config';
+export * from './lib/event/Keys';
+export * from './lib/element'
+
+import { awb } from './lib/client'
+export default awb

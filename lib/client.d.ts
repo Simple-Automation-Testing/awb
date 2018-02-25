@@ -1,7 +1,6 @@
 import { Element, Elements } from './element.d';
 import { Config } from './config'
 
-
 interface SessionLocalStorage {
   get: (key: string) => Promise<string>
   set: (key: string, value: string) => Promise<any>
@@ -9,11 +8,11 @@ interface SessionLocalStorage {
   getAll: () => Promise<object>
 }
 
-class Client {
+declare class Client {
   constructor()
 
-  get sessionStorage(): SessionLocalStorage
-  get localStorage(): SessionLocalStorage
+  sessionStorage: SessionLocalStorage
+  localStorage: SessionLocalStorage
 
   refresh(): Promise<any>
   back(): Promise<any>
@@ -35,7 +34,7 @@ class Client {
   getBrowserTabs(): Promise<Array<string>>
   getCurrentBrowserTab(): Promise<string>
   switchToTab(index: number): Promise<any>
-  closeBrowser(): Promise
+  closeBrowser(): Promise<any>
 }
 
 interface ElementInit {
@@ -46,8 +45,4 @@ interface ElementsInit {
   (selector: string): Elements;
 }
 
-export default function (opts: Config): {
-  client: Client
-  element: ElementInit
-  elements: ElementsInit
-}
+export function awb(opts: Config): { client: Client, element: ElementInit, elements: ElementsInit }
