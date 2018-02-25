@@ -108,7 +108,7 @@ describe('Google base example', () => {
   * [get](#get)
 - [Element](#element)
   * [sendKeys](#sendkeys)
-  * [cliear](#clear)
+  * [clear](#clear)
   * [location](#location)
   * [locationView](#locationview)
   * [size](#size)
@@ -118,8 +118,8 @@ describe('Google base example', () => {
   * [waitForClicable](#waitForClicable)
   * [getText](#gettext)
   * [waitForElement](#waitforelement)
-  * [getElement](#getelement)
-  * [getElements](#getelements)
+  * [element](#element)
+  * [elements](#elements)
   * [getAttribute](#getattribute)
   * [click](#click)
   * [isPresent](#ispresent)
@@ -529,20 +529,20 @@ const token = await sessionStorage.get('token')
   * will wait for element visible in DOM node
   */
 ```
-## getElement
+## element
 ```js
   const awb = require('awb')
   const {element, client: browser }= awb() 
-  const elementSpan = element('div').getElement('span').getElement('a')
+  const elementSpan = element('div').element('span').element('a')
   /* 
   *  return element instanse
   */
 ```
-## getElements
+## elements
 ```js
   const awb = require('awb')
   const {element, client: browser }= awb() 
-  const elementsSpan = element('div').getElements('span')
+  const elementsSpan = element('div').elements('span')
   /* 
   *  return Elements instance
   */
@@ -551,7 +551,7 @@ const token = await sessionStorage.get('token')
 ```js
   const awb = require('awb')
   const {element, client: browser }= awb() 
-  const elementSpan = element('div').getElement('span')
+  const elementSpan = element('div').element('span')
   const style = await elementSpan.getAttribute('style')
   /*
   * args strin , value name , for example 'value', 'href', 'style' etc 
@@ -562,7 +562,7 @@ const token = await sessionStorage.get('token')
 ```js
   const awb = require('awb')
   const {element, client: browser }= awb() 
-  const elementSpan = element('div').getElement('span')
+  const elementSpan = element('div').element('span')
   await elementSpan.click()
   /*
   * triger click 
@@ -572,7 +572,7 @@ const token = await sessionStorage.get('token')
 ```js
   const awb = require('awb')
   const {element, client: browser }= awb() 
-  const elementSpan = element('div').getElement('span')
+  const elementSpan = element('div').element('span')
   const present = await elementSpan.isPresent()
   /*
   * return true if element mounted to DOM
@@ -583,7 +583,7 @@ const token = await sessionStorage.get('token')
 ```js
   const awb = require('awb')
   const {element, client: browser }= awb() 
-  const elementSpan = element('div').getElement('span')
+  const elementSpan = element('div').element('span')
   const display = await elementSpan.isDisplayed()
   /*
   * return true if visible and in view port
@@ -594,7 +594,7 @@ const token = await sessionStorage.get('token')
 ```js
   const awb = require('awb')
   const {element, client: browser }= awb() 
-  const elementSpan = element('div').getElement('span')
+  const elementSpan = element('div').element('span')
   await elementSpan.toElement()
   /*
   * will scroll view port to element 
@@ -604,7 +604,7 @@ const token = await sessionStorage.get('token')
 ```js
   const awb = require('awb')
   const {element, client: browser }= awb() 
-  const elementSpan = element('div').getElement('span')
+  const elementSpan = element('div').element('span')
   await elementSpan.mouseDownAndMove({x: 100, y: 0})
   /*
   * args object with x and y 
