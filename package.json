@@ -14,6 +14,7 @@
         "name": "Potapov Dmytro",
         "url": "https://github.com/potapovDim"
     },
+    "typings": "awb.d.ts",
     "keywords": [
         "nodejs",
         "selenium",
