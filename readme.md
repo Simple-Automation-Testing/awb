@@ -88,6 +88,7 @@ describe('Google base example', () => {
   * [switchToFrame](#switchtoframe)
   * [refresh](#refresh)
   * [back](#back)
+  * [getSize](#getsize)
   * [forward](#forward)
   * [goTo](#goto)
   * [closeCurrentTab](#closecurrenttab)
@@ -106,6 +107,7 @@ describe('Google base example', () => {
   * [forEach](#foreach)
   * [filter](#filter)
   * [get](#get)
+  * [count](#count)
 - [Element](#element)
   * [sendKeys](#sendkeys)
   * [clear](#clear)
@@ -174,6 +176,17 @@ describe('Google base example', () => {
   const el = element('.test.class')
   await el.sendKeys('test name', browser.Keys.ENTER) // for submit
 ```
+## getSize
+```js
+  const awb = require('awb')
+  const {element, client: browser }= awb()
+  const size = browser.getSize() //{ height: 983, width: 1200 } for example
+  /* 
+   * any args
+   * return current window size {height: number, width: number}
+   */
+```
+##
 ## localStorage
 ```js
   const awb = require('awb')
@@ -667,6 +680,15 @@ const token = await sessionStorage.get('token')
   * does not return 
   * /
 ```
+### count
+```js
+  const awb = require('awb')
+  const {element, elements, client: browser }= awb()
+  const elementsCount = await elements('span').count()
+  /* 
+  * return elements quantity, return number
+  * /
+```
 ### filter
 ```js
   const awb = require('awb')
@@ -687,7 +709,7 @@ const token = await sessionStorage.get('token')
   const awb = require('awb')
   const {element, elements, client: browser }= awb() 
   const elementsSpan = elements('span')
-  const elementWithText = await elementsSpan.get(0)
+  const elementWithText = elementsSpan.get(3)
   await elementWithText.getText()
   /* 
   * args index number

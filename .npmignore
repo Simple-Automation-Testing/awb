@@ -5,7 +5,7 @@ src
 .vscode
 index.html
 .babelrc
-style.css
+*.css
 a.js
 standalone.jar
 chromedriver*

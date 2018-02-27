@@ -13,6 +13,7 @@ declare class Client {
   sessionStorage: SessionLocalStorage
   localStorage: SessionLocalStorage
 
+  getSize(): Promise<{ height: number, width: number }>
   refresh(): Promise<any>
   back(): Promise<any>
   forward(): Promise<any>

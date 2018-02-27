@@ -5,11 +5,16 @@ class Google {
     this.submitSearch = element('body').element('.tsf-p').element('[name="btnK"]').waitForClicable(1000)
     this.inputSearch = element('#lst-ib')
     this.resultSearch = element('#ires .g').waitForElementVisible(1000)
+    this.input4 = elements('input').get(4)
   }
 
   async find(value) {
     await this.inputSearch.sendKeys(value, /*Keys.ESCAPE */)
     await this.submitSearch.click()
+  }
+
+  async getSome() {
+    console.log(await this.input4.getElementHTML())
   }
 
   async getElementRects() {

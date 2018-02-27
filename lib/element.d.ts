@@ -20,15 +20,14 @@ export declare class ElementAWB {
   toElement(): Promise<any>
   isDisplayed(): Promise<boolean>
   mouseDownAndMove(position: { x: number, y: number }): Promise<any>
-
 }
 
 export declare class ElementsAWB {
   constructor(selector: string, sessionId: string | null, baseElement: ElementAWB)
-  get(index: number): Promise<Element>
+  get(index: number): ElementAWB
   count(): Promise<number>
   filter(cb: Promise<any>): Promise<any>
   map(cb: Promise<any>): Promise<any>
   forEach(cb: Promise<any>): Promise<any>
-  waitForElements(time: number): ProxyHandler<ElementsAWB>
+  waitForElements(time: number): ElementsAWB
 }

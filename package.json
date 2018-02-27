@@ -1,6 +1,6 @@
 {
     "name": "awb",
-    "version": "0.1.6",
+    "version": "0.1.9",
     "description": "simple light weight interface for selenium webdriver (node js)",
     "main": "./awb.js",
     "bin": {
@@ -63,5 +63,9 @@
         "google-exapmle": "mocha --timeout 15000 ./examples/google.example.js",
         "start-test-app": "NODE_ENV=test-app webpack-dev-server ./webpack.test.app.js",
         "kill-test-app": "kill $(ps aux | grep 'webpack' | awk '{print $2}')"
+    },
+    "devDependencies": {
+        "chai": "^4.1.2",
+        "mocha": "^5.0.1"
     }
 }
