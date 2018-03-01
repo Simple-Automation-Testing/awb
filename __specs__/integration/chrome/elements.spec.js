@@ -1,10 +1,10 @@
 const { expect } = require('chai')
-const fetchy = require('../../../interface/fetchy')
-const initializator = require('../../../interface/core')
+const fetchy = require('../../../lib/fetchy')
+const initializator = require('../../../lib/core')
 
-const elementInitializer = require('../../../interface/element')
+const elementInitializer = require('../../../lib/element')
 
-describe('Elements', () => {
+describe.skip('Elements', () => {
   const baseRequest = {
     get: fetchy.bind(fetchy, "GET", 'http://localhost:4444/wd/hub/', 1000),
     post: fetchy.bind(fetchy, "POST", 'http://localhost:4444/wd/hub/', 1000),

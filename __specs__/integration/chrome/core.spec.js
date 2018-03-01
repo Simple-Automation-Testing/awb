@@ -1,29 +1,24 @@
 const { expect } = require('chai')
 
-const fetchy = require('../../../interface/fetchy')
-const initializator = require('../../../interface/core')
+const fetchy = require('../../../lib/fetchy')
+const initializator = require('../../../lib/core')
 
-const { Keys } = require('../../../interface/event/keys')
+const { Keys } = require('../../../lib/event/keys')
 
-const SELENIUM_STATUSES = require('../../../interface/responseSeleniumStatus')
+const SELENIUM_STATUSES = require('../../../lib/responseSeleniumStatus')
 
-const { defaultFirefoxCapabilities, defaultSafariCapabilities } = require('../../../interface/capabilitiesAndBaseOpts')
+const { defaultFirefoxCapabilities, defaultSafariCapabilities } = require('../../../lib/capabilitiesAndBaseOpts')
 
-const { InterfaceError } = require('../../../interface/interfaceError')
+const { InterfaceError } = require('../../../lib/interfaceError')
 
-const { resizeWindow, initSession, killSession, findElements, findElement, goToUrl, getUrl, setScriptTimeout } = require('../../../interface/core')
-const { getTitle, clickElement, sendKeys, getAttribute, executeScript, sleep, syncWithDOM, clearElementText } = require('../../../interface/core')
-const { getElementText, moveTo, mouseDown, elementFromElement, elementsFromElement, present, displayed, executeScriptAsync } = require('../../../interface/core')
-const { maximizeWindow, minimizeWindow, getScreenshot } = require('../../../interface/core')
-
-describe('core function positive scenario', () => {
+describe.only('core function positive scenario', () => {
 
 
   const baseRequest = {
-    get: fetchy.bind(fetchy, "GET", 'http://localhost:4444/wd/hub/', 1000),
-    post: fetchy.bind(fetchy, "POST", 'http://localhost:4444/wd/hub/', 1000),
-    put: fetchy.bind(fetchy, "PUT", 'http://localhost:4444/wd/hub/', 1000),
-    del: fetchy.bind(fetchy, "DELETE", 'http://localhost:4444/wd/hub/', 1000)
+    get: fetchy.bind(fetchy, "GET", 'http://localhost:4444/wd/hub/', 5000),
+    post: fetchy.bind(fetchy, "POST", 'http://localhost:4444/wd/hub/', 5000),
+    put: fetchy.bind(fetchy, "PUT", 'http://localhost:4444/wd/hub/', 5000),
+    del: fetchy.bind(fetchy, "DELETE", 'http://localhost:4444/wd/hub/', 5000)
   }
   const wireJSONAPI = initializator(baseRequest)
   const { resizeWindow, initSession, killSession, findElements, findElement, goToUrl, clearElementText }      = wireJSONAPI

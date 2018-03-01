@@ -1,7 +1,7 @@
 // const { expect } = require('chai')
 
-// const client = require('../../../interface/client')
-// const { element, elements } = require('../../../interface/element')
+// const client = require('../../../lib/client')
+// const { element, elements } = require('../../../lib/element')
 // const { fakeServer } = require('../../util')
 
 // describe('client chrome', () => {
