@@ -110,6 +110,7 @@ describe('Google base example', () => {
   * [count](#count)
 - [Element](#element)
   * [sendKeys](#sendkeys)
+  * [getRect](#getrect)
   * [clear](#clear)
   * [location](#location)
   * [locationView](#locationview)
@@ -451,6 +452,18 @@ const token = await sessionStorage.get('token')
   */
 ```
 
+## getRect
+```js
+  const awb = require('awb')
+  const {element, client: browser }= awb() 
+  const elementInput = element('input')
+
+  const {width, height, x, y } = await elementInput.getRect()
+  /* 
+  * return element`s width and height, and location x, y
+  */
+```
+
 ## location
 ```js
   const awb = require('awb')
@@ -462,7 +475,7 @@ const token = await sessionStorage.get('token')
   * return element`s start, x and y where element begins 
   */
 ```
-## location
+## locationView
 ```js
   const awb = require('awb')
   const {element, client: browser }= awb() 
