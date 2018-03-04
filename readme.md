@@ -86,6 +86,7 @@ describe('Google base example', () => {
   * [startDriver](#startdriver)
   * [stopDriver](#stopdriver)
   * [switchToFrame](#switchtoframe)
+  * [switchBack](#switchback)
   * [refresh](#refresh)
   * [back](#back)
   * [getSize](#getsize)
@@ -304,6 +305,17 @@ const token = await sessionStorage.get('token')
   await browser.switchToFrame('#myFrame')
   /* 
    * arg css selector (id , class or some atribute)
+   * / 
+```
+## switchBack
+```js 
+  const awb = require('awb')
+  const {element, client: browser }= awb()
+  await browser.switchToFrame('#myFrame')
+  // do some action with elements with frame
+  await browser.switchBack()
+  /* 
+   * return to initial context
    * / 
 ```
 ## refresh

@@ -34,5 +34,6 @@ declare class Client {
   getBrowserTabs(): Promise<Array<string>>
   getCurrentBrowserTab(): Promise<string>
   switchToTab(index: number): Promise<any>
+  switchBack(): Promise<any>
   closeBrowser(): Promise<any>
 }
