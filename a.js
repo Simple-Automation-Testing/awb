@@ -1,4 +1,19 @@
-const url = require('url')
+function name(params) {
+  this.runSomeIssue()
+}
 
-console.log(url.resolve('https://weblium.com/', ''))
+class XXXX {
+  constructor() {
+    this.aaaa = 'xxxxx'
+  }
 
+  runSomeIssue() {
+    console.log('aaaaaa,dsadsadsadsa')
+  }
+}
+
+
+const a = new XXXX()
+
+
+name.apply(a)
