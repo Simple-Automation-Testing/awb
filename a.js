@@ -1,19 +1,6 @@
-function name(params) {
-  this.runSomeIssue()
-}
 
-class XXXX {
-  constructor() {
-    this.aaaa = 'xxxxx'
-  }
-
-  runSomeIssue() {
-    console.log('aaaaaa,dsadsadsadsa')
-  }
-}
+const arr = [1, 2, 3, 4, 56, 6, 76,]
 
 
-const a = new XXXX()
-
-
-name.apply(a)
+const b = ['x', 'y', ...arr]
+console.log(b)

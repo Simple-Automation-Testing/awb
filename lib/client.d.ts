@@ -28,12 +28,12 @@ declare class Client {
   executeScript(): Promise<any>
   executeScriptAsync(): Promise<any>
   getUrl(): Promise<string>
-  sleep(): Promise<any>
+  sleep(time?: number): Promise<any>
   getTitle(): Promise<string>
   goTo(url: string): Promise<any>
   getBrowserTabs(): Promise<Array<string>>
   getCurrentBrowserTab(): Promise<string>
   switchToTab(index: number): Promise<any>
   switchBack(): Promise<any>
-  closeBrowser(): Promise<any>
+  close(): Promise<any>
 }

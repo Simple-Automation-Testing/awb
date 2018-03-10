@@ -12,7 +12,7 @@ interface ElementsInit {
 
 export = AWB;
 
-declare function AWB(conf: Config): { element: ElementInit, elements: ElementsInit, client: Client }
+declare function AWB(conf?: Config): { element: ElementInit, elements: ElementsInit, client: Client }
 
 declare namespace AWB {
   export class Element extends ElementAWB {
