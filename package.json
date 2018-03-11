@@ -1,6 +1,6 @@
 {
     "name": "awb",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "simple light weight interface for selenium webdriver (node js)",
     "main": "./awb.js",
     "bin": {
@@ -23,7 +23,8 @@
         "automation-testing",
         "wd-interface",
         "browser-automation-testing",
-        "testing"
+        "testing",
+        "awb"
     ],
     "tags": [
         "nodejs",
