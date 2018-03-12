@@ -18,7 +18,7 @@ describe('Google base example', () => {
   })
 
   after(async () => {
-    await browser.closeBrowser()
+    await browser.close()
     await browser.stopDriver()
   })
 

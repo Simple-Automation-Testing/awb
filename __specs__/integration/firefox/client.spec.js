@@ -32,7 +32,7 @@ describe('firefox', () => {
   })
 
   afterEach(async () => {
-    await browser.closeBrowser()
+    await browser.close()
   })
 
   it('send case', async () => {
