@@ -103,6 +103,10 @@ describe('Google base example', () => {
   * [sleep](#sleep)
   * [getUrl](#geturl)
 - [Elements](#elements)
+  * [elements.css](#element.css)
+  * [elements.xpath](#element.xpath)
+  * [elements.id](#element.id)
+  * [elements.id](#element.accessibilityId)
   * [waitForElements](#waitforelements)
   * [map](#map)
   * [forEach](#foreach)
@@ -110,6 +114,10 @@ describe('Google base example', () => {
   * [get](#get)
   * [count](#count)
 - [Element](#element)
+  * [element.css](#element.css)
+  * [element.xpath](#element.xpath)
+  * [element.id](#element.id)
+  * [element.id](#element.accessibilityId)
   * [sendKeys](#sendkeys)
   * [getRect](#getrect)
   * [clear](#clear)
@@ -442,6 +450,33 @@ const token = await sessionStorage.get('token')
   * args css selector for example '#id', '[name="name"]', '.class'
   */
 ```
+## element.css
+```js
+  const awb = require('awb')
+  const {element, client: browser }= awb()
+  const elementDiv = element.css('div') //args css selector for example '#id', '[name="name"]', '.class'
+  /*
+  * args css selector for example '#id', '[name="name"]', '.class'
+  */
+```
+## element.xpath
+```js
+  const awb = require('awb')
+  const {element, client: browser }= awb()
+  const elementDiv = element.xpath('/html/body/div')
+  /*
+  * args xpath
+  */
+```
+## element.id
+```js
+  const awb = require('awb')
+  const {element, client: browser }= awb()
+  const elementDiv = element.id('uniq-id')
+  /*
+  * args element id
+  */
+```
 ## sendKeys
 ```js
   const awb = require('awb')
@@ -585,6 +620,15 @@ const token = await sessionStorage.get('token')
   *  return Elements instance
   */
 ```
+## elements.css
+```js
+  const awb = require('awb')
+  const {element, client: browser }= awb()
+  const elementsSpan = element('div').elements('span')
+  /*
+  *  return Elements instance
+  */
+```
 ## getAttribute
 ```js
   const awb = require('awb')
@@ -654,13 +698,30 @@ const token = await sessionStorage.get('token')
 ```js
   const awb = require('awb')
   const {element, elements, client: browser }= awb()
+  // by css selector
+  const elementsSpan = elements('span')// work the same as element.css
+ /*
+  *  return array Element instaces
+  */
+```
+## elements.css
+```js
+  const awb = require('awb')
+  const {element, elements, client: browser }= awb()
   const elementDiv = elements('div')
   // by css selector
-  const elementsSpan = elements('span')
-  // by xpath
-  const elementsDiv = elements('xpath: /html/body/div[1]/div/div/div/div[1]/div[2]/div[2]/div/div')
+  const elementsSpan = elements.css('span') // will find element by css selector
  /*
-  *  args css selector for example '#id', '[name="name"]', '.class' or xpath format xpath: /html/body/div (for example)
+  *  return array Element instaces
+  */
+```
+## elements.xpath
+```js
+  const awb = require('awb')
+  const {element, elements, client: browser }= awb()
+  // by css selector
+  const elementsDiv = elements.xpath('/html/body/div') // will find element by xpath
+ /*
   *  return array Element instaces
   */
 ```

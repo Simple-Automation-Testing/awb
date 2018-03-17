@@ -1,3 +1,15 @@
+declare function elementFn(): ElementAWB
+elementFn.css = () => ElementAWB
+elementFn.xpath = () => ElementAWB
+elementFn.id = () => ElementAWB
+elementFn.assesabilityId = () => ElementAWB
+
+declare function elementsFn(): ElementAWB
+elementsFn.css = () => ElementsAWB
+elementsFn.xpath = () => ElementsAWB
+elementsFn.id = () => ElementsAWB
+elementsFn.assesabilityId = () => ElementsAWB
+
 export declare class ElementAWB {
   constructor(selector: string, sessionId: string | null, elementId: string | null, baseElement: ElementAWB)
 
@@ -12,7 +24,8 @@ export declare class ElementAWB {
   clear(): Promise<any>
   getElementHTML(): Promise<string>
   getText(): Promise<string>
-  element(selector: string): ElementAWB
+  element = elementFn
+  element = elementsFn
   elements(selector: string): ElementsAWB
   sendKeys(keys: string | Array<string>): Promise<any>
   getAttribute(attribute: string): Promise<string>
