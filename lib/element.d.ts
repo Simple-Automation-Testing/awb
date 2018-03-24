@@ -24,8 +24,8 @@ export declare class ElementAWB {
   clear(): Promise<any>
   getElementHTML(): Promise<string>
   getText(): Promise<string>
-  element = elementFn
-  element = elementsFn
+  element: elementFn
+  element: elementsFn
   elements(selector: string): ElementsAWB
   sendKeys(keys: string | Array<string>): Promise<any>
   getAttribute(attribute: string): Promise<string>
