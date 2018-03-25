@@ -252,7 +252,7 @@ describe.only('core function positive scenario', () => {
           })
           return elValue
         })
-        console.log(body)
+
         expect(body.status).to.eql(0)
         expect(body.sessionId).to.eql(sessionId)
         expect(body.value).to.be.exist
