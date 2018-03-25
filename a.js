@@ -1,20 +1,15 @@
-function spawnStandalone() {
-  const stPath = 'C:/Users/IEUser/Downloads/selenium-server-standalone-3.11.0.jar'
-  const iePath = 'C:/Users/IEUser/Downloads/IEDriverServer.exe'
-  return new Promise((resolve, reject) => {
-    try {
-      const nodeProc = spawn('java', [
-        `-Dwebdriver.ie.driver=${iePath}`,
-        '-jar',
-        `${stPath}`,
-        '-port',
-        '10259'
-      ], {
-          stdio: ['pipe', process.stdout, process.stderr]
-        })
-      resolve(nodeProc)
-    } catch (error) {
-      console.error(error.toString())
+function bbb(...args) {
+  function aaa(...args) {
+    if(typeof args[args.length - 1] === 'function') {
+      args[args.length - 1]()
     }
-  })
+    console.log(args)
+  }
+  aaa(...args)
 }
+
+function x () {
+  console.log('XXXX')
+}
+
+bbb(1, 2, 3, 4, x)
