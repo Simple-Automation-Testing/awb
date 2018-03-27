@@ -18,7 +18,8 @@ declare class Client {
   back(): Promise<any>
   forward(): Promise<any>
   takeScreenshot(): Promise<string>
-  waitForUrlIncludes(): Promise<any>
+  waitForUrlIncludes(): Promise<void>
+  waitForTitleInclude(): Promise<void>
   resizeWindow(): Promise<any>
   startDriver(): Promise<any>
   stopDriver(): Promise<any>

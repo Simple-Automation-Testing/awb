@@ -10,8 +10,8 @@ export declare function assertObject(arg: any): boolean
 
 export declare function waitCondition(
   conditionFn: Promise,
-  time: number,
-  conditionTarget: Function | boolean
+  conditionTarget: Function | boolean,
+  time: number
 ): Promise<boolean>
 
 export declare function waitElementPresent(

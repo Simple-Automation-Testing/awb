@@ -17,7 +17,7 @@ export declare class ElementAWB {
   waitForClicable(time: number): ElementAWB
   waitForElementVisible(time: number): ElementAWB
   waitForElementPresent(time: number): ElementAWB
-
+  waitUntilDisappear(time: number): Promise<void>
   size(): Promise<{ width: number, height: number }>
   location(): Promise<{ x: number, y: number }>
   locationView(): Promise<{ x: number, y: number }>
