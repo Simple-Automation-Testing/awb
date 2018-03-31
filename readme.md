@@ -49,7 +49,7 @@ describe('Google base example', () => {
   const inputsearch = '#lst-ib'
   const resultsearch = '#ires .g'
   //elements
-  const submitSearch = element(submitsearch).waitForClicable(1000) //lazy element with  expected condition
+  const submitSearch = element(submitsearch).waitForClickable(1000) //lazy element with  expected condition
   const resultSearch = element(resultsearch).waitForElement(1000) //lazy element with  expected condition
   const inputSearch = element(inputsearch)
   before(async () => {
@@ -128,7 +128,7 @@ describe('Google base example', () => {
   * [getElementHTML](#getelementhtml)
   * [waitForElementPresent](#waitforelementpresent)
   * [waitForElementVisible](#waitforelementvisible)
-  * [waitForClicable](#waitForClicable)
+  * [waitForClickable](#waitforclickable)
   * [waitUntilDisappear](#waituntildisappear)
   * [getText](#gettext)
   * [waitForElement](#waitforelement)
@@ -596,11 +596,11 @@ const token = await sessionStorage.get('token')
   * will wait for element mount to DOM node
   */
 ```
-## waitForClicable
+## waitForClickable
 ```js
   const awb = require('awb')
   const {element, client }= awb()
-  const elementDiv = element('div').waitForClicable(1000)
+  const elementDiv = element('div').waitForClickable(1000)
   /*
   * will wait for element mount to DOM node
   */

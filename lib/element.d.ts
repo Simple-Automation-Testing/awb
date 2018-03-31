@@ -14,7 +14,7 @@ export declare class ElementAWB {
   constructor(selector: string, sessionId: string | null, elementId: string | null, baseElement: ElementAWB)
 
   waitForElement(time: number): ElementAWB
-  waitForClicable(time: number): ElementAWB
+  waitForClickable(time: number): ElementAWB
   waitForElementVisible(time: number): ElementAWB
   waitForElementPresent(time: number): ElementAWB
   waitUntilDisappear(time: number): Promise<void>
