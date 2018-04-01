@@ -130,6 +130,7 @@ describe('Google base example', () => {
   * [getElementHTML](#getelementhtml)
   * [waitForElementPresent](#waitforelementpresent)
   * [waitForElementVisible](#waitforelementvisible)
+  * [wait](#wait)
   * [waitForClickable](#waitforclickable)
   * [waitUntilDisappear](#waituntildisappear)
   * [getText](#gettext)
@@ -598,6 +599,16 @@ const token = await sessionStorage.get('token')
   * will wait for element mount to DOM node
   */
 ```
+## wait
+```js
+const awb = require('awb')
+const {element, client }= awb()
+const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==='test')
+  /*
+  * will wait for element mount to DOM node
+  */
+```
+
 ## waitForClickable
 ```js
   const awb = require('awb')
