@@ -4,7 +4,9 @@ UI automated testing framework powered by [Node.js](http://nodejs.org/).
 Uses the [Selenium WebDriver API](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol).
 Uses the [ChromeDriver API](https://chromium.googlesource.com/chromium/src/+/master/docs/chromedriver_status.md)
 
-Base: lazy elements, chrome driver dirrect connection, own standalone server and chrome driver installer
+Base: lazy elements, chrome driver dirrect connection, own standalone server, chrome and gecko driver installer
+
+![npm downloads](https://img.shields.io/npm/dm/awb.svg?style=flat-square)
 
 Install [Node.js](http://nodejs.org/) and install framework
 ```sh
