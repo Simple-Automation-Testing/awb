@@ -1,99 +1,79 @@
-// const { expect } = require('chai')
+const {expect} = require('chai')
 
-// const client = require('../../../lib/client')
-// const { element, elements } = require('../../../lib/element')
-// const { fakeServer } = require('../../util')
+const awb = require('../../../awb')
 
-// describe('client chrome', () => {
+const {element, elements, client} = awb()
 
-//   let browser = null
+const pathResolver = (name) => {
+  const resolvedPath = require('path').resolve(__dirname, `../../spec_utils/${name}.html`)
+  return `file://${resolvedPath}`
+}
 
-//   const baseURL = 'http://localhost:9090'
-//   const addnewname = 'button'
-//   const dropzone = '.dropzone'
-//   const dropitem = '.dropitem'
-//   const firstname = '[placeholder="firstname"]'
-//   const dispaynonediv = '.not.displayed'
-//   const bottomdiv = '.bottom.div'
-//   const openframe = '.frame-open-button'
-//   const playbutton = '.ytp-large-play-button.ytp-button'
+describe('client chrome', () => {
+  before(async () => {
+    await client.startDriver()
+  })
 
-//   const elementDropZone = element(dropzone)
-//   const elementInput = element(firstname)
-//   const elementBottomDiv = element(bottomdiv)
-//   const elementDisplayNoneDiv = element(dispaynonediv)
-//   const elementOpenFrame = element(openframe)
-//   const playButton = element(playbutton)
+  after(async () => {
+    await client.close()
+    await client.stopDriver()
+  })
 
-//   before(async () => {
-//     // fakeServer.start()
-//     browser = client().chrome(false, {
-//       'request': 1000,
-//       // 'page load': 1
-//     })
-//     // await browser.startSelenium()
-//   })
+  it('clicker', async () => {
+    const file = 'clicker'
+    await client.goTo(pathResolver(file))
+    const clicker = element('#test_button')
+    const spanArr = elements('span')
+    await clicker.click()
+    expect(await spanArr.count()).to.eql(1)
+    await clicker.click()
+    expect(await spanArr.count()).to.eql(2)
+  })
 
-//   after(async () => {
-//     // await browser.stopSelenium()
-//     // fakeServer.stop()
-//   })
+  it('input', async () => {
+    const file = 'input'
+    await client.goTo(pathResolver(file))
+    const input = element('input')
+    await input.sendKeys('test1')
+    expect(await input.getAttribute('value')).to.eql('test1')
+    await element('body').click()
+    const spanArr = elements('span')
+    expect(await spanArr.count()).to.eql(1)
+  })
 
-//   beforeEach(async () => {
+  it('execute script', async () => {
+    const file = 'clicker'
+    const clicker = element('#test_button')
+    await client.goTo(pathResolver(file))
+    await clicker.click()
+    await clicker.click()
 
-//     expect(browser.sessionId).to.eql(null)
-//     expect(global.__sessionId).to.eql(undefined)
-//     await browser.goTo(baseURL)
-//     expect(browser.sessionId).to.be.exist
-//     expect(browser.sessionId).to.not.null
-//     expect(browser.sessionId).to.not.undefined
-//   })
+    const res = await client.executeScript(function() {
+      return document.querySelectorAll('span').length
+    })
+    expect(res).to.eql(2)
+    const res1 = await client.executeScript(`
+      const text = arguments[0]
+      let condition = true
+      const spanArr = document.querySelectorAll('span').length
+      const emptyArr = []
+      emptyArr.forEach.call(spanArr, (el) =>{
+        if(el.innerText !== text) {
+          condition = false
+        }
+      })
+      return condition
+    `, 'test')
+    expect(res1).to.eql(true)
+  })
 
-//   afterEach(async () => {
-//     await browser.close()
-//   })
-
-//   it('send case', async () => {
-//     const inputValue = '!#!#!@#!'
-//     {
-//       const body = await elementInput.sendKeys(inputValue)
-//     }
-//     {
-//       const value = await elementInput.getAttribute('value')
-//       expect(value).to.be.exist
-//       expect(value).to.eql(inputValue)
-//     }
-//   })
-
-//   it('get title and url', async () => {
-//     {
-//       const currentUrl = await browser.getUrl()
-//       expect(currentUrl).to.eql(`${baseURL}/`)
-//     }
-//   })
-
-//   it.skip('execute async script', async () => {
-//     {
-//       const val = await browser.executeScriptAsync(
-//         function (callback) {
-//           fetch('http://localhost:8085/bar', {
-//             node: 'no-cors'
-//           }).then(resp => resp.json()).then(callback)
-//         })
-//       expect(val).to.eql({ bar: 'bar' })
-//     }
-//   })
-//   /*
-//       it('to frame', async () => {
-//         await elementOpenFrame.click()
-//         await browser.switchToFrame('#myId')
-//         await browser.sleep(1500)
-  
-//         await elements(playbutton).get(0)
-//         // await browser.sleep(10000)
-//       })
-//   */
-
-  
-// })
+  it('appear', async () => {
+    const file = 'appear'
+    const clicker = element('#test_button')
+    const link = element('a').waitForElement(1700)
+    await client.goTo(pathResolver(file))
+    await clicker.click()
+    expect(await link.isDisplayed()).to.eql(true)
+  })
+})
 
