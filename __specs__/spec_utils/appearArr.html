@@ -11,10 +11,15 @@
     <button id="test_button" onclick="init()">Test button</button>
   </div>
   <script>
-    const a = document.createElement('a')
     function aaa() {
       let i = 10
       while(i > 1) {
+        const a = document.createElement('a')
+        a.style = "height:15px;background:red;"
+        console.log(i)
+        if(i === 7) {
+          a.innerText = 'Super link'
+        }
         document.body.appendChild(a)
         i--
       }

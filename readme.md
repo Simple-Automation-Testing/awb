@@ -105,7 +105,7 @@ describe('Google base example', () => {
   * [getclientTabs](#getclienttabs)
   * [sleep](#sleep)
   * [getUrl](#geturl)
-- [Elements](#elements)
+- [Elements](#elements) alias is $$
   * [elements.css](#element.css)
   * [elements.xpath](#element.xpath)
   * [elements.id](#element.id)
@@ -116,7 +116,7 @@ describe('Google base example', () => {
   * [filter](#filter)
   * [get](#get)
   * [count](#count)
-- [Element](#element)
+- [Element](#element) alias is $
   * [element.css](#element.css)
   * [element.xpath](#element.xpath)
   * [element.id](#element.id)

@@ -2,7 +2,7 @@ const {expect} = require('chai')
 
 const awb = require('../../../awb')
 
-const {element, elements, client} = awb()
+const {element, elements, $, $$, client} = awb()
 
 const pathResolver = (name) => {
   const resolvedPath = require('path').resolve(__dirname, `../../spec_utils/${name}.html`)
@@ -90,7 +90,7 @@ describe('client chrome', () => {
     expect(time).to.not.eq(0)
   })
 
-  it('wait', async () => {
+  it('wait cb', async () => {
     const file = 'wait'
     const clicker = element('#test_button')
       .wait(1000, async (el) => await el.isDisplayed() === true)
@@ -104,6 +104,13 @@ describe('client chrome', () => {
     const links = elements('a').waitForElements(15000)
     await client.goTo(pathResolver(file))
     expect(await links.count()).to.not.eq(0)
+  })
+
+  it('wait arr cb ', async () => {
+    const file = 'appearArr'
+    const link = elements('a').wait(15000, async (els) => await els.count() > 7).get(3)
+    await client.goTo(pathResolver(file))
+    expect(await link.getText()).to.eq('Super link')
   })
 })
 
