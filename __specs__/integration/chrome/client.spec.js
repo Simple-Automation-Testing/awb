@@ -75,5 +75,22 @@ describe('client chrome', () => {
     await clicker.click()
     expect(await link.isDisplayed()).to.eql(true)
   })
+
+  it('disappear', async () => {
+    const file = 'disappear'
+    const clicker = element('#test_button')
+    await client.goTo(pathResolver(file))
+    try {
+      await clicker.waitUntilDisappear(1000)
+    } catch(error) {
+      expect(error.toString().includes('still present on page'))
+    }
+    const time = await clicker.waitUntilDisappear(5000)
+
+    expect(time).to.not.eq(0)
+
+    // await clicker.click()
+    // expect(await link.isDisplayed()).to.eql(true)
+  })
 })
 
