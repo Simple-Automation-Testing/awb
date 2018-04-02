@@ -40,6 +40,7 @@ export declare class ElementsAWB {
   constructor(selector: string, sessionId: string | null, baseElement: ElementAWB)
   get(index: number): ElementAWB
   count(): Promise<number>
+  wait(time: number, cb): ElementsAWB
   filter(cb: Promise<any>): Promise<any>
   map(cb: Promise<any>): Promise<any>
   forEach(cb: Promise<any>): Promise<any>

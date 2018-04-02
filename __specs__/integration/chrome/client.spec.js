@@ -98,5 +98,12 @@ describe('client chrome', () => {
     await client.goTo(pathResolver(file))
     await clicker.click()
   })
+
+  it('appear elements', async () => {
+    const file = 'appearArr'
+    const links = elements('a').waitForElements(15000)
+    await client.goTo(pathResolver(file))
+    expect(await links.count()).to.not.eq(0)
+  })
 })
 

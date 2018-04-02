@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Appear file</title>
+</head>
+
+<body>
+  <div id="app">
+    <button id="test_button" onclick="init()">Test button</button>
+  </div>
+  <script>
+    const a = document.createElement('a')
+    function aaa() {
+      let i = 10
+      while(i > 1) {
+        document.body.appendChild(a)
+        i--
+      }
+    }
+    setTimeout(aaa, 800)
+  </script>
+</body>
+
+</html>
