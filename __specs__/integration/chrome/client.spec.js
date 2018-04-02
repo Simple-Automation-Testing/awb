@@ -88,9 +88,15 @@ describe('client chrome', () => {
     const time = await clicker.waitUntilDisappear(5000)
 
     expect(time).to.not.eq(0)
+  })
 
-    // await clicker.click()
-    // expect(await link.isDisplayed()).to.eql(true)
+  it('wait', async () => {
+    const file = 'wait'
+    const clicker = element('#test_button')
+      .wait(1000, async (el) => await el.isDisplayed() === true)
+      .wait(3500, async (el) => await el.getText() === 'Button test')
+    await client.goTo(pathResolver(file))
+    await clicker.click()
   })
 })
 
