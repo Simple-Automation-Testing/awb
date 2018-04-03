@@ -112,5 +112,19 @@ describe('client chrome', () => {
     await client.goTo(pathResolver(file))
     expect(await link.getText()).to.eq('Super link')
   })
+
+  it('disappear arr', async () => {
+    const file = 'desappearArr'
+    const links = elements('a')
+    await client.goTo(pathResolver(file))
+    await links.waitUntilDisappear(10000)
+  })
+
+  it('disappear arr negative', async () => {
+    const file = 'desappearArr'
+    const links = elements('a')
+    await client.goTo(pathResolver(file))
+    await links.waitUntilDisappear(1000)
+  })
 })
 

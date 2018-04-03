@@ -115,6 +115,7 @@ describe('Google base example', () => {
   * [forEach](#foreach)
   * [filter](#filter)
   * [get](#get)
+  * [waitUntilDisappear](#waituntildisappear)
   * [count](#count)
 - [Element](#element) alias is $
   * [element.css](#element.css)
@@ -636,7 +637,6 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
   await elementDiv.click()
   await elementDiv.waitUntilDisappear(10000)
   // do other
-
   /*
   * will wait for element unmount from DOM 1000ms
   */
@@ -805,6 +805,18 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
   * does not return
   * /
 ```
+## waitUntilDisappear
+
+```js
+  const awb = require('awb')
+  const {elements, client }= awb()
+  const links = element('a')
+  await links.waitUntilDisappear(10000) // will assert that every element with css selector disappear from page
+  /*
+  * will wait for elements unmount from DOM 1000m
+  */
+```
+
 ### count
 ```js
   const awb = require('awb')
