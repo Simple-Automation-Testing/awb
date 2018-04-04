@@ -1,4 +1,5 @@
 import { Config } from './config'
+import { ElementAWB } from './element'
 
 interface SessionLocalStorage {
   get: (key: string) => Promise<string>
@@ -23,7 +24,7 @@ declare class Client {
   resizeWindow(): Promise<any>
   startDriver(): Promise<any>
   stopDriver(): Promise<any>
-  switchToFrame(): Promise<any>
+  switchToFrame(selector: string | ElementAWB): Promise<any>
   getSession(): Promise<any>
   closeCurrentTab(): Promise<any>
   executeScript(): Promise<any>

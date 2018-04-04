@@ -326,7 +326,7 @@ const token = await sessionStorage.get('token')
 ```js
   const awb = require('awb')
   const {element, client }= awb()
-  await client.switchToFrame('#myFrame')
+  await client.switchToFrame(element('#myFrame'))
   /*
    * arg css selector (id , class or some atribute)
    * /
