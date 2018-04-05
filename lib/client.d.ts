@@ -24,7 +24,7 @@ declare class Client {
   resizeWindow(): Promise<any>
   startDriver(): Promise<any>
   stopDriver(): Promise<any>
-  switchToFrame(selector: string | ElementAWB): Promise<any>
+  switchToFrame(element: ElementAWB): Promise<any>
   getSession(): Promise<any>
   closeCurrentTab(): Promise<any>
   executeScript(): Promise<any>
