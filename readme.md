@@ -84,6 +84,10 @@ describe('Google base example', () => {
     - [set](#set)
     - [clear](#clear)
     - [getAll](#getall)
+  * [alert](#alert)
+    - [accept](#accept)
+    - [dismiss](#dismiss)
+    - [getText](#gettext)
   * [waitForUrlIncludes](#waitforurlincludes)
   * [waitForTitleInclude](#waitfortitleinclude)
   * [startDriver](#startdriver)
@@ -202,7 +206,30 @@ describe('Google base example', () => {
    * return current window size {height: number, width: number}
    */
 ```
-##
+## alert
+```js
+  const awb = require('awb')
+  const {element, client }= awb()
+  const alert = client.alert //getter
+  // return client alert api
+```
+## accept
+```js
+await alert.accept()
+
+```
+## dismiss
+```js
+ await alert.dismiss()
+```
+## getText
+```js
+const alertText =  await alert.getText()
+/*
+return text from alert
+*/
+
+```
 ## localStorage
 ```js
   const awb = require('awb')

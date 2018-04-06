@@ -8,11 +8,19 @@ interface SessionLocalStorage {
   getAll: () => Promise<object>
 }
 
+
+interface Alert {
+  accept: () => Promise<void>
+  dismiss: () => Promise<void>
+  getText: () => Promise<string>
+}
+
 declare class Client {
   constructor()
 
   sessionStorage: SessionLocalStorage
   localStorage: SessionLocalStorage
+  alert: Alert
 
   getSize(): Promise<{ height: number, width: number }>
   refresh(): Promise<any>

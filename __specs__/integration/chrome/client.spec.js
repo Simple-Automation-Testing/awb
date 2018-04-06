@@ -19,6 +19,15 @@ describe('client chrome', () => {
     await client.stopDriver()
   })
 
+  it('allert', async () => {
+    const file = 'alert'
+    await client.goTo(pathResolver(file))
+    const clicker = element('#test_button')
+    await clicker.click()
+    expect(await client.alert.getText()).to.eql('Hello')
+    await client.alert.accept()
+  })
+
   it('clicker', async () => {
     const file = 'clicker'
     await client.goTo(pathResolver(file))
