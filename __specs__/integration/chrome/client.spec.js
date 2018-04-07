@@ -157,5 +157,30 @@ describe('client chrome', () => {
     await client.switchBack()
     expect(await clicker.isDisplayed()).to.eql(true)
   })
-})
 
+  it('localstorage', async () => {
+    const file = 'localstorage'
+    const clicker = element('#test_button')
+    await client.goTo(pathResolver(file))
+    await clicker.click()
+    const localStorage = client.localStorage
+
+    expect(await localStorage.getAll()).to.eql({
+      test: '{"first":1,"second":2}'
+    })
+
+    expect(await localStorage.get('test')).to.eql(
+      '{"first":1,"second":2}'
+    )
+
+    await localStorage.set('testy', JSON.stringify({first: 1, second: 2}))
+
+    expect(await localStorage.getAll()).to.eql({
+      test: '{"first":1,"second":2}',
+      testy: JSON.stringify({first: 1, second: 2})
+    })
+
+    await localStorage.clear()
+    expect(await localStorage.getAll()).to.eql({})
+  })
+})
