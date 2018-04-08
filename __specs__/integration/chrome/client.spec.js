@@ -1,8 +1,23 @@
 const {expect} = require('chai')
 
 const awb = require('../../../awb')
+const conf = {
+  withStandalone: true,
+  remote: true,
+  directConnect: false,
+  desiredCapabilities:
+    {
+      javascriptEnabled: true,
+      acceptSslCerts: true,
+      platform: 'ANY',
+      browserName: 'chrome'
+    },
+  host: 'localhost',
+  port: 4444,
+  timeout: 5000
+}
 
-const {element, elements, $, $$, client} = awb()
+const {element, elements, $, $$, client} = awb(conf)
 
 const pathResolver = (name) => {
   const resolvedPath = require('path').resolve(__dirname, `../../spec_utils/${name}.html`)
