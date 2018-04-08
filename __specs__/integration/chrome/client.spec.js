@@ -190,6 +190,6 @@ describe('client chrome', () => {
     const link = elements('a').wait(1200, async (el) => await el.count() === 8).get(3)
     await client.goTo(pathResolver(file))
     await clicker.click()
-    console.log(await link.getText())
+    expect(await link.getText()).to.eql('link 5')
   })
 })
