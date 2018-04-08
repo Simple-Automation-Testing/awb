@@ -183,4 +183,13 @@ describe('client chrome', () => {
     await localStorage.clear()
     expect(await localStorage.getAll()).to.eql({})
   })
+
+  it('subelements', async () => {
+    const file = 'subelement'
+    const clicker = element('#test_button')
+    const link = elements('a').wait(1200, async (el) => await el.count() === 8).get(3)
+    await client.goTo(pathResolver(file))
+    await clicker.click()
+    console.log(await link.getText())
+  })
 })
