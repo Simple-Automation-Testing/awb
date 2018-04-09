@@ -1,11 +1,11 @@
-const { element, elements } = require('../driver')
+const {$, $$} = require('../driver')
 
 class Google {
   constructor() {
-    this.submitSearch = element('body').element('.tsf-p').element('[name="btnK"]').waitForClicable(1000)
-    this.inputSearch = element('#lst-ib')
-    this.resultSearch = element('#ires .g').waitForElementVisible(1000)
-    this.input4 = elements('input').get(4)
+    this.submitSearch = $('body').$('.tsf-p').$('[name="btnK"]').waitForClickable(1000)
+    this.inputSearch = $('#lst-ib')
+    this.resultSearch = $('#ires .g').waitForElementVisible(1000)
+    this.input4 = $$('input').get(4)
   }
 
   async find(value) {
@@ -18,9 +18,9 @@ class Google {
   }
 
   async getElementRects() {
-    const { x, y } = await this.inputSearch.location()
+    const {x, y} = await this.inputSearch.location()
     const body = await this.inputSearch.locationView()
-    const { width, height } = await this.inputSearch.size()
+    const {width, height} = await this.inputSearch.size()
     console.log(x, y, body, width, height)
   }
 

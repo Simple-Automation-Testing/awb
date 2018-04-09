@@ -1,6 +1,6 @@
-const { expect } = require('chai')
+const {expect} = require('chai')
 
-const { element, client, elements } = require('./driver')
+const {client} = require('./driver')
 
 const Google = require('./po/google.po')
 

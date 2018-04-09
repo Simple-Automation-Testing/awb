@@ -42,7 +42,7 @@ const { expect } = require('chai')
 
 const awb = require('awb')
 
-const { client, element } = awb()
+const { client, $ } = awb()
 
 describe('Google base example', () => {
   const baseURL = 'https://www.google.com.ua/'
@@ -51,9 +51,9 @@ describe('Google base example', () => {
   const inputsearch = '#lst-ib'
   const resultsearch = '#ires .g'
   //elements
-  const submitSearch = element(submitsearch).waitForClickable(1000) //lazy element with  expected condition
-  const resultSearch = element(resultsearch).waitForElement(1000) //lazy element with  expected condition
-  const inputSearch = element(inputsearch)
+  const submitSearch = $(submitsearch).waitForClickable(1000) //lazy element with  expected condition
+  const resultSearch = $(resultsearch).waitForElement(1000) //lazy element with  expected condition
+  const inputSearch = $(inputsearch)
   before(async () => {
     await client.startDriver()
     await client.goTo(baseURL)
@@ -157,7 +157,6 @@ describe('Google base example', () => {
    * config example, optional, this example config is default config
    */
   const defautlOpts = {
-    withStandalone: true, // if true will run selenium standalone server when call start startDriver(), default true
     remote: false, // if remote true startDriver() will not work, default false
     directConnect: false, // if directConnect true directConnect() will run gecko or chrome driver without selenium standalone server, default false
     host: 'localhost', // host, default 'localhost' or '127.0.0.1' or '0.0.0.0'
@@ -172,7 +171,7 @@ describe('Google base example', () => {
   }
 
   const awb = require('awb')
-  const {client, element, elements} = awb(config)
+  const {client, $, $$} = awb(config)
   /*
    * awb() returns element, elements, client instance
    * if run awb without args, will be used default config from example

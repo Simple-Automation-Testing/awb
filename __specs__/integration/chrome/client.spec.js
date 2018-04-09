@@ -12,7 +12,7 @@ const conf = {
   },
   host: 'localhost',
   port: 4444,
-  timeout: 5000
+  timeout: 25000
 }
 
 const {element, elements, $, $$, client} = awb(conf)
@@ -30,6 +30,15 @@ describe('client chrome', () => {
   after(async () => {
     await client.close()
     await client.stopDriver()
+  })
+
+  it('click', async () => {
+    const file = 'click'
+    const link = element('a[href="https://google.com"]')
+    const clicker = element('#test_button').waitForClickable(3000)
+    await client.goTo(pathResolver(file))
+    await clicker.click()
+    expect(await link.getAttribute('href')).to.eql('https://google.com/')
   })
 
   it('allert', async () => {
@@ -88,6 +97,8 @@ describe('client chrome', () => {
     `, 'test')
     expect(res1).to.eql(true)
   })
+
+
 
   it('appear', async () => {
     const file = 'appear'
@@ -151,7 +162,7 @@ describe('client chrome', () => {
 
   it('iframe', async () => {
     const file = 'iframe'
-    const buttonYoutube = $('.ytp-large-play-button.ytp-button')
+    const buttonYoutube = $('.ytp-large-play-button.ytp-button').waitForElement(1500)
     const clicker = element('#test_button')
     await client.goTo(pathResolver(file))
     await client.switchToFrame(element('#youtube'))
