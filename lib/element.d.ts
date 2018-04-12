@@ -33,6 +33,7 @@ export declare class ElementAWB {
   click(): Promise<any>
   toElement(): Promise<any>
   isDisplayed(): Promise<boolean>
+  isPresent(): Promise<boolean>
   mouseDownAndMove(position: { x: number, y: number }): Promise<any>
 }
 

@@ -35,11 +35,26 @@ describe('client chrome', () => {
   it('tabs', async () => {
     const file = 'tabs'
     const link = $('a').waitForClickable(1000)
-    const googleInput = $('#lst-ib').waitForElementPresent(2000)
+    const googleInput = $('#lst-ib').waitForElementPresent(5000)
     await client.goTo(pathResolver(file))
     await link.click()
     await client.switchToTab(1)
     expect(await googleInput.isDisplayed()).to.eql(true)
+  })
+
+  it('switch back', async () => {
+    const file = 'iframe'
+    const buttonYoutube = $('.ytp-large-play-button.ytp-button').waitForElement(1500)
+    const clicker = element('#test_button')
+    await client.goTo(pathResolver(file))
+    await client.switchToFrame(element('#youtube'))
+    expect(await buttonYoutube.isPresent()).to.eql(true)
+    expect(await clicker.isDisplayed()).to.eql(false)
+    await client.switchBack()
+    await client.sleep(1000)
+    // console.log(await client.)
+
+    expect(await clicker.isDisplayed()).to.eql(true)
   })
 
   it('click', async () => {
