@@ -5,9 +5,11 @@ node_modules/
 .vscode
 chromedriver*
 drivers/procid
-standalone.jar*
+geckodriver*
+standalone.jar
 gecko*
 b.js
 c.js
 debug.log
 *.png
+*.log

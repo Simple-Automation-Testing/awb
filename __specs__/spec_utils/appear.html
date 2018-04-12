@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Appear file</title>
+</head>
+
+<body>
+  <div id="app">
+    <button id="test_button" onclick="init()">Test button</button>
+  </div>
+  <script>
+    function init() {
+      const a = document.createElement('a')
+      setTimeout(() => {
+        a.innerText = 'test link'
+        document.body.appendChild(a)
+      }, 1500)
+    }
+  </script>
+</body>
+
+</html>

@@ -5,9 +5,9 @@ src
 .vscode
 index.html
 .babelrc
-style.css
+*.css
 a.js
-selenium*
+standalone.jar
 chromedriver*
 geckodriver*
 test-app
@@ -17,4 +17,5 @@ examples
 .vscode
 node_modules
 debug.log
+*.log
 *.png

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Localstorage</title>
+</head>
+
+<body>
+  <div id="app">
+    <button id="test_button" onclick="initLical()">Test button</button>
+  </div>
+  <script>
+    function initLical() {
+      localStorage.setItem('test', JSON.stringify({
+        first: 1,
+        second: 2
+      }))
+    }
+  </script>
+</body>
+
+</html>

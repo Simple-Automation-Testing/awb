@@ -35,8 +35,10 @@ const getReleases = async () => {
 function getDownloadLink(list) {
   const osArchMap = {
     darwinx64: 'mac64',
-    win32x64: 'win64',
-    win32x86: 'win32'
+    win32x64: 'win32',
+    win32x86: 'win32',
+    linuxx64: 'linux64',
+    linuxx86: 'linux32'
   }
 
   const chromeArch = osArchMap[`${os.platform()}${os.arch()}`]

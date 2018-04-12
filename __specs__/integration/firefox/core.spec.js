@@ -2,7 +2,7 @@ const { expect } = require('chai')
 
 const { Keys } = require('../../../interface/event/keys')
 
-const SELENIUM_STATUSES = require('../../../interface/reponseSeleniumStatus')
+const SELENIUM_STATUSES = require('../../../interface/responseSeleniumStatus')
 
 const { defaultFirefoxCapabilities, defaultSafariCapabilities } = require('../../../interface/capabilitiesAndBaseOpts')
 

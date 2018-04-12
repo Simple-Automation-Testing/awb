@@ -1,61 +1,37 @@
-const fetch = require('node-fetch')
-const { requestInterface } = require('./interface/request')
-const http = require('http')
+// function bbb(...args) {
+//   function aaa(...args) {
+//     if(typeof args[args.length - 1] === 'function') {
+//       args[args.length - 1]()
+//     }
+//     console.log(args)
+//   }
+//   aaa(...args)
+// }
 
-http.request = ((request) => (opts, ...args) => {
-  return request(opts, ...args)
-})(http.request.bind(http.request));
+// function x() {
+//   console.log('XXXX')
+// }
 
-const body = JSON.stringify({
-  desiredCapabilities: {
-    browserName: 'chrome',
-    javascriptEnabled: true,
-    acceptSslCerts: true,
-    platform: 'ANY'
-  }
-});
+// bbb(1, 2, 3, 4, x)
 
-const baseOptions = {
-  hostname: 'localhost',
-  port: 9515,
-  path: '/session',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  timeout: 6000
+function asyncFunc(e) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve(e), e * 1000);
+  });
 }
 
+const arr = [1, 2, 3];
+let final = [];
 
-var fs = require('fs');
-var tar = require('tar');
-var zlib = require('zlib');
-var path = require('path');
-const { resolve } = require('path')
-var mkdirp = require('mkdirp'); // used to create directory tree
+function workMyCollection(arr) {
+  return arr.reduce((promise, item) => {
+    return promise
+      .then(() => {
+        console.log(`item ${item}`);
+        return asyncFunc(item).then(result => final.push(result));
+      }).catch(console.error);
+  }, Promise.resolve())
+}
 
-var log = console.log;
-
-
-
-const geckodriver = 'https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckodriver-v0.19.1-macos.tar.gz'
-
-const resolvePath = (path) => resolve(__dirname, path)
-
-
-var tarball = resolvePath('./geckodriver-v0.19.1-macos.tar.gz')
-var dest = resolvePath('./')
-
-
-// fs.createReadStream(tarball)
-//   .on('error', console.log)
-//   .pipe(zlib.Unzip())
-//   .pipe(new tar.Parse())
-//   .on('entry', function (entry) {
-//     mkdirp(path.dirname(path.join(dest, entry.path)), function (err) {
-//       if (err) throw err;
-//       entry.pipe(fs.createWriteStream(path.join(dest, entry.path)))
-//       entry.on('end', () => {
-//         console.log('dasl;d;ask;kd;kas;k;l')
-//       })
-//     })
-//   })
+workMyCollection(arr)
+  .then(() => console.log(`FINAL RESULT is ${final}`));

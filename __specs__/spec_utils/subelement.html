@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Elements</title>
+</head>
+
+<body>
+  <div id="app">
+    <button id="test_button" onclick="initLical()">Test button</button>
+  </div>
+  <script>
+    function initLical() {
+      let i = 9
+      while(i--) {
+        const a = document.createElement('a')
+        a.innerText = `link ${i}`
+        document.body.appendChild(a)
+      }
+    }
+  </script>
+</body>
+
+</html>

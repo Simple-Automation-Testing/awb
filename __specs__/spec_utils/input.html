@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Util file</title>
+</head>
+
+<body>
+  <div id="app">
+    <button id="test_button">Test button</button>
+    <input type="text" onchange="changeState(event)">
+  </div>
+  <script>
+    function changeState({target: {value}}) {
+      const span = document.createElement('span')
+      span.innerText = value
+      document.body.appendChild(span)
+    }
+  </script>
+</body>
+
+</html>
