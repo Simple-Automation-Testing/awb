@@ -32,6 +32,11 @@ describe('client chrome', () => {
     await client.stopDriver()
   })
 
+  it('range', async () => {
+    const file = 'range'
+
+  })
+
   it('tabs', async () => {
     const file = 'tabs'
     const link = $('a').waitForClickable(1000)

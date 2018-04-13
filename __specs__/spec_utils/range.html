@@ -9,7 +9,7 @@
 <body>
   <div id="app">
     <button id="test_button" onclick="initLical()">Test button</button>
-    <input type="range" min="-10" max="10" onchange="doStuff(event)">
+    <input type="range" min="-10" max="10" onchange="doStuff(event)" id="range">
   </div>
   <script>
     function doStuff({target: {value}}) {
