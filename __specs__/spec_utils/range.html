@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Localstorage</title>
+</head>
+
+<body>
+  <div id="app">
+    <button id="test_button" onclick="initLical()">Test button</button>
+    <input type="range" min="-10" max="10" onchange="doStuff(event)">
+  </div>
+  <script>
+    function doStuff({target: {value}}) {
+      document.querySelector('#test_button').innerHTML = `<span> ${value} </span>`
+    }
+  </script>
+</body>
+
+</html>

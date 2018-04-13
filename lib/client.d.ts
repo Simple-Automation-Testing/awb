@@ -29,13 +29,13 @@ declare class Client {
   takeScreenshot(): Promise<string>
   waitForUrlIncludes(): Promise<void>
   waitForTitleInclude(): Promise<void>
-  resizeWindow(): Promise<any>
+  resizeWindow(width: number, height: number): Promise<any>
   startDriver(): Promise<any>
   stopDriver(): Promise<any>
   switchToFrame(element: ElementAWB): Promise<any>
   getSession(): Promise<any>
   closeCurrentTab(): Promise<any>
-  executeScript(): Promise<any>
+  executeScript(script: string | functin, funcArgs?: any): Promise<any>
   executeScriptAsync(): Promise<any>
   getUrl(): Promise<string>
   sleep(time?: number): Promise<any>
