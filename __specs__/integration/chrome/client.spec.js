@@ -34,7 +34,11 @@ describe('client chrome', () => {
 
   it('range', async () => {
     const file = 'range'
-
+    const range = $('#range')
+    const span = $('span')
+    await client.goTo(pathResolver(file))
+    await range.mouseDownAndMove({x: -10, y: 15})
+    expect(await span.isDisplayed()).to.eql(true)
   })
 
   it('tabs', async () => {
