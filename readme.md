@@ -89,6 +89,7 @@ describe('Google base example', () => {
     - [dismiss](#dismiss)
     - [getText](#gettext)
   * [waitForUrlIncludes](#waitforurlincludes)
+  * [wait](#wait)
   * [waitForTitleInclude](#waitfortitleinclude)
   * [startDriver](#startdriver)
   * [stopDriver](#stopdriver)
@@ -177,7 +178,6 @@ describe('Google base example', () => {
    * if run awb without args, will be used default config from example
    */
 ```
-
 ## goTo
 ```js
   const awb = require('awb')
@@ -186,6 +186,16 @@ describe('Google base example', () => {
   /*
    * args url
    * type string
+   */
+```
+## wait
+```js
+  const awb = require('awb')
+  const {client, $} = awb()
+  await client.goTo('https://google.com')
+  await client.wait(5000,async () => $('#test').isDisplayed(), 'Test error message')
+  /*
+   * will wail 5000 ms until appear element with css selector #test
    */
 ```
 ## Keys

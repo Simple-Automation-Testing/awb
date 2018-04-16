@@ -53,15 +53,13 @@ describe('client chrome', () => {
 
   it('switch back', async () => {
     const file = 'iframe'
-    const buttonYoutube = $('.ytp-large-play-button.ytp-button').waitForElement(1500)
+    const buttonYoutube = $('figure').waitForElement(1500)
     const clicker = element('#test_button')
     await client.goTo(pathResolver(file))
-    await client.switchToFrame(element('#youtube'))
+    await client.switchToFrame(element('iframe'))
     expect(await buttonYoutube.isPresent()).to.eql(true)
     expect(await clicker.isDisplayed()).to.eql(false)
     await client.switchBack()
-    await client.sleep(1000)
-    // console.log(await client.)
 
     expect(await clicker.isDisplayed()).to.eql(true)
   })
@@ -196,21 +194,22 @@ describe('client chrome', () => {
 
   it('iframe', async () => {
     const file = 'iframe'
-    const buttonYoutube = $('.ytp-large-play-button.ytp-button').waitForElement(1500)
+    const figure = $('figure').waitForElement(1500)
     const clicker = element('#test_button')
     await client.goTo(pathResolver(file))
     await client.switchToFrame(element('#youtube'))
-    expect(await buttonYoutube.isDisplayed()).to.eql(true)
+
+    expect(await figure.isDisplayed()).to.eql(true)
     expect(await clicker.isDisplayed()).to.eql(false)
   })
 
   it('switch', async () => {
     const file = 'iframe'
-    const buttonYoutube = $('.ytp-large-play-button.ytp-button')
+    const figure = $('figure')
     const clicker = element('#test_button')
     await client.goTo(pathResolver(file))
     await client.switchToFrame(element('#youtube'))
-    expect(await buttonYoutube.isDisplayed()).to.eql(true)
+    expect(await figure.isDisplayed()).to.eql(true)
     expect(await clicker.isDisplayed()).to.eql(false)
     await client.switchBack()
     expect(await clicker.isDisplayed()).to.eql(true)
