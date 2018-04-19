@@ -36,7 +36,7 @@ declare class Client {
   getSession(): Promise<any>
   closeCurrentTab(): Promise<any>
   executeScript(script: string | functin, funcArgs?: any): Promise<any>
-  executeScriptAsync(): Promise<any>
+  executeScriptAsync(script: string | functin, funcArgs?: any): Promise<any>
   getUrl(): Promise<string>
   sleep(time?: number): Promise<any>
   getTitle(): Promise<string>
