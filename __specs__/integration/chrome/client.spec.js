@@ -247,18 +247,9 @@ describe('client chrome', () => {
     await client.goTo(pathResolver(file))
     await clicker.click()
     const resp = await client.executeScriptAsync(function(cb) {
-      const resolver = Promise.resolve
-      function finder(res) {
-        return new Promise(resss => {
-          setTimeout(() => {
-            let links = document.querySelectorAll('a')
-            if(links.length) {return res('test')}
-            else {finder(resss)}
-          }, 250)
-        })
-      }
-      finder(resolver).then(cb)
+      cb('test')
     })
+    expect(resp).to.eql('test')
   })
 
   it('subelements', async () => {
