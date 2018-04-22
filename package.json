@@ -54,7 +54,6 @@
     },
     "scripts": {
         "lint": "eslint lib/** --ext .js",
-        "test": "mocha $(find ./specs/ -path '*.test.js') --compilers js:babel-core/register --require ./specs/setup.js",
         "integration-chrome": "mocha --timeout 60000 $(find ./__specs__/integration/chrome -path '*.spec.js')",
         "integration-chrome:watch": "mocha --timeout 60000 -w --harmony --trace-deprecation $(find ./__specs__/integration/chrome -path '*.spec.js')",
         "integration-firefox": "mocha --timeout 60000 $(find ./__specs__/integration/firefox -path '*.spec.js')",

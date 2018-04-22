@@ -32,6 +32,15 @@ describe('client chrome', () => {
     await client.stopDriver()
   })
 
+  it('chaining', async () => {
+    const file = 'appear'
+    const clicker = element('#test_button')
+    const link = $$('body').get(0).waitForElement(1000).$('a')
+    await client.goTo(pathResolver(file))
+    await clicker.click()
+    // expect(await link.isDisplayed()).to.eql(true)
+  })
+
   it('range', async () => {
     const file = 'range'
     const range = $('#range')
@@ -129,8 +138,6 @@ describe('client chrome', () => {
     `, 'test')
     expect(res1).to.eql(true)
   })
-
-
 
   it('appear', async () => {
     const file = 'appear'
