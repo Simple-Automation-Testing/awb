@@ -32,10 +32,21 @@ describe('client chrome', () => {
     await client.stopDriver()
   })
 
-  it('chaining', async () => {
+  it('count', async () => {
     const file = 'appear'
     const clicker = element('#test_button')
-    const link = $$('body').get(0).waitForElement(1000).$('a')
+    let link = $$('a')
+    await client.goTo(pathResolver(file))
+    expect(await link.count()).to.eql(0)
+    await clicker.click()
+    link = $$('a').waitForElements(2500)
+    expect(await link.count()).to.eql(1)
+  })
+
+  it.skip('chaining', async () => {
+    const file = 'appear'
+    const clicker = element('#test_button')
+    const link = $$('body').get(0).waitForElement(1000)
     await client.goTo(pathResolver(file))
     await clicker.click()
     // expect(await link.isDisplayed()).to.eql(true)
