@@ -43,13 +43,13 @@ describe('client chrome', () => {
     expect(await link.count()).to.eql(1)
   })
 
-  it.skip('chaining', async () => {
+  it.only('chaining', async () => {
     const file = 'appear'
     const clicker = element('#test_button')
-    const link = $$('body').get(0).waitForElement(1000)
+    const link = $$('a').get(0).waitForElement(2500)
     await client.goTo(pathResolver(file))
     await clicker.click()
-    // expect(await link.isDisplayed()).to.eql(true)
+    expect(await link.getElementHTML()).to.eql(true)
   })
 
   it('range', async () => {
