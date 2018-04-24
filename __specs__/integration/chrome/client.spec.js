@@ -48,8 +48,19 @@ describe('client chrome', () => {
     const clicker = element('#test_button')
     const link = $$('body').get(0).waitForElement(1000)
     await client.goTo(pathResolver(file))
+    expect(await link.count()).to.eql(0)
     await clicker.click()
-    // expect(await link.isDisplayed()).to.eql(true)
+    link = $$('a').waitForElements(2500)
+    expect(await link.count()).to.eql(1)
+  })
+
+  it.only('chaining', async () => {
+    const file = 'appear'
+    const clicker = element('#test_button')
+    const link = $$('a').get(0).waitForElement(2500)
+    await client.goTo(pathResolver(file))
+    await clicker.click()
+    expect(await link.getElementHTML()).to.eql(true)
   })
 
   it('range', async () => {
