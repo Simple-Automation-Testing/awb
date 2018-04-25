@@ -43,10 +43,10 @@ describe('client chrome', () => {
     expect(await link.count()).to.eql(1)
   })
 
-  it.skip('chaining', async () => {
+  it('chaining', async () => {
     const file = 'appear'
     const clicker = element('#test_button')
-    const link = $$('body').get(0).waitForElement(1000)
+    const link = $$('a').waitForElements(2500).get(0)
     await client.goTo(pathResolver(file))
     expect(await link.count()).to.eql(0)
     await clicker.click()
@@ -57,10 +57,10 @@ describe('client chrome', () => {
   it.only('chaining', async () => {
     const file = 'appear'
     const clicker = element('#test_button')
-    const link = $$('a').get(0).waitForElement(2500)
+    const link = $$('a')..waitForElements(2500).get(0)
     await client.goTo(pathResolver(file))
     await clicker.click()
-    expect(await link.getElementHTML()).to.eql(true)
+    expect(await link.getElementHTML()).to.eql('<a>test link</a>')
   })
 
   it('range', async () => {
