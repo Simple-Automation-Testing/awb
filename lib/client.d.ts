@@ -35,8 +35,8 @@ declare class Client {
   switchToFrame(element: ElementAWB): Promise<any>
   getSession(): Promise<any>
   closeCurrentTab(): Promise<any>
-  executeScript(script: string | functin, funcArgs?: any): Promise<any>
-  executeScriptAsync(script: string | functin, funcArgs?: any): Promise<any>
+  executeScript(script: string | any, funcArgs?: any): Promise<any>
+  executeScriptAsync(script: string | any, funcArgs?: any): Promise<any>
   getUrl(): Promise<string>
   sleep(time?: number): Promise<any>
   getTitle(): Promise<string>
