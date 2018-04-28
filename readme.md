@@ -201,14 +201,14 @@ describe('Google base example', () => {
 ## Keys
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const el = element('.test.class')
   await el.sendKeys('test name', client.Keys.ENTER) // for submit
 ```
 ## getSize
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const size = client.getSize() //{ height: 983, width: 1200 } for example
   /*
    * any args
@@ -218,7 +218,7 @@ describe('Google base example', () => {
 ## alert
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const alert = client.alert //getter
   // return client alert api
 ```
@@ -242,7 +242,7 @@ return text from alert
 ## localStorage
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const localStorage = client.localStorage //getter
  // return client localStorage api
 ```
@@ -256,7 +256,7 @@ const token = await localStorage.get('token')
 ```
 ## set
 ```js
- await localStorage.get('token', 'test-token')
+ await localStorage.set('token', 'test-token')
 /*
   args: key = string, value = string
 */
@@ -278,7 +278,7 @@ const token = await localStorage.get('token')
 ## sessionStorage
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const sessionStorage = client.sessionStorage //getter
   // return client sessionStorage api
 ```
@@ -314,7 +314,7 @@ const token = await sessionStorage.get('token')
 ## startDriver
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   await client.startDriver()
   /*
    * it will start selenium process
@@ -332,7 +332,7 @@ const token = await sessionStorage.get('token')
 ## closeCurrentTab
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   await client.closeCurrentTab()
   /*
    * will close current tab
@@ -342,7 +342,7 @@ const token = await sessionStorage.get('token')
 ## waitForUrlIncludes
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   await client.waitForUrlIncludes('test', 1000)
   /*
    * will wait 1000ms for url includes test
@@ -351,7 +351,7 @@ const token = await sessionStorage.get('token')
 ## waitForTitleInclude
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   await
   await client.waitForTitleInclude('New title', 1000)
   /*
@@ -361,7 +361,7 @@ const token = await sessionStorage.get('token')
 ## switchToFrame
 ```js
   const awb = require('awb')
-  const {element, client } = awb()
+  const { element, client } = awb()
   await client.switchToFrame(element('#myFrame'))
   /*
    * arg element frame
@@ -370,7 +370,7 @@ const token = await sessionStorage.get('token')
 ## switchBack
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   await client.switchToFrame('#myFrame')
   // do some action with elements with frame
   await client.switchBack()
@@ -381,7 +381,7 @@ const token = await sessionStorage.get('token')
 ## refresh
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   await client.refresh()
   /*
    * refresh client current page
@@ -390,7 +390,7 @@ const token = await sessionStorage.get('token')
 ## back
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   await client.back()
   /*
    * client histor go back
@@ -399,7 +399,7 @@ const token = await sessionStorage.get('token')
 ## forward
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   await client.forward()
   /*
    * client histor go forward
@@ -408,7 +408,7 @@ const token = await sessionStorage.get('token')
 ## getTitle
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const currentTitle = await client.getTitle()
   /*
    * will return tab title
@@ -417,7 +417,7 @@ const token = await sessionStorage.get('token')
 ## executeScript
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const currentTitle = await client.executeScript(function () {
     const [cssSelector] = arguments
     return document.querySelector(cssSelector).innerHTML
@@ -430,7 +430,7 @@ const token = await sessionStorage.get('token')
 ## executeScriptAsync
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const currentTitle = await client.executeScriptAsync(function () {
     const [callback] = arguments
       fetch('http://localhost:8085/bar', {
@@ -445,7 +445,7 @@ const token = await sessionStorage.get('token')
 ## switchToTab
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   await client.switchToTab(1)
   /* for example if was opened link with _blank
    * will switch to opened tab
@@ -454,7 +454,7 @@ const token = await sessionStorage.get('token')
 ## close
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   await client.close()
   /* for example if was focused tab from switchToTab example
    * this will close current tab and focus you to previous
@@ -463,14 +463,14 @@ const token = await sessionStorage.get('token')
 ## getCurrentclientTab
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const tabId = await client.getCurrentclientTab()
   /* return selenium tab id * /
 ```
 ## getclientTabs
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const tabIdS = await client.getclientTabs()
   /*
   * return array with selenium tab ids
@@ -479,7 +479,7 @@ const token = await sessionStorage.get('token')
 ## sleep
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   await client.sleep(1000)
   /* args number timeout
   * will wait until timeout end
@@ -488,7 +488,7 @@ const token = await sessionStorage.get('token')
 ## getUrl
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const currentUrl = await client.getUrl()
   /* return current tab url*/
 ```
@@ -496,7 +496,7 @@ const token = await sessionStorage.get('token')
 ## ConstructorElement
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const elementDiv = element('div')
   /*
   * args css selector for example '#id', '[name="name"]', '.class'
@@ -505,7 +505,7 @@ const token = await sessionStorage.get('token')
 ## element.css
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const elementDiv = element.css('div') //args css selector for example '#id', '[name="name"]', '.class'
   /*
   * args css selector for example '#id', '[name="name"]', '.class'
@@ -514,7 +514,7 @@ const token = await sessionStorage.get('token')
 ## element.xpath
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const elementDiv = element.xpath('/html/body/div')
   /*
   * args xpath
@@ -523,7 +523,7 @@ const token = await sessionStorage.get('token')
 ## element.id
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const elementDiv = element.id('uniq-id')
   /*
   * args element id
@@ -532,7 +532,7 @@ const token = await sessionStorage.get('token')
 ## sendKeys
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const elementInput = element('input')
   await elementInput.sendKeys('test value')
   /*
@@ -542,7 +542,7 @@ const token = await sessionStorage.get('token')
 ## size
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const elementInput = element('input')
 
   const {width, height} = await elementInput.size()
@@ -554,7 +554,7 @@ const token = await sessionStorage.get('token')
 ## getRect
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const elementInput = element('input')
 
   const {width, height, x, y } = await elementInput.getRect()
@@ -566,7 +566,7 @@ const token = await sessionStorage.get('token')
 ## location
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const elementInput = element('input')
 
   const {y, x} = await elementInput.location()
@@ -577,7 +577,7 @@ const token = await sessionStorage.get('token')
 ## locationView
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const elementInput = element('input')
 
   const {x, y} = await elementInput.locationView()
@@ -589,7 +589,7 @@ const token = await sessionStorage.get('token')
 ## clear
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const elementInput = element('input')
   await elementInput.clear()
   /*
@@ -599,7 +599,7 @@ const token = await sessionStorage.get('token')
 ## getElementHTML
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const elementInput = element('input')
   const inputHTML = await elementInput.getElementHTML()
   /*
@@ -610,7 +610,7 @@ const token = await sessionStorage.get('token')
 ## getText
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const elementDiv = element('div')
   const divText = await elementDiv.getText()
   /*
@@ -620,7 +620,7 @@ const token = await sessionStorage.get('token')
 ## waitForElement
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const elementDiv = element('div').waitForElement(1000)
 
   /*
@@ -630,7 +630,7 @@ const token = await sessionStorage.get('token')
 ## waitForElementPresent
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const elementDiv = element('div').waitForElementPresent(1000)
   /*
   * will wait for element mount to DOM node
@@ -639,7 +639,7 @@ const token = await sessionStorage.get('token')
 ## wait
 ```js
 const awb = require('awb')
-const {element, client }= awb()
+const { element, client } = awb()
 const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==='test')
   /*
   * will wait for element mount to DOM node
@@ -649,7 +649,7 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
 ## waitForClickable
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const elementDiv = element('div').waitForClickable(1000)
   /*
   * will wait for element mount to DOM node
@@ -658,7 +658,7 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
 ## waitForElementVisible
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const elementDiv = element('div').waitForElementVisible(1000)
   /*
   * will wait for element visible in DOM 1000ms
@@ -668,7 +668,7 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
 
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const elementDiv = element('div').waitForElementVisible(1000)
   await elementDiv.click()
   await elementDiv.waitUntilDisappear(10000)
@@ -680,7 +680,7 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
 ## element
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const elementSpan = element('div').element('span').element('a')
   /*
   *  return element instanse
@@ -689,7 +689,7 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
 ## elements
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const elementsSpan = element('div').elements('span')
   /*
   *  return Elements instance
@@ -698,7 +698,7 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
 ## elements.css
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const elementsSpan = element('div').elements('span')
   /*
   *  return Elements instance
@@ -707,7 +707,7 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
 ## getAttribute
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const elementSpan = element('div').element('span')
   const style = await elementSpan.getAttribute('style')
   /*
@@ -718,7 +718,7 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
 ## click
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const elementSpan = element('div').element('span')
   await elementSpan.click()
   /*
@@ -728,7 +728,7 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
 ## isPresent
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const elementSpan = element('div').element('span')
   const present = await elementSpan.isPresent()
   /*
@@ -739,7 +739,7 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
 ## isDisplayed
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const elementSpan = element('div').element('span')
   const display = await elementSpan.isDisplayed()
   /*
@@ -750,7 +750,7 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
 ## toElement
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const elementSpan = element('div').element('span')
   await elementSpan.toElement()
   /*
@@ -760,7 +760,7 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
 ## mouseDownAndMove
 ```js
   const awb = require('awb')
-  const {element, client }= awb()
+  const { element, client } = awb()
   const elementSpan = element('div').element('span')
   await elementSpan.mouseDownAndMove({x: 100, y: 0})
   /*
@@ -772,7 +772,7 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
 ## Constructor elements
 ```js
   const awb = require('awb')
-  const {element, elements, client }= awb()
+  const { element, elements, client } = awb()
   // by css selector
   const elementsSpan = elements('span')// work the same as element.css
  /*
@@ -782,7 +782,7 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
 ## elements.css
 ```js
   const awb = require('awb')
-  const {element, elements, client }= awb()
+  const { element, elements, client } = awb()
   const elementDiv = elements('div')
   // by css selector
   const elementsSpan = elements.css('span') // will find element by css selector
@@ -793,7 +793,7 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
 ## elements.xpath
 ```js
   const awb = require('awb')
-  const {element, elements, client }= awb()
+  const { element, elements, client } = awb()
   // by css selector
   const elementsDiv = elements.xpath('/html/body/div') // will find element by xpath
  /*
@@ -803,7 +803,7 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
 ## waitForElements
 ```js
   const awb = require('awb')
-  const {element, elements, client }= awb()
+  const { element, elements, client } = awb()
   const elementDiv = elements('div').waitForElements(1000)
   /*
   * will wait for first element with selector mount to DOM node
@@ -813,7 +813,7 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
 ```js
   // by css selector
   const awb = require('awb')
-  const {element, elements, client }= awb()
+  const { element, elements, client } = awb()
   const elementsSpan = elements('span')
   const textArr = await elementsSpan.map(async (element) => {
         return await element.getText()
@@ -826,7 +826,7 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
 ### forEach
 ```js
   const awb = require('awb')
-  const {element, elements, client }= awb()
+  const { element, elements, client } = awb()
   //by css selector
   const elementsSpan = elements('span')
 
@@ -845,7 +845,7 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
 
 ```js
   const awb = require('awb')
-  const {elements, client }= awb()
+  const { elements, client } = awb()
   const links = element('a')
   await links.waitUntilDisappear(10000) // will assert that every element with css selector disappear from page
   /*
@@ -856,7 +856,7 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
 ### count
 ```js
   const awb = require('awb')
-  const {element, elements, client }= awb()
+  const { element, elements, client } = awb()
   const elementsCount = await elements('span').count()
   /*
   * return elements quantity, return number
@@ -865,7 +865,7 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
 ### filter
 ```js
   const awb = require('awb')
-  const {element, elements, client }= awb()
+  const { element, elements, client } = awb()
   const elementsSpan = elements('span')
   const textArr = await elementsSpan.filter(async (element) => {
         const html = await element.getElementHTML()
@@ -880,7 +880,7 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
 ### get
 ```js
   const awb = require('awb')
-  const {element, elements, client }= awb()
+  const { element, elements, client } = awb()
   const elementsSpan = elements('span')
   const elementWithText = elementsSpan.get(3)
   await elementWithText.getText()
