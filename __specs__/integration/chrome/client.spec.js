@@ -8,7 +8,8 @@ const conf = {
     javascriptEnabled: true,
     acceptSslCerts: true,
     platform: 'ANY',
-    browserName: 'chrome'
+    browserName: 'chrome',
+    chromeOptions: {args: ['--headless']}
   },
   host: 'localhost',
   port: 4444,
