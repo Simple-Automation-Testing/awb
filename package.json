@@ -54,7 +54,7 @@
     },
     "scripts": {
         "lint": "eslint lib/** --ext .js",
-        "pretest": "./bin/awb standalone gecko chrome",
+        "pretest": "./bin/awb standalone chrome",
         "test": "npm run integration-chrome",
         "integration-chrome": "mocha --timeout 60000 $(find ./__specs__/integration/chrome -path '*.spec.js')",
         "integration-chrome:watch": "mocha --timeout 60000 -w --harmony --trace-deprecation $(find ./__specs__/integration/chrome -path '*.spec.js')",
