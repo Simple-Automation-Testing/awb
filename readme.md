@@ -7,6 +7,7 @@ Uses the [ChromeDriver API](https://chromium.googlesource.com/chromium/src/+/mas
 Base: lazy elements, chrome driver dirrect connection, own standalone server, chrome and gecko driver installer
 
 ![npm downloads](https://img.shields.io/npm/dm/awb.svg?style=flat-square)
+[![Build Status](https://travis-ci.org/potapovDim/interface-webdriver.svg?branch=develop)](https://travis-ci.org/potapovDim/interface-webdriver)
 
 Install [Node.js](http://nodejs.org/) and install framework
 ```sh
