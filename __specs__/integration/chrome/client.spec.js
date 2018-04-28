@@ -181,7 +181,6 @@ describe('client chrome', () => {
       expect(error.toString().includes('still present on page'))
     }
     const time = await clicker.waitUntilDisappear(5000)
-
     expect(time).to.not.eq(0)
   })
 
