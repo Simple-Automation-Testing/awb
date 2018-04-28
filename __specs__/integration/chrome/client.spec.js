@@ -3,7 +3,7 @@ const {expect} = require('chai')
 const awb = require('../../../awb')
 const conf = {
   remote: false,
-  directConnect: false,
+  directConnect: true,
   desiredCapabilities: {
     javascriptEnabled: true,
     acceptSslCerts: true,
@@ -11,8 +11,8 @@ const conf = {
     browserName: 'chrome',
     chromeOptions: {args: ['--headless']}
   },
-  host: 'localhost',
-  port: 4444,
+  // host: 'localhost',
+  // port: 4444,
   timeout: 25000
 }
 
