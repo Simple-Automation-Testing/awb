@@ -9,7 +9,7 @@ const conf = {
     acceptSslCerts: true,
     platform: 'ANY',
     browserName: 'chrome',
-    chromeOptions: {args: ['--headless']}
+    // chromeOptions: {args: ['--headless']}
   },
   // host: 'localhost',
   // port: 4444,
@@ -31,6 +31,25 @@ describe('client chrome', () => {
   after(async () => {
     await client.close()
     await client.stopDriver()
+  })
+
+  it('stale reference one element', async () => {
+    const file = 'appear'
+    const clicker = element('#test_button')
+    await client.goTo(pathResolver(file))
+    expect(await clicker.isDisplayed()).to.eql(true)
+    await client.refresh()
+    expect(await clicker.isDisplayed()).to.eql(true)
+  })
+
+  it.only('stale reference with parent', async () => {
+    const file = 'appear'
+    const clicker = $('body').$('#test_button')
+    await client.goTo(pathResolver(file))
+    expect(await clicker.isDisplayed()).to.eql(true)
+    await client.refresh()
+    await client.sleep(2500)
+    expect(await clicker.isDisplayed()).to.eql(true)
   })
 
   it('count', async () => {
