@@ -9,7 +9,7 @@ const conf = {
     acceptSslCerts: true,
     platform: 'ANY',
     browserName: 'chrome',
-    // chromeOptions: {args: ['--headless']}
+    chromeOptions: {args: ['--headless']}
   },
   // host: 'localhost',
   // port: 4444,
@@ -42,16 +42,12 @@ describe('client chrome', () => {
     expect(await clicker.isDisplayed()).to.eql(true)
   })
 
-  it.only('stale reference with parent', async () => {
+  it('stale reference with parent', async () => {
     const file = 'appear'
-    const clicker = $('#test_button')// .waitForElement(1000)
-    clicker.baseElement = $('body')
+    const clicker = $('body').$('#test_button')
     await client.goTo(pathResolver(file))
     expect(await clicker.isDisplayed()).to.eql(true)
     await client.refresh()
-    console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
-
-
     expect(await clicker.isDisplayed()).to.eql(true)
   })
 
@@ -59,17 +55,6 @@ describe('client chrome', () => {
     const file = 'appear'
     const clicker = element('#test_button')
     let link = $$('a')
-    await client.goTo(pathResolver(file))
-    expect(await link.count()).to.eql(0)
-    await clicker.click()
-    link = $$('a').waitForElements(2500)
-    expect(await link.count()).to.eql(1)
-  })
-
-  it('chaining', async () => {
-    const file = 'appear'
-    const clicker = element('#test_button')
-    const link = $$('a').waitForElements(2500).get(0)
     await client.goTo(pathResolver(file))
     expect(await link.count()).to.eql(0)
     await clicker.click()
@@ -111,6 +96,7 @@ describe('client chrome', () => {
     const clicker = element('#test_button')
     await client.goTo(pathResolver(file))
     await client.switchToFrame(element('iframe'))
+
     expect(await buttonYoutube.isPresent()).to.eql(true)
     expect(await clicker.isDisplayed()).to.eql(false)
     await client.switchBack()
