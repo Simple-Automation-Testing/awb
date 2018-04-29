@@ -44,11 +44,14 @@ describe('client chrome', () => {
 
   it.only('stale reference with parent', async () => {
     const file = 'appear'
-    const clicker = $('body').$('#test_button')
+    const clicker = $('#test_button')// .waitForElement(1000)
+    clicker.baseElement = $('body')
     await client.goTo(pathResolver(file))
     expect(await clicker.isDisplayed()).to.eql(true)
     await client.refresh()
-    await client.sleep(2500)
+    console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+
+
     expect(await clicker.isDisplayed()).to.eql(true)
   })
 
