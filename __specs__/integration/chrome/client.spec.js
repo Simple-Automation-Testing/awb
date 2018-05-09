@@ -9,7 +9,7 @@ const conf = {
     acceptSslCerts: true,
     platform: 'ANY',
     browserName: 'chrome',
-    chromeOptions: {args: ['--headless']}
+    //chromeOptions: {args: ['--headless']}
   },
   // host: 'localhost',
   // port: 4444,
@@ -296,5 +296,32 @@ describe('client chrome', () => {
     await client.goTo(pathResolver(file))
     await clicker.click()
     expect(await link.getText()).to.eql('link 5')
+  })
+
+  it.only('switchToTab', async () => {
+    const file = 'subelement'
+    const file1 = 'appear'
+    const file2 = 'localstorage'
+
+    await client.goTo(pathResolver(file))
+
+    expect(await client.getTitle()).to.eql('Elements')
+
+    await client.executeScript(`window.open('${pathResolver(file1)}')`)
+
+    await client.switchToTab(1)
+
+    expect(await client.getTitle()).to.eql('Appear file')
+
+    await client.executeScript(`window.open('${pathResolver(file2)}')`)
+
+    await client.switchToTab(2)
+
+    expect(await client.getTitle()).to.eql('Localstorage')
+    await client.closeCurrentTab()
+
+    await client.switchToTab(1)
+
+    expect(await client.getTitle()).to.eql('Appear file')
   })
 })
