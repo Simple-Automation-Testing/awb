@@ -47,5 +47,7 @@ export declare class ElementsAWB {
   filter(cb: Promise<any>): Promise<any>
   map(cb: Promise<any>): Promise<any>
   forEach(cb: Promise<any>): Promise<any>
+  some(cb: Promise<any>): Promise<boolean>
+  every(cb: Promise<any>): Promise<boolean>
   waitForElements(time: number): ElementsAWB
 }

@@ -325,4 +325,38 @@ describe('client chrome', () => {
 
     expect(await client.getTitle()).to.eql('Appear file')
   })
+
+  it('some', async () => {
+    const file = 'some'
+    const spans = $$('span')
+
+    await client.goTo(pathResolver(file))
+
+    const result = await spans.some(async (el) => {
+      return (await el.getText()).includes('Test')
+    })
+    expect(result).to.be.true
+
+    const resultNext = await spans.some(async (el) => {
+      return (await el.getText()).includes('Zorrro')
+    })
+    expect(resultNext).to.be.false
+  })
+
+  it('every', async () => {
+    const file = 'some'
+    const spans = $$('span')
+
+    await client.goTo(pathResolver(file))
+
+    const result = await spans.every(async (el) => {
+      return (await el.getText()).includes('Test')
+    })
+    expect(result).to.be.true
+
+    const resultNext = await spans.every(async (el) => {
+      return (await el.getText()).includes('1')
+    })
+    expect(resultNext).to.be.false
+  })
 })
