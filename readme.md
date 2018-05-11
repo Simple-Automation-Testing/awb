@@ -118,6 +118,8 @@ describe('Google base example', () => {
   * [waitForElements](#waitforelements)
   * [map](#map)
   * [forEach](#foreach)
+  * [some](#some)
+  * [every](#every)
   * [filter](#filter)
   * [get](#get)
   * [waitUntilDisappear](#waituntildisappear)
@@ -839,6 +841,39 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
   * args async call back
   * call async funcs with await
   * does not return
+  * /
+```
+
+### every
+```js
+  const awb = require('awb')
+  const { element, elements, client } = awb()
+  //by css selector
+  const elementsSpan = elements('span')
+
+  const textArr = await elementsSpan.every(async (element) => {
+        return (await element.getText()).includes('test') // if every element test includes "test" method will return true
+      })                                                  // if someone element does not includes "test" method will return false
+  /*
+  * args async call back
+  * call async funcs with await
+  * return boolean
+  * /
+```
+### some
+```js
+  const awb = require('awb')
+  const { element, elements, client } = awb()
+  //by css selector
+  const elementsSpan = elements('span')
+
+  const textArr = await elementsSpan.some(async (element) => {
+        return (await element.getText()).includes('test') // if someone element includes "test" method will return false
+      })
+  /*
+  * args async call back
+  * call async funcs with await
+  * return boolean
   * /
 ```
 ## waitUntilDisappear
