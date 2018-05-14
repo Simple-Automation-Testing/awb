@@ -359,4 +359,28 @@ describe('client chrome', () => {
     })
     expect(resultNext).to.be.false
   })
+
+  it('map', async () => {
+    const file = 'some'
+    const spans = $$('span')
+
+    await client.goTo(pathResolver(file))
+
+    const result = await spans.map(async (el) => {
+      return await el.getText()
+    })
+
+    expect(result.every(val => val.includes('Test'))).to.be.true
+  })
+
+  it('forEach', async () => {
+    const file = 'some'
+    const spans = $$('span')
+
+    await client.goTo(pathResolver(file))
+
+    const result = await spans.forEach(async (el) => {
+      expect((await el.getText()).includes('Test')).to.eql(true)
+    })
+  })
 })
