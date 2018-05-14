@@ -39,15 +39,21 @@ export declare class ElementAWB {
   mouseDownAndMove(position: { x: number, y: number }): Promise<any>
 }
 
+
+function cb(el: ElementAWB): Promise<any>
 export declare class ElementsAWB {
   constructor(selector: string, sessionId: string | null, baseElement: ElementAWB)
-  get(index: number): ElementAWB
+
+  get(index: number): Promise<ElementAWB>
   count(): Promise<number>
   wait(time: number, cb): ElementsAWB
-  filter(cb: Promise<any>): Promise<any>
-  map(cb: Promise<any>): Promise<any>
-  forEach(cb: Promise<any>): Promise<any>
-  some(cb: Promise<any>): Promise<boolean>
-  every(cb: Promise<any>): Promise<boolean>
+  filter(cb: cb): Promise<any>
+  map(cb: cb): Promise<any>
+  forEach(cb: cb): Promise<any>
+  some(cb: cb): Promise<boolean>
+  every(cb: cb): Promise<boolean>
   waitForElements(time: number): ElementsAWB
 }
+
+export declare function $$(): ElementsAWB
+export declare function $(): ElementAWB
