@@ -384,5 +384,4 @@ describe('client chrome', () => {
     })
   })
 
-  it()
 })
