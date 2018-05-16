@@ -395,6 +395,4 @@ describe('client chrome', () => {
       expect((await el.getText()).includes('Test')).to.eql(true)
     })
   })
-
-  it('')
 })
