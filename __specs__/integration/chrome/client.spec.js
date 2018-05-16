@@ -122,6 +122,18 @@ describe('client chrome', () => {
     await client.alert.accept()
   })
 
+  it('prompt', async () => {
+    const file = 'prompt'
+    const button = element('button').waitForClickable(1000)
+    const text = element('#prompt_try')
+    const prompt = client.alert
+    await client.goTo(pathResolver(file))
+    await button.click()
+    await prompt.sendKeys('TEST')
+    await prompt.accept()
+    expect(await text.getText()).to.includes('TEST')
+  })
+
   it('clicker', async () => {
     const file = 'clicker'
     await client.goTo(pathResolver(file))
@@ -384,4 +396,5 @@ describe('client chrome', () => {
     })
   })
 
+  it('')
 })

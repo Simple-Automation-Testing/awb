@@ -13,6 +13,7 @@ interface Alert {
   accept: () => Promise<void>
   dismiss: () => Promise<void>
   getText: () => Promise<string>
+  sendKeys: (text: string) => Promise<void>
 }
 
 declare class Client {

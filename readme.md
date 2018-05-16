@@ -88,6 +88,7 @@ describe('Google base example', () => {
     - [accept](#accept)
     - [dismiss](#dismiss)
     - [getText](#gettext)
+    - [sendKeys](#sendKeys)
   * [waitForUrlIncludes](#waitforurlincludes)
   * [wait](#wait)
   * [waitForTitleInclude](#waitfortitleinclude)
@@ -228,6 +229,14 @@ describe('Google base example', () => {
 ```js
 await alert.accept()
 
+```
+## sendKeys
+```js
+  const awb = require('awb')
+  const { element, client } = awb()
+  const prompt = client.alert //getter
+  await prompt.sendKeys('test') //set test to prompt box
+  await prompt.accept() // accept prompt box
 ```
 ## dismiss
 ```js
