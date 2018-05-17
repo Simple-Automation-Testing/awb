@@ -111,6 +111,8 @@ describe('Google base example', () => {
   * [getclientTabs](#getclienttabs)
   * [sleep](#sleep)
   * [getUrl](#geturl)
+  * [takeScreenshot](#takescreenshot)
+  * [saveScreenshot](#savescreenshot)
 - [Elements](#elements) alias is $$
   * [elements.css](#element.css)
   * [elements.xpath](#element.xpath)
@@ -502,6 +504,31 @@ const token = await sessionStorage.get('token')
   const { element, client } = awb()
   const currentUrl = await client.getUrl()
   /* return current tab url*/
+```
+## takeScreenshot
+```js
+  const awb = require('awb')
+  const { client } = awb()
+  const screenshot = await client.takeScreenshot()
+  /* return string (base64 encoded image) */
+```
+## saveScreenshot
+```js
+  const awb = require('awb')
+  const { client } = awb()
+  await client.saveScreenshot('someName')
+  await client.saveScreenshot('someName', {
+    path: '/dev/null',
+    format: 'jpeg',
+    screenshot: 'encoded string',
+    encoding: 'customEncoding',
+  })
+  /* Saves screenshot in png format into `screenshots` folder.
+  Optional parameters are passed as object (second parameter) and might have:
+   path where to save screenshots (path of any nesting levels will be created automatically)
+   format (jpeg)
+   screenshot (by default screenshot will be taken with client.takescreenshot method but it is possible to pass any screenshot as a string)
+   encoding*/
 ```
 # Element
 ## ConstructorElement
