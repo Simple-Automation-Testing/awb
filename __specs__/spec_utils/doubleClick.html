@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>DoubleClick</title>
+</head>
+
+<body>
+  <div id="app">
+    <button id="test_button" ondblclick="runDoubleClick()">Test button</button>
+  </div>
+  <script>
+    function runDoubleClick() {
+      const a = document.createElement('a')
+      a.innerText = 'im link'
+      a.href = 'https://google.com'
+      document.body.appendChild(a)
+    }
+  </script>
+</body>
+
+</html>
