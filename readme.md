@@ -136,6 +136,7 @@ describe('Google base example', () => {
   * [getRect](#getrect)
   * [clear](#clear)
   * [location](#location)
+  * [doubleClick](#doubleclick)
   * [locationView](#locationview)
   * [size](#size)
   * [getElementHTML](#getelementhtml)
@@ -761,6 +762,16 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
   await elementSpan.click()
   /*
   * triger click
+  */
+```
+## doubleClick
+```js
+  const awb = require('awb')
+  const { element, client } = awb()
+  const elementSpan = element('div').element('span')
+  await elementSpan.doubleClick()
+  /*
+  * triger doubleClick
   */
 ```
 ## isPresent

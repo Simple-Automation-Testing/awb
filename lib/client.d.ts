@@ -27,6 +27,7 @@ declare class Client {
   refresh(): Promise<any>
   back(): Promise<any>
   forward(): Promise<any>
+  doubleClick(): Promise<any>
   takeScreenshot(): Promise<string>
   waitForUrlIncludes(): Promise<void>
   waitForTitleInclude(): Promise<void>
