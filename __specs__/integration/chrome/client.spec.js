@@ -134,6 +134,13 @@ describe('client chrome', () => {
     await client.alert.accept()
   })
 
+  it('tagname', async () => {
+    const file = 'click'
+    const clicker = element('#test_button').waitForClickable(3000)
+    await client.goTo(pathResolver(file))
+    expect(await clicker.getTag()).to.eql('button')
+  })
+
   it('prompt', async () => {
     const file = 'prompt'
     const button = element('button').waitForClickable(1000)
