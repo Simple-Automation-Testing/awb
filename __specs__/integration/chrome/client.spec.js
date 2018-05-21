@@ -12,7 +12,7 @@ const conf = {
     acceptSslCerts: true,
     platform: 'ANY',
     browserName: 'chrome',
-    chromeOptions: {args: ['--headless']}
+    // chromeOptions: {args: ['--headless']}
   },
   // host: 'localhost',
   // port: 4444,
@@ -139,6 +139,17 @@ describe('client chrome', () => {
     const clicker = element('#test_button').waitForClickable(3000)
     await client.goTo(pathResolver(file))
     expect(await clicker.getTag()).to.eql('button')
+  })
+
+  it.only('rightClick', async () => {
+    const file = 'rightClick'
+    const clicker = element('#test_button').waitForClickable(3000)
+    const spans = $$('span')
+    await client.goTo(pathResolver(file))
+
+    await clicker.rightClick()
+    await client.sleep(10000)
+    expect(await spans.count()).to.eql(1)
   })
 
   it('prompt', async () => {
