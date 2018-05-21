@@ -766,6 +766,17 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
   * triger click
   */
 ```
+## rightClick
+```js
+  const awb = require('awb')
+  const { element, client } = awb()
+  const elementSpan = element('div').element('span')
+  await elementSpan.rightClick()
+  /*
+  * triger click right mouse button
+  */
+```
+
 ## doubleClick
 ```js
   const awb = require('awb')

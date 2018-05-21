@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Right click</title>
+</head>
+
+<body>
+  <div id="app">
+    <button id="test_button" oncontextmenu="clicker(event)">Test button</button>
+  </div>
+  <script>
+    function clicker(e) {
+      const {key, code} = e
+      const spn = document.createElement('span')
+      spn.innerText = 'click text'
+      document.body.appendChild(spn)
+    }
+  </script>
+</body>
+
+</html>
