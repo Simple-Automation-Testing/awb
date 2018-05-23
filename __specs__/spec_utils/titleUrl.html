@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Elements</title>
+</head>
+
+<body>
+  <div id="app">
+    <div>Changed url and title</div>
+  </div>
+  <script>
+    setTimeout(() => {
+      document.title = 'Changed'
+      window.location.href = window.location.href + '#changed'
+    }, 3500)
+  </script>
+</body>
+
+</html>

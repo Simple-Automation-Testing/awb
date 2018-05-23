@@ -46,12 +46,17 @@ describe('client chrome', () => {
   })
 
   it('waitForTitleInclude', async () => {
-    const file = 'appear'
-    const clicker = element('#test_button')
+    const file = 'titleUrl'
     await client.goTo(pathResolver(file))
-    expect(await clicker.isDisplayed()).to.eql(true)
-    await client.refresh()
-    expect(await clicker.isDisplayed()).to.eql(true)
+    await client.waitForTitleInclude('Changed', 5000)
+    expect(await client.getTitle()).to.eql('Changed')
+  })
+
+  it('waitForUrlIncludes', async () => {
+    const file = 'titleUrl'
+    await client.goTo(pathResolver(file))
+    await client.waitForUrlIncludes('#changed', 5000)
+    expect(await client.getUrl()).to.includes('#changed')
   })
 
   it('back forward', async () => {

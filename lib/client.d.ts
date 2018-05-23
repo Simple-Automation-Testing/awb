@@ -29,8 +29,8 @@ declare class Client {
   forward(): Promise<any>
   doubleClick(): Promise<any>
   takeScreenshot(): Promise<string>
-  waitForUrlIncludes(): Promise<void>
-  waitForTitleInclude(): Promise<void>
+  waitForUrlIncludes(url: string, time: number): Promise<void>
+  waitForTitleInclude(title: string, time: number): Promise<void>
   resizeWindow(width: number, height: number): Promise<any>
   startDriver(): Promise<any>
   stopDriver(): Promise<any>
