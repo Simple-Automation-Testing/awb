@@ -45,6 +45,26 @@ describe('client chrome', () => {
     await client.stopDriver()
   })
 
+  it('waitForTitleInclude', async () => {
+    const file = 'appear'
+    const clicker = element('#test_button')
+    await client.goTo(pathResolver(file))
+    expect(await clicker.isDisplayed()).to.eql(true)
+    await client.refresh()
+    expect(await clicker.isDisplayed()).to.eql(true)
+  })
+
+  it('back forward', async () => {
+    await client.goTo('https://www.google.com/')
+    expect(await client.getUrl()).to.includes('google.com')
+    await client.goTo('https://www.linkedin.com/')
+    expect(await client.getUrl()).to.includes('linkedin.com/')
+    await client.back()
+    expect(await client.getUrl()).to.includes('google.com')
+    await client.forward()
+    expect(await client.getUrl()).to.includes('linkedin.com/')
+  })
+
   it('stale reference one element', async () => {
     const file = 'appear'
     const clicker = element('#test_button')
