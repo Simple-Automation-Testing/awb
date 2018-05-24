@@ -70,6 +70,13 @@ describe('client chrome', () => {
     expect(await client.getUrl()).to.includes('linkedin.com/')
   })
 
+  it('waitTextContains', async () => {
+    const file = 'waitTextContains'
+    await client.goTo(pathResolver(file))
+    const button = $('button').waitTextContains('CHANGED', 2500)
+    expect(await button.getText()).to.eql('CHANGED')
+  })
+
   it('stale reference one element', async () => {
     const file = 'appear'
     const clicker = element('#test_button')

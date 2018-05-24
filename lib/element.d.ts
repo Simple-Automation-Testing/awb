@@ -18,6 +18,7 @@ export declare class ElementAWB {
   waitForElementVisible(time: number): ElementAWB
   waitForElementPresent(time: number): ElementAWB
   waitUntilDisappear(time: number): Promise<void>
+  waitTextContains(text: string, time: number): ElementAWB
   wait(time: number, cb: Promise<any>): ElementsAWB
   size(): Promise<{ width: number, height: number }>
   location(): Promise<{ x: number, y: number }>

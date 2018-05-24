@@ -134,6 +134,7 @@ describe('Google base example', () => {
   * [element.id](#element.id)
   * [element.id](#element.accessibilityId)
   * [sendKeys](#sendkeys)
+  * [waitTextContains](#waittextcontains)
   * [getRect](#getrect)
   * [clear](#clear)
   * [location](#location)
@@ -635,6 +636,16 @@ const token = await sessionStorage.get('token')
   await elementInput.clear()
   /*
   * clear value inside input
+  */
+```
+## waitTextContains
+```js
+  const awb = require('awb')
+  const { element, client } = awb()
+  const elementInput = element('button').waitTextContains('test', 2500)
+  await elementInput.click()
+  /*
+  * will wait until test does not include 'test'
   */
 ```
 ## getElementHTML
