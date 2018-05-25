@@ -134,6 +134,25 @@ describe('client chrome', () => {
     expect(await googleInput.isDisplayed()).to.eql(true)
   })
 
+  it('getRect', async () => {
+    const file = 'tabs'
+    const link = $('a').waitForClickable(1000)
+    const googleInput = $('#lst-ib').waitForElementPresent(5000)
+    await client.goTo(pathResolver(file))
+    expect(await link.getRect()).to.eql(
+      '<a href="https://www.google.com.ua" target="_blank">Go to goole</a>'
+    )
+  })
+
+  it('getElementHTML', async () => {
+    const file = 'tabs'
+    const link = $('a').waitForClickable(1000)
+    const googleInput = $('#lst-ib').waitForElementPresent(5000)
+    await client.goTo(pathResolver(file))
+    expect(await link.getElementHTML()).to.eql({
+    })
+  })
+
   it('switch back', async () => {
     const file = 'iframe'
     const buttonYoutube = $('figure').waitForElement(1500)
