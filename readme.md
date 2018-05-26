@@ -218,10 +218,20 @@ describe('Google base example', () => {
 ```js
   const awb = require('awb')
   const { element, client } = awb()
-  const size = client.getSize() //{ height: 983, width: 1200 } for example
+  const size = await client.getSize() //{ height: 983, width: 1200 } for example
   /*
    * any args
    * return current window size {height: number, width: number}
+   */
+```
+## doubleClick
+```js
+  const awb = require('awb')
+  const { element, client } = awb()
+  await client.doubleClick($('button')) // will click button element
+  await client.doubleClick({x: 100, y: 200}) // will click by coordinates
+  /*
+   *  args: ElementAWB or object {x: number, y: number}
    */
 ```
 ## alert

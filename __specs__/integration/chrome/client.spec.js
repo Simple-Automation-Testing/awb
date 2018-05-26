@@ -503,6 +503,15 @@ describe('client chrome', () => {
     expect(await links.count()).to.eql(1)
   })
 
+  it('doubleClick client', async () => {
+    const file = 'doubleClick'
+    const button = $('button')
+    const links = $$('a')
+    await client.goTo(pathResolver(file))
+    await client.doubleClick(button)
+    expect(await links.count()).to.eql(1)
+  })
+
   describe('saveScreenshot', () => {
     const defaultPath = `${process.cwd()}/screenshots`
     const customNestedPath = `${defaultPath}/1/2/3/4`
