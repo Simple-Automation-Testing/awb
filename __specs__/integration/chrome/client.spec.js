@@ -45,9 +45,18 @@ describe('client chrome', () => {
     await client.stopDriver()
   })
 
+  it('resizeWindow', async () => {
+    const file = 'titleUrl'
+    await client.goTo(pathResolver(file))
+    expect(await client.getSize()).to.eql({height: 600, width: 800})
+    await client.resizeWindow(900, 500)
+    expect(await client.getSize()).to.eql({height: 500, width: 900})
+  })
+
   it('waitForTitleInclude', async () => {
     const file = 'titleUrl'
     await client.goTo(pathResolver(file))
+    expect(await client.getTitle()).to.eql('Elements')
     await client.waitForTitleInclude('Changed', 5000)
     expect(await client.getTitle()).to.eql('Changed')
   })
