@@ -149,7 +149,7 @@ describe('client chrome', () => {
     const googleInput = $('#lst-ib').waitForElementPresent(5000)
     await client.goTo(pathResolver(file))
     expect(await link.getRect()).to.eql(
-      '<a href="https://www.google.com.ua" target="_blank">Go to goole</a>'
+      {width: 76, height: 17, x: 8, y: 8}
     )
   })
 
@@ -158,8 +158,7 @@ describe('client chrome', () => {
     const link = $('a').waitForClickable(1000)
     const googleInput = $('#lst-ib').waitForElementPresent(5000)
     await client.goTo(pathResolver(file))
-    expect(await link.getElementHTML()).to.eql({
-    })
+    expect(await link.getElementHTML()).to.eql('<a href="https://www.google.com.ua" target="_blank">Go to goole</a>')
   })
 
   it('switch back', async () => {
@@ -180,6 +179,7 @@ describe('client chrome', () => {
     const file = 'click'
     const link = element('a[href="https://google.com"]')
     const clicker = element('#test_button').waitForClickable(3000)
+
     await client.goTo(pathResolver(file))
     await clicker.click()
     expect(await link.getAttribute('href')).to.eql('https://google.com/')
