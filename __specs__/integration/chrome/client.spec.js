@@ -53,6 +53,14 @@ describe('client chrome', () => {
     expect(await client.getSize()).to.eql({height: 500, width: 900})
   })
 
+  it('pageSource', async () => {
+    const file = 'titleUrl'
+    await client.goTo(pathResolver(file))
+    expect(await client.pageSource()).to.not.eql('')
+    expect(await client.pageSource()).to.not.eql(null)
+    expect(await client.pageSource()).to.not.eql(undefined)
+  })
+
   it('waitForTitleInclude', async () => {
     const file = 'titleUrl'
     await client.goTo(pathResolver(file))

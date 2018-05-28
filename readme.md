@@ -309,6 +309,13 @@ const token = await localStorage.get('token')
   const sessionStorage = client.sessionStorage //getter
   // return client sessionStorage api
 ```
+## pageSource
+```js
+  const awb = require('awb')
+  const { element, client } = awb()
+  const source = await client.pageSource()
+  // return current window page source
+```
 ## get
 ```js
 const token = await sessionStorage.get('token')
