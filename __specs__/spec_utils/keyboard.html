@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>keysdown</title>
+</head>
+
+<body onkeydown="handler(event)">
+  <div id="app">
+  </div>
+  <script>
+    function handler(ev) {
+      const span = document.createElement('span')
+      document.body.innerText += ev.key
+    }
+  </script>
+</body>
+
+</html>
