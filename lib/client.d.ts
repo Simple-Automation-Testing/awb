@@ -1,5 +1,6 @@
 import { Config } from './config'
 import { ElementAWB } from './element'
+import { Keys } from './event/keys'
 
 interface SessionLocalStorage {
   get: (key: string) => Promise<string>
@@ -22,7 +23,8 @@ declare class Client {
   sessionStorage: SessionLocalStorage
   localStorage: SessionLocalStorage
   alert: Alert
-
+  Keys: Keys
+  pressKeys(keys: Keys | [Keys])
   getSize(): Promise<{ height: number, width: number }>
   refresh(): Promise<any>
   back(): Promise<any>

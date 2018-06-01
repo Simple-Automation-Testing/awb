@@ -91,6 +91,7 @@ describe('Google base example', () => {
     - [sendKeys](#sendKeys)
   * [waitForUrlIncludes](#waitforurlincludes)
   * [wait](#wait)
+  * [pressKeys](#presskeys)
   * [doubleclick](#doubleClick)
   * [waitForTitleInclude](#waitfortitleinclude)
   * [startDriver](#startdriver)
@@ -240,6 +241,17 @@ describe('Google base example', () => {
   const { element, client } = awb()
   const alert = client.alert //getter
   // return client alert api
+```
+## presskeys
+```js
+  const awb = require('awb')
+  const { client } = awb()
+  await client.presskeys(client.Keys.F1, client.Keys.F2, client.Keys.F3)
+  // will press F1, F2, F3 keys
+
+   /*
+   *  args: Keys
+   */
 ```
 ## accept
 ```js

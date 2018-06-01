@@ -2,7 +2,6 @@ const {expect} = require('chai')
 const fs = require('fs')
 const rimraf = require('rimraf');
 
-
 const awb = require('../../../awb')
 const conf = {
   remote: false,
@@ -43,6 +42,14 @@ describe('client chrome', () => {
   after(async () => {
     await client.close()
     await client.stopDriver()
+  })
+
+  it('keyPress', async () => {
+    const file = 'keyboard'
+    await client.goTo(pathResolver(file))
+    expect(await $('body').getText()).to.eql('')
+    await client.pressKeys(client.Keys.F1, client.Keys.F2)
+    expect(await $('body').getText()).to.eql('F1F2')
   })
 
   it('resizeWindow', async () => {
@@ -183,14 +190,14 @@ describe('client chrome', () => {
     expect(await clicker.isDisplayed()).to.eql(true)
   })
 
-  it.only('click', async () => {
+  it('click', async () => {
     const file = 'click'
     const link = element('a[href="https://google.com"]')
-    const clicker = element('#test_button')
+    const clicker = element('#test_button').waitForClickable(25000)
 
     await client.goTo(pathResolver(file))
     await clicker.click()
-    // expect(await link.getAttribute('href')).to.eql('https://google.com/')
+    expect(await link.getAttribute('href')).to.eql('https://google.com/')
   })
 
   it('allert', async () => {
