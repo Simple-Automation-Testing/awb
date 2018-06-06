@@ -44,6 +44,17 @@ describe('client chrome', () => {
     await client.stopDriver()
   })
 
+  it.skip('cookue', async () => {
+    const file = 'keyboard'
+    await client.goTo(pathResolver(file))
+    const cookie = client.cookie
+
+    expect(await cookie.getAll()).to.eql([])
+
+    await cookie.set('test', '/test')
+
+  })
+
   it('keyPress', async () => {
     const file = 'keyboard'
     await client.goTo(pathResolver(file))
