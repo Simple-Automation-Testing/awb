@@ -52,7 +52,6 @@ describe('client chrome', () => {
     expect(await cookie.getAll()).to.eql([])
 
     await cookie.set('test', '/test')
-
   })
 
   it('keyPress', async () => {
