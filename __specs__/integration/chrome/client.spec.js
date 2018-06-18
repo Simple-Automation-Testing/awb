@@ -360,7 +360,11 @@ describe('client chrome', () => {
     const file = 'desappearArr'
     const links = elements('a')
     await client.goTo(pathResolver(file))
-    await links.waitUntilDisappear(1000)
+    try {
+      await links.waitUntilDisappear(1000)
+    } catch (error) {
+     expect(error).to.exist
+    }
   })
 
   it('iframe', async () => {
