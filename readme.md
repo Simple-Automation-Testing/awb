@@ -38,13 +38,12 @@ Use with [mocha](https://mochajs.org/) or other test runner
 
 # Base example
 ```js
-const { expect } = require('chai')
 
 const awb = require('awb')
 
 const { client, $ } = awb()
 
-describe('Google base example', () => {
+async function findInGoogle_potapovDim() {
   const baseURL = 'https://www.google.com.ua/'
   //selectors
   const submitsearch = '[name="btnK"]'
@@ -54,21 +53,19 @@ describe('Google base example', () => {
   const submitSearch = $(submitsearch).waitForClickable(1000) //lazy element with  expected condition
   const resultSearch = $(resultsearch).waitForElement(1000) //lazy element with  expected condition
   const inputSearch = $(inputsearch)
-  before(async () => {
-    await client.startDriver()
-    await client.goTo(baseURL)
-  })
-  after(async () => {
-    await client.close()
-    await client.stopDriver()
-  })
-  it('search git hub potapovDim', async () => {
-    await inputSearch.sendKeys('git hub potapovDim')
-    await submitSearch.click()
-    const allTextInSelector = await resultSearch.getText()
-    expect(allTextInSelector).to.includes('potapovDim')
-  })
-})
+  // start driver and start driver
+  await client.startDriver()
+  await client.goTo(baseURL)
+  // page activity
+  await inputSearch.sendKeys('git hub potapovDim')
+  await submitSearch.click()
+  const allTextInSelector = await resultSearch.getText()
+  console.log(allTextInSelector.includes('potapovDim')) //output: true
+  // kill browser and stop driver
+  await client.close()
+  await client.stopDriver()
+}
+findInGoogle_potapovDim()
 ```
 [More examples here -> ](https://github.com/potapovDim/interface-webdriver/tree/another-webdriver-binding/examples)
 
