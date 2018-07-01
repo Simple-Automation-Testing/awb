@@ -107,6 +107,7 @@ describe('client chrome', () => {
   it('waitTextContains', async () => {
     const file = 'waitTextContains'
     await client.goTo(pathResolver(file))
+    expect(await $('button').getText()).to.eql('Test button')
     const button = $('button').waitTextContains('CHANGED', 2500)
     expect(await button.getText()).to.eql('CHANGED')
   })
@@ -231,11 +232,8 @@ describe('client chrome', () => {
     const clicker = element('#test_button').waitForClickable(3000)
     const spans = $$('span')
     await client.goTo(pathResolver(file))
-
     await clicker.rightClick()
-
     await client.sleep(10000)
-
     expect(await spans.count()).to.eql(1)
   })
 
@@ -244,13 +242,11 @@ describe('client chrome', () => {
     const button = element('button').waitForClickable(1000)
     const text = element('#prompt_try')
     const prompt = client.alert
-
     await client.goTo(pathResolver(file))
     await button.click()
     await prompt.sendKeys('TEST')
     await prompt.accept()
     expect(await text.getText()).to.includes('TEST')
-
     await button.click()
     await prompt.accept()
     expect(await text.getText()).to.includes('AWB')
@@ -360,11 +356,8 @@ describe('client chrome', () => {
     const file = 'desappearArr'
     const links = elements('a')
     await client.goTo(pathResolver(file))
-    try {
-      await links.waitUntilDisappear(1000)
-    } catch (error) {
-     expect(error).to.exist
-    }
+    try {await links.waitUntilDisappear(1000)
+    } catch (error) { expect(error).to.exist}
   })
 
   it('iframe', async () => {
@@ -421,9 +414,7 @@ describe('client chrome', () => {
     const clicker = $('button')
     await client.goTo(pathResolver(file))
     await clicker.click()
-    const resp = await client.executeScriptAsync(function(cb) {
-      cb('test')
-    })
+    const resp = await client.executeScriptAsync(function(cb) {cb('test')})
     expect(resp).to.eql('test')
   })
 
@@ -587,7 +578,5 @@ describe('client chrome', () => {
       expect(fs.existsSync(`${defaultPath}/${screenshotName}.${customFormat}`))
         .to.eql(true, `Screenshot was not saved with custom format`)
     })
-
   })
-
 })
