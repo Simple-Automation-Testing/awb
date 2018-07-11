@@ -10,6 +10,97 @@ const arrayToSubArrays = (arr, formedArr = [], arrLenth = 8) => {
   return formedArr
 }
 
+function bubbleSort(a) {
+  let swapped
+  do {
+    swapped = false
+    for(var i = 0; i < a.length - 1; i++) {
+      if(a[i].bottom > a[i + 1].bottom) {
+        const temp = a[i]
+        a[i] = a[i + 1]
+        a[i + 1] = temp
+        swapped = true
+      }
+    }
+  } while(swapped)
+}
+
+// const callback = (arg) => console.log(arg)
+
+// const clickData = {
+//   tableHeader: 'Description', // Table Column, head name
+//   searchByValue: 'Life Safety Consultant', // Search by value in 'tableHeader'
+//   searchInColumn: 'Number' // table head Column name
+// }
+
+// build headerHash
+function buildHash(headElemes = document.querySelector('.slick-header-columns.slick-header-columns-left').querySelectorAll('div[title]')) {
+
+  function replacer(str) {
+    return str.trim().replace(/( )|(:)/ig, '').replace(RegExp(
+      String.fromCharCode(10) + '|' + String.fromCharCode(160) + '|' +
+      String.fromCharCode(13) + '|' + String.fromCharCode(32), 'ig'), '').replace('#', 'Number')
+  }
+
+  function removePrefix(headTitle) {
+    return headTitle.charAt(0) === headTitle.charAt(0).toUpperCase() &&
+      headTitle.charAt(1) === headTitle.charAt(1).toUpperCase() ? headTitle.slice(1) : headTitle
+  }
+
+  return Array.prototype.reduce.call(headElemes, function(acc, current, index) {
+
+    if(current.innerText.trim().length === 0) {
+      acc['EmptyTitle' + index] = index; return acc
+    }
+
+    if(current.innerText.trim().length) {
+      const spanText = current.innerText
+      console.log(spanText)
+      acc[removePrefix(replacer(spanText.replace(/ *\([^)]*\) */g, '')))] = index
+    }
+
+    return acc
+  }, {})
+}
+
+headerHash = buildHash()
+
+function clickData(tableRoot, editableData, data) {
+  data = data || []
+  const rows = tableRoot.querySelectorAll('.grid-canvas.grid-canvas-top.grid-canvas-left > div')
+
+  const rowsToObject = Array.prototype.map.call(rows, function(row1) {
+    const rect1 = row1.getBoundingClientRect()
+    return {bottom: rect1.bottom, row: row1, content: row1.innerText}
+  })
+
+  bubbleSort(rowsToObject)
+
+  if(data.length && data[data.length - 1].content === rowsToObject[rowsToObject.length - 1].content) {
+    return Promise.resolve(callback(false))
+  }
+
+  rowsToObject.forEach(function(rowObj) {
+    if(rowObj.row.querySelectorAll('.slick-cell')[headerHash[editableData.tableHeader]].innerText = editableData.searchByValue) {
+      console.log('AAAAA', headerHash[editableData.searchInColumn])
+      callback(true); Promise.resolve(true)
+    }
+  })
+
+  data.push(...rowsToObject)
+
+  rowsToObject[rowsToObject.length - 1].row.scrollIntoView()
+
+  return new Promise((resolve) => {
+    setTimeout(() => {console.log('x'); resolve(combineData(clickData, data))}, 150)
+  })
+}
+
+
+combineData(clickData, []).then(arr => {
+  console.log(arr)
+})
+
 
 const sort = `
 function bubbleSort(a) {
@@ -27,7 +118,6 @@ function bubbleSort(a) {
   } while(swapped)
 }
 `
-
 
 // build headerHash
 function buildHash(headElemes = document.querySelector('.slick-header-columns.slick-header-columns-left').querySelectorAll('div[title]')) {

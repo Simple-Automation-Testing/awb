@@ -1,4 +1,4 @@
-const sort = `
+
 function bubbleSort(a) {
   let swapped
   do {
@@ -13,7 +13,7 @@ function bubbleSort(a) {
     }
   } while(swapped)
 }
-`
+
 
 
 // build headerHash
@@ -46,7 +46,7 @@ function buildHash(headElemes = document.querySelector('.slick-header-columns.sl
   }, {})
 }
 
-// headerHash = buildHash()
+headerHash = buildHash()
 
 function combineData(data = []) {
 
@@ -89,8 +89,10 @@ combineData().then(arr => {
   }, []).map(a => a.row)
 
 }).then(a => a.map(row => {
-  const columns = row.querySelectorAll('.slick-cell')
-  return Object.keys(headerHash).reduce(function(acc, curr) {
-    acc[curr] = columns[headerHash[curr]].innerText; return acc
-  }, {})
+  return row
+  // const columns = row.querySelectorAll('.slick-cell')
+
+  // return Object.keys(headerHash).reduce(function(acc, curr) {
+  //   acc[curr] = columns[headerHash[curr]].innerText; return acc
+  // }, {})
 })).then(console.log)
