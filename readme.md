@@ -136,6 +136,7 @@ findInGoogle_potapovDim()
   * [getRect](#getrect)
   * [clear](#clear)
   * [location](#location)
+  * [getoptionlist](#getOptionList)
   * [doubleClick](#doubleclick)
   * [locationView](#locationview)
   * [size](#size)
@@ -691,6 +692,16 @@ const token = await sessionStorage.get('token')
   const { element, client } = awb()
   const elementDiv = element('div')
   const divText = await elementDiv.getText()
+  /*
+  * return all text inside element , return string
+  */
+```
+## getOptionList
+```js
+  const awb = require('awb')
+  const { element, client } = awb()
+  const elementSelect = element('select')
+  const listData = await elementSelect.getOptionList()
   /*
   * return all text inside element , return string
   */
