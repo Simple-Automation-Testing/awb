@@ -170,6 +170,7 @@ findInGoogle_potapovDim()
     directConnect: false, // if directConnect true directConnect() will run gecko or chrome driver without selenium standalone server, default false
     host: 'localhost', // host, default 'localhost' or '127.0.0.1' or '0.0.0.0'
     port: 4444, // port on what will be runned client driver
+    slowTime: 200, // will delay 200 ms every request
     desiredCapabilities: {
       javascriptEnabled: true,
       acceptSslCerts: true,
