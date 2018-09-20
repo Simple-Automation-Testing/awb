@@ -44,8 +44,8 @@
   },
   "homepage": "https://github.com/potapovDim/interface-webdriver#readme",
   "dependencies": {
-    "node-fetch": "^1.7.3",
-    "tar": "^4.1.1",
+    "node-fetch": "^2.2.0",
+    "tar": "^4.4.6",
     "unzip": "^0.1.11",
     "xml2js": "^0.4.19"
   },
@@ -59,6 +59,7 @@
     "lint": "eslint lib/** --ext .js",
     "pretest": "./bin/awb standalone chrome",
     "test": "npm run integration-chrome && npm run unit",
+    "integration-crash": "mocha --timeout 60000 $(find ./__specs__/crash -path '*.spec.js')",
     "integration-chrome": "mocha --timeout 60000 $(find ./__specs__/integration/chrome -path '*.spec.js')",
     "integration-chrome:watch": "mocha --timeout 60000 -w --harmony --trace-deprecation $(find ./__specs__/integration/chrome -path '*.spec.js')",
     "integration-firefox": "mocha --timeout 60000 $(find ./__specs__/integration/firefox -path '*.spec.js')",
@@ -74,7 +75,7 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "eslint": "^4.19.1",
-    "mocha": "^5.0.1",
+    "mocha": "^5.2.0",
     "sinon": "^4.5.0"
   }
 }
