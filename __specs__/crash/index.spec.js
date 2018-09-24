@@ -38,8 +38,13 @@ describe('crash', () => {
 
 
   it('wait logic chaining', async () => {
-    const el = $('body').$('#sfdiv').waitForEement(100)
-    expect(await el.getTag()).to.eql('input')
+
+    const el = $('body')
+      .waitForElement(100)
+      .$('#sfdiv')
+
+    console.log(await el.getTag())
+    console.log(el.baseElement)
     // expect(await el.getAttribute('id')).to.eql('lst-ib')
   })
 })
