@@ -42,10 +42,8 @@ describe('crash', () => {
     const el = $('body')
       .waitForElement(100)
       .$('#sfdiv')
-      // .waitForElement(200)
+      .waitForElement(200)
 
-    console.log(await el.getTag())
-    console.log(el.baseElement)
-    // expect(await el.getAttribute('id')).to.eql('lst-ib')
+    expect(await el.getAttribute('id')).to.eql('sfdiv')
   })
 })
