@@ -36,22 +36,9 @@ describe('crash', () => {
     await client.goTo(false)
   })
 
-  // it('open empty url', async () => {
-  //   const el = $('body').$('#sfdiv').$('.sfibbbc').$('#lst-ib')
-  //   expect(await el.getTag()).to.eql('input')
-  //   expect(await el.getAttribute('id')).to.eql('lst-ib')
-  // })
 
   it('wait logic chaining', async () => {
-    const el = $('body')
-                        .waitForElement(1000)
-                        .$('#sfdiv')
-
-                        // .waitForElement(1000)
-                        // .$('.sfibbbc')
-                        // .waitForElement(1000)
-                        // .$('#lst-ib')
-    // console.log(el)
+    const el = $('body').$('#sfdiv')
     expect(await el.getTag()).to.eql('input')
     // expect(await el.getAttribute('id')).to.eql('lst-ib')
   })
