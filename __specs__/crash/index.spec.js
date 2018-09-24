@@ -42,6 +42,7 @@ describe('crash', () => {
     const el = $('body')
       .waitForElement(100)
       .$('#sfdiv')
+      // .waitForElement(200)
 
     console.log(await el.getTag())
     console.log(el.baseElement)
