@@ -38,7 +38,7 @@ describe('crash', () => {
 
 
   it('wait logic chaining', async () => {
-    const el = $('body').$('#sfdiv')
+    const el = $('body').$('#sfdiv').waitForEement(100)
     expect(await el.getTag()).to.eql('input')
     // expect(await el.getAttribute('id')).to.eql('lst-ib')
   })
