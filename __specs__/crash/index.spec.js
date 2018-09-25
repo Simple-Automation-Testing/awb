@@ -38,12 +38,25 @@ describe('crash', () => {
 
 
   it('wait logic chaining', async () => {
-
     const el = $('body')
       .waitForElement(100)
       .$('#sfdiv')
       .waitForElement(200)
-
     expect(await el.getAttribute('id')).to.eql('sfdiv')
+  })
+
+  it('$$', async () => {
+    const els = $('body').waitForElement(1000).$$('div')
+    expect(await els.count()).to.eql(170)
+  })
+
+  it('chaining', async () => {
+
+    const link = $$('a').waitForElements(3500)
+
+    await link.get(10).getTag()
+
+
+    expect(await els.count()).to.eql(170)
   })
 })
