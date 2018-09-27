@@ -1,6 +1,6 @@
 {
   "name": "awb",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "simple light weight interface for selenium webdriver (node js)",
   "main": "./awb.js",
   "bin": {
@@ -73,7 +73,7 @@
     "kill-test-app": "kill $(ps aux | grep 'webpack' | awk '{print $2}')"
   },
   "devDependencies": {
-    "chai": "^4.1.2",
+    "chai": "^4.2.0",
     "eslint": "^4.19.1",
     "mocha": "^5.2.0",
     "sinon": "^4.5.0"

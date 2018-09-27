@@ -2,7 +2,7 @@ import { Config } from './config'
 import { ElementAWB } from './element'
 import { Keys } from './event/keys'
 
-interface SessionLocalStorage {
+interface ISessionLocalStorage {
   get: (key: string) => Promise<string>
   set: (key: string, value: string) => Promise<any>
   clear: () => Promise<any>
@@ -10,22 +10,35 @@ interface SessionLocalStorage {
 }
 
 
-interface Alert {
+interface IAlert {
   accept: () => Promise<void>
   dismiss: () => Promise<void>
   getText: () => Promise<string>
   sendKeys: (text: string) => Promise<void>
 }
 
-declare class Client {
+interface ICookie {
+  set: () => Promise<void>
+  get: () => Promise<any>
+  clear: () => Promise<void>
+  getAll: (text: string) => Promise<any>
+}
+
+export declare class Client {
   constructor()
 
-  sessionStorage: SessionLocalStorage
-  localStorage: SessionLocalStorage
+  static Keys: Keys
+  static sessionId: string | null
+
+  sessionStorage: ISessionLocalStorage
+  localStorage: ISessionLocalStorage
+  cookie: ICookie
+
   alert: Alert
   Keys: Keys
   pressKeys(keys: Keys | [Keys])
   getSize(): Promise<{ height: number, width: number }>
+
   refresh(): Promise<any>
   back(): Promise<any>
   forward(): Promise<any>
