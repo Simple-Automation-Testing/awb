@@ -54,6 +54,15 @@ describe('client chrome', () => {
     await cookie.set('test', '/test')
   })
 
+  it.only('element util', async () => {
+    const file = 'table'
+    await client.goTo(pathResolver(file))
+    const table = $('table').waitForElement(500)
+    console.log(await table.util.getTableCollection())
+
+    // expect(await $('body').getText()).to.eql('')
+  })
+
   it('keyPress', async () => {
     const file = 'keyboard'
     await client.goTo(pathResolver(file))
@@ -356,8 +365,9 @@ describe('client chrome', () => {
     const file = 'desappearArr'
     const links = elements('a')
     await client.goTo(pathResolver(file))
-    try {await links.waitUntilDisappear(1000)
-    } catch (error) { expect(error).to.exist}
+    try {
+      await links.waitUntilDisappear(1000)
+    } catch(error) {expect(error).to.exist}
   })
 
   it('iframe', async () => {
