@@ -54,11 +54,10 @@ describe('client chrome', () => {
     await cookie.set('test', '/test')
   })
 
-  it.only('element util', async () => {
+  it('element util', async () => {
     const file = 'table'
     await client.goTo(pathResolver(file))
     const table = $('table').waitForElement(500)
-    console.log(await table.util.getTableCollection())
 
     // expect(await $('body').getText()).to.eql('')
   })

@@ -4,7 +4,11 @@ UI automated testing framework powered by [Node.js](http://nodejs.org/).
 Uses the [Selenium WebDriver API](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol).
 Uses the [ChromeDriver API](https://chromium.googlesource.com/chromium/src/+/master/docs/chromedriver_status.md)
 
-Base: lazy elements, chrome driver dirrect connection, own standalone server, chrome and gecko driver installer
+##
+[Contributing guide here](https://github.com/potapovDim/interface-webdriver/blob/develop/contributing.md)
+##
+
+### Base: lazy elements, chrome driver dirrect connection, own standalone server, chrome and gecko driver installer
 
 ![npm downloads](https://img.shields.io/npm/dm/awb.svg?style=flat-square)
 ![Build Status](https://travis-ci.org/potapovDim/interface-webdriver.svg?branch=develop)
@@ -132,6 +136,7 @@ findInGoogle_potapovDim()
   * [element.id](#element.id)
   * [element.id](#element.accessibilityId)
   * [sendKeys](#sendkeys)
+  * [util]()
   * [waitTextContains](#waittextcontains)
   * [getRect](#getrect)
   * [clear](#clear)

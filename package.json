@@ -1,6 +1,6 @@
 {
   "name": "awb",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "simple light weight interface for selenium webdriver (node js)",
   "main": "./awb.js",
   "bin": {
