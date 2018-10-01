@@ -5,7 +5,7 @@ Uses the [Selenium WebDriver API](https://github.com/SeleniumHQ/selenium/wiki/Js
 Uses the [ChromeDriver API](https://chromium.googlesource.com/chromium/src/+/master/docs/chromedriver_status.md)
 
 ##
-[Contributing guide here](https://github.com/potapovDim/interface-webdriver/blob/develop/contributing.md)
+[Contributing guide here](https://github.com/potapovDim/interface-webdriver/blob/develop/docs/contributing.md)
 ##
 
 ### Base: lazy elements, chrome driver dirrect connection, own standalone server, chrome and gecko driver installer
