@@ -4,6 +4,19 @@ elementFn.xpath = () => ElementAWB
 elementFn.id = () => ElementAWB
 elementFn.assesabilityId = () => ElementAWB
 
+interface IGetTableCollection {
+  (indexRowHeader = 0, indexRowFooter = null): Promise<any[]>
+}
+
+interface IGetTableHeaderObject {
+  (indexRowHeader = 0, indexRowFooter = null): Promise<object>
+}
+
+interface IElementUtil {
+  getTableCollection: IGetTableCollection
+  getTableHeaderObject: IGetTableHeaderObject
+}
+
 declare function elementsFn(): ElementAWB
 elementsFn.css = () => ElementsAWB
 elementsFn.xpath = () => ElementsAWB
@@ -13,6 +26,7 @@ elementsFn.assesabilityId = () => ElementsAWB
 export declare class ElementAWB {
   constructor(selector: string, sessionId: string | null, elementId: string | null, baseElement: ElementAWB)
 
+  util: IElementUtil
   waitForElement: (time: number) => ElementAWB
   waitForClickable: (time: number) => ElementAWB
   waitForElementVisible: (time: number) => ElementAWB

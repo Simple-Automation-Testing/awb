@@ -54,12 +54,25 @@ describe('client chrome', () => {
     await cookie.set('test', '/test')
   })
 
-  it('element util', async () => {
+  it('element util (getTableCollection)', async () => {
     const file = 'table'
     await client.goTo(pathResolver(file))
     const table = $('table').waitForElement(500)
+    const tableCollection = await table.util.getTableCollection()
 
-    // expect(await $('body').getText()).to.eql('')
+    expect(Array.isArray(tableCollection)).to.eql(true)
+    expect(tableCollection.length).to.eql(6)
+  })
+
+  it('element util (getTableHeaderObject)', async () => {
+    const file = 'table'
+    await client.goTo(pathResolver(file))
+    const table = $('table').waitForElement(500)
+    const tableHeaderObj = await table.util.getTableHeaderObject()
+
+    expect(Array.isArray(tableHeaderObj)).to.eql(false)
+    expect(typeof tableHeaderObj).to.eq('object')
+    expect(Object.keys(tableHeaderObj).length).to.eql(3)
   })
 
   it('keyPress', async () => {
