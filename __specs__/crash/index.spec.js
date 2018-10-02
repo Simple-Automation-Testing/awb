@@ -50,6 +50,11 @@ describe('crash', () => {
     expect(await els.count()).to.not.eql(0)
     expect(await els.count()).to.not.eql(null)
     expect(await els.count()).to.not.eql(undefined)
+
+    const elsElements = element('body').waitForElement(1000).elements('div')
+    expect(await elsElements.count()).to.not.eql(0)
+    expect(await elsElements.count()).to.not.eql(null)
+    expect(await elsElements.count()).to.not.eql(undefined)
   })
 
   it('chaining', async () => {
@@ -61,5 +66,14 @@ describe('crash', () => {
     expect(await link.count()).to.not.eql(0)
     expect(await link.count()).to.not.eql(null)
     expect(await link.count()).to.not.eql(undefined)
+
+
+    const linkElements = elements('a').waitForElements(2500)
+
+    await linkElements.get(10).getTag()
+
+    expect(await linkElements.count()).to.not.eql(0)
+    expect(await linkElements.count()).to.not.eql(null)
+    expect(await linkElements.count()).to.not.eql(undefined)
   })
 })
