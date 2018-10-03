@@ -71,7 +71,10 @@ async function findInGoogle_potapovDim() {
 }
 findInGoogle_potapovDim()
 ```
+
 [More examples here -> ](https://github.com/potapovDim/interface-webdriver/tree/another-webdriver-binding/examples)
+<br>
+[Element util examples here ->](https://github.com/potapovDim/interface-webdriver/blob/develop/docs/elementUtil.md)
 
 ## Api
 - [Client](#client)

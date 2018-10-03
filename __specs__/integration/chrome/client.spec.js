@@ -82,6 +82,16 @@ describe('client chrome', () => {
     expect(Array.isArray(listCollection)).to.eql(true)
   })
 
+  it('element util from elements', async () => {
+    const file = 'select'
+    await client.goTo(pathResolver(file))
+    const select = $$('select').waitForElements(200).get(1)
+
+    const collectionWithOptsgroups = await select.util.getSelectListCollection()
+    expect(typeof collectionWithOptsgroups).to.eql('object')
+    expect(Object.keys(collectionWithOptsgroups).length).to.eql(2)
+  })
+
   it('keyPress', async () => {
     const file = 'keyboard'
     await client.goTo(pathResolver(file))
