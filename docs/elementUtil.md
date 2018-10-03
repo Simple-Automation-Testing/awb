@@ -1,37 +1,6 @@
 ## element util is API for some elements, as table, list ul, list select ect
 
-```js
-const awb = require('awb')
-const {$} = awb()
-const tableElement = $('table').waitForElement(150)
-
-const tableCollection = await tableElement.util.getTableCollection()
-// table collection will be next
-```
-```js
-[
-   { Company: { text: 'Alfreds Futterkiste' },
-    Contact: { text: 'Maria Anders' },
-    Country: { text: 'Germany' } },
-  { Company: { text: 'Centro comercial Moctezuma' },
-    Contact: { text: 'Francisco Chang' },
-    Country: { text: 'Mexico' } },
-  { Company: { text: 'Ernst Handel' },
-    Contact: { text: 'Roland Mendel' },
-    Country: { text: 'Austria' } },
-  { Company: { text: 'Island Trading' },
-    Contact: { text: 'Helen Bennett' },
-    Country: { text: 'UK' } },
-  { Company: { text: 'Laughing Bacchus Winecellars' },
-    Contact: { text: 'Yoshi Tannamuri' },
-    Country: { text: 'Canada' } },
-  { Company: { text: 'Magazzini Alimentari Riuniti' },
-    Contact: { text: 'Giovanni Rovelli' },
-    Country: { text: 'Italy' } }
-    ]
-```
-
-
+### Table util
 ```html
 <table>
     <tbody>
@@ -55,21 +24,69 @@ const tableCollection = await tableElement.util.getTableCollection()
         <td>Roland Mendel</td>
         <td>Austria</td>
       </tr>
-      <tr>
-        <td>Island Trading</td>
-        <td>Helen Bennett</td>
-        <td>UK</td>
-      </tr>
-      <tr>
-        <td>Laughing Bacchus Winecellars</td>
-        <td>Yoshi Tannamuri</td>
-        <td>Canada</td>
-      </tr>
-      <tr>
-        <td>Magazzini Alimentari Riuniti</td>
-        <td>Giovanni Rovelli</td>
-        <td>Italy</td>
-      </tr>
     </tbody>
   </table>
+```
+
+```js
+//  util.getTableCollection()
+const awb = require('awb')
+const {$} = awb()
+const tableElement = $('table').waitForElement(150)
+
+const tableCollection = await tableElement.util.getTableCollection()
+// table collection will be next
+```
+```js
+[
+   { Company: { text: 'Alfreds Futterkiste' },
+    Contact: { text: 'Maria Anders' },
+    Country: { text: 'Germany' } },
+  { Company: { text: 'Centro comercial Moctezuma' },
+    Contact: { text: 'Francisco Chang' },
+    Country: { text: 'Mexico' } },
+  { Company: { text: 'Ernst Handel' },
+    Contact: { text: 'Roland Mendel' },
+    Country: { text: 'Austria' } }
+    ]
+```
+
+```js
+// util.getTableHeaderObject()
+const awb = require('awb')
+const {$} = awb()
+const tableElement = $('table').waitForElement(150)
+
+const tableCollection = await tableElement.util.getTableHeaderObject()
+// table header object will be next
+```
+
+```js
+  { Company: 0, Contact: 1, Country: 2 }
+```
+### Select list util
+```html
+ <select name="test" id="test-select">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+ </select>
+```
+```js
+// util.getTableHeaderObject()
+const awb = require('awb')
+const {$} = awb()
+const selectElement = $('select').waitForElement(150)
+
+const collection = await selectElement.util.getSelectListCollection()
+// select collection  will be next
+```
+```js
+[ { index: 0, isSelected: true, text: '1', value: '1' },
+  { index: 1, isSelected: false, text: '2', value: '2' },
+  { index: 2, isSelected: false, text: '3', value: '3' },
+  { index: 3, isSelected: false, text: '4', value: '4' },
+  { index: 4, isSelected: false, text: '5', value: '5' } ]
 ```

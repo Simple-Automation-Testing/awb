@@ -69,10 +69,17 @@ describe('client chrome', () => {
     await client.goTo(pathResolver(file))
     const table = $('table').waitForElement(500)
     const tableHeaderObj = await table.util.getTableHeaderObject()
-
     expect(Array.isArray(tableHeaderObj)).to.eql(false)
     expect(typeof tableHeaderObj).to.eq('object')
     expect(Object.keys(tableHeaderObj).length).to.eql(3)
+  })
+
+  it('element util (getSelectListCollection)', async () => {
+    const file = 'select'
+    await client.goTo(pathResolver(file))
+    const selectFirst = $('select').waitForElement(200)
+    const listCollection = await selectFirst.util.getSelectListCollection()
+    expect(Array.isArray(listCollection)).to.eql(true)
   })
 
   it('keyPress', async () => {

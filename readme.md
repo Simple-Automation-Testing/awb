@@ -141,7 +141,6 @@ findInGoogle_potapovDim()
   * [getRect](#getrect)
   * [clear](#clear)
   * [location](#location)
-  * [getoptionlist](#getOptionList)
   * [doubleClick](#doubleclick)
   * [locationView](#locationview)
   * [size](#size)
@@ -702,16 +701,6 @@ const token = await sessionStorage.get('token')
   * return all text inside element , return string
   */
 ```
-## getOptionList
-```js
-  const awb = require('awb')
-  const { element, client } = awb()
-  const elementSelect = element('select')
-  const listData = await elementSelect.getOptionList()
-  /*
-  * return all text inside element , return string
-  */
-```
 ## waitForElement
 ```js
   const awb = require('awb')
@@ -1044,3 +1033,5 @@ const elementDiv = element('div').wait(1000, async (el) => await el.getText() ==
  * [x] Add possibility find element by xpath (done)
  * [ ] Develop error handler system
  * [x] Develop and improve enviroment installer for every OS
+ * [ ] Develop full util system support
+ * [ ] Fix proxy system for element util

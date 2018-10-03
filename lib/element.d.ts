@@ -11,10 +11,14 @@ interface IGetTableCollection {
 interface IGetTableHeaderObject {
   (indexRowHeader = 0, indexRowFooter = null): Promise<object>
 }
+interface IGetSelectListCollection {
+  (): Promise<any[] | object>
+}
 
 interface IElementUtil {
   getTableCollection: IGetTableCollection
   getTableHeaderObject: IGetTableHeaderObject
+  getSelectListCollection: IGetSelectListCollection
 }
 
 declare function elementsFn(): ElementAWB
