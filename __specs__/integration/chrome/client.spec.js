@@ -124,6 +124,17 @@ describe('client chrome', () => {
     expect(await client.getTitle()).to.eql('Changed')
   })
 
+  it('windowRect', async () => {
+    const file = 'titleUrl'
+    await client.goTo(pathResolver(file))
+    const rect = await client.getRect()
+
+    expect(rect.hasOwnProperty('x')).to.eql(true)
+    expect(rect.hasOwnProperty('y')).to.eql(true)
+    expect(rect.hasOwnProperty('width')).to.eql(true)
+    expect(rect.hasOwnProperty('height')).to.eql(true)
+  })
+
   it('waitForUrlIncludes', async () => {
     const file = 'titleUrl'
     await client.goTo(pathResolver(file))

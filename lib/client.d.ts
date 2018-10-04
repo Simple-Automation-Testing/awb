@@ -42,6 +42,7 @@ export declare class Client {
   refresh(): Promise<any>
   back(): Promise<any>
   forward(): Promise<any>
+  getRect(): Promise<{ height: number, width: number, x: number, y: number }>
   pageSource(): Promise<string>
   doubleClick(): Promise<any>
   takeScreenshot(): Promise<string>

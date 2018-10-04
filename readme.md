@@ -95,6 +95,7 @@ findInGoogle_potapovDim()
     - [sendKeys](#sendKeys)
   * [waitForUrlIncludes](#waitforurlincludes)
   * [wait](#wait)
+  * [getRect](#getRect)
   * [pressKeys](#presskeys)
   * [doubleclick](#doubleClick)
   * [waitForTitleInclude](#waitfortitleinclude)
@@ -398,6 +399,15 @@ const token = await sessionStorage.get('token')
   await client.waitForUrlIncludes('test', 1000)
   /*
    * will wait 1000ms for url includes test
+   * /
+```
+## waitForUrlIncludes
+```js
+  const awb = require('awb')
+  const { element, client } = awb()
+  await client.getRect()
+  /*
+   * will return object format { height: number, width: number, x: number, y: number }
    * /
 ```
 ## waitForTitleInclude
