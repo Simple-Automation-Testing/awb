@@ -44,6 +44,8 @@ export declare class Client {
   forward(): Promise<any>
   getRect(): Promise<{ height: number, width: number, x: number, y: number }>
   pageSource(): Promise<string>
+  maximizeWindow(): Promise<void>
+  // minimizeWindow(): Promise<void>
   doubleClick(): Promise<any>
   takeScreenshot(): Promise<string>
   waitForUrlIncludes(url: string, time: number): Promise<void>

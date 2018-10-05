@@ -54,6 +54,14 @@ describe('client chrome', () => {
     await cookie.set('test', '/test')
   })
 
+  it.skip('client minimaze', async () => {
+    await client.minimizeWindow()
+  })
+
+  it('client maximize', async () => {
+    await client.maximizeWindow()
+  })
+
   it('element util (getTableCollection)', async () => {
     const file = 'table'
     await client.goTo(pathResolver(file))

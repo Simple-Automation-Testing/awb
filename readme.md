@@ -94,6 +94,7 @@ findInGoogle_potapovDim()
     - [getText](#gettext)
     - [sendKeys](#sendKeys)
   * [waitForUrlIncludes](#waitforurlincludes)
+  * [maximizeWindow](#maximizeWindow)
   * [wait](#wait)
   * [getRect](#getRect)
   * [pressKeys](#presskeys)
@@ -283,8 +284,16 @@ const alertText =  await alert.getText()
 /*
 return text from alert
 */
-
 ```
+
+## maximizeWindow
+```js
+  const awb = require('awb')
+  const { element, client } = awb()
+  await client.maximizeWindow()
+  // will maximize browser window
+```
+
 ## localStorage
 ```js
   const awb = require('awb')
