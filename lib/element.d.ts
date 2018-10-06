@@ -8,6 +8,10 @@ interface IGetTableCollection {
   (indexRowHeader = 0, indexRowFooter = null): Promise<any[]>
 }
 
+interface IUploadFileViaDnD {
+  (filePath: string): Promise<void>
+}
+
 interface IGetTableHeaderObject {
   (indexRowHeader = 0, indexRowFooter = null): Promise<object>
 }
@@ -17,6 +21,7 @@ interface IGetSelectListCollection {
 
 interface IElementUtil {
   getTableCollection: IGetTableCollection
+  uploadFileViaDnD: IUploadFileViaDnD
   getTableHeaderObject: IGetTableHeaderObject
   getSelectListCollection: IGetSelectListCollection
 }

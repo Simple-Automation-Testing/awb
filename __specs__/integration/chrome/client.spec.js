@@ -1,6 +1,7 @@
 const {expect} = require('chai')
 const fs = require('fs')
 const rimraf = require('rimraf');
+const path = require('path')
 
 const awb = require('../../../awb')
 const conf = {
@@ -70,6 +71,17 @@ describe('client chrome', () => {
 
     expect(Array.isArray(tableCollection)).to.eql(true)
     expect(tableCollection.length).to.eql(6)
+  })
+
+  it('element util (uploadFileViaDnD)', async () => {
+    const file = 'upload'
+    const testFilePath = path.resolve(process.cwd(), './__specs__/spec_utils/testIm.png')
+    await client.goTo(pathResolver(file))
+    const dropZone = $('.dropzone > div').waitForElement(500)
+    expect(await $$('li').count()).to.eql(0)
+    await dropZone.util.uploadFileViaDnD(testFilePath)
+    expect(await $$('li').count()).to.eql(1)
+    expect(await $$('li').get(0).getText()).to.include('testIm')
   })
 
   it('element util (getTableHeaderObject)', async () => {
