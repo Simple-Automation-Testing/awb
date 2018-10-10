@@ -120,6 +120,14 @@ describe('client chrome', () => {
     expect(await $('body').getText()).to.eql('F1F2')
   })
 
+  it('client.wait', async () => {
+    const file = 'wait'
+    const clicker = element('#test_button')
+    await client.goTo(pathResolver(file))
+    await client.wait(10000, async () => clicker.isPresent())
+    expect(await clicker.getText()).to.eql('Test button')
+  })
+
   it('resizeWindow', async () => {
     const file = 'titleUrl'
     await client.goTo(pathResolver(file))

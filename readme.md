@@ -211,7 +211,7 @@ findInGoogle_potapovDim()
   const awb = require('awb')
   const {client, $} = awb()
   await client.goTo('https://google.com')
-  await client.wait(5000,async () => $('#test').isDisplayed(), 'Test error message')
+  await client.wait(5000, async () => $('#test').isDisplayed(), 'Test error message')
   /*
    * will wail 5000 ms until appear element with css selector #test
    */
