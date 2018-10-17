@@ -150,6 +150,7 @@ findInGoogle_potapovDim()
   * [locationView](#locationview)
   * [size](#size)
   * [getElementHTML](#getelementhtml)
+  * [getColor](#getColor)
   * [waitForElementPresent](#waitforelementpresent)
   * [waitForElementVisible](#waitforelementvisible)
   * [wait](#wait)
@@ -721,6 +722,16 @@ const token = await sessionStorage.get('token')
   const divText = await elementDiv.getText()
   /*
   * return all text inside element , return string
+  */
+```
+## getColor
+```js
+  const awb = require('awb')
+  const { element, client } = awb()
+  const elementDiv = element('div')
+  const divText = await elementDiv.getColor()
+  /*
+  * return rgba color
   */
 ```
 ## waitForElement

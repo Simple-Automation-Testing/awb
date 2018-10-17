@@ -1,4 +1,4 @@
-const {expect} = require('chai')
+const { expect } = require('chai')
 const fs = require('fs')
 const rimraf = require('rimraf');
 const path = require('path')
@@ -12,14 +12,14 @@ const conf = {
     acceptSslCerts: true,
     platform: 'ANY',
     browserName: 'chrome',
-    chromeOptions: {args: ['--headless']}
+    chromeOptions: { args: ['--headless'] }
   },
   // host: 'localhost',
   // port: 4444,
   timeout: 25000
 }
 
-const {element, elements, $, $$, client} = awb(conf)
+const { element, elements, $, $$, client } = awb(conf)
 
 const pathResolver = (name) => {
   const resolvedPath = require('path').resolve(__dirname, `../../spec_utils/${name}.html`)
@@ -112,6 +112,19 @@ describe('client chrome', () => {
     expect(Object.keys(collectionWithOptsgroups).length).to.eql(2)
   })
 
+  it('getColor', async () => {
+    const file = 'style'
+    await client.goTo(pathResolver(file))
+    const div1 = $('div.div___1').waitForElement(250)
+    const div2 = $('div.div___2').waitForElement(250)
+    const div3 = $('div.div___3').waitForElement(250)
+    expect(await div1.getColor()).to.eql('rgb(255, 0, 0)')
+    expect(await div2.getColor()).to.eql('rgb(255, 255, 0)')
+    expect(await div3.getColor()).to.eql('rgb(0, 128, 0)')
+  })
+
+
+
   it('keyPress', async () => {
     const file = 'keyboard'
     await client.goTo(pathResolver(file))
@@ -131,9 +144,9 @@ describe('client chrome', () => {
   it('resizeWindow', async () => {
     const file = 'titleUrl'
     await client.goTo(pathResolver(file))
-    expect(await client.getSize()).to.eql({height: 600, width: 800})
+    expect(await client.getSize()).to.eql({ height: 600, width: 800 })
     await client.resizeWindow(900, 500)
-    expect(await client.getSize()).to.eql({height: 500, width: 900})
+    expect(await client.getSize()).to.eql({ height: 500, width: 900 })
   })
 
   it('pageSource', async () => {
@@ -232,7 +245,7 @@ describe('client chrome', () => {
     const range = $('#range')
     const span = $('span')
     await client.goTo(pathResolver(file))
-    await range.mouseDownAndMove({x: -10, y: 15})
+    await range.mouseDownAndMove({ x: -10, y: 15 })
     expect(await span.isDisplayed()).to.eql(true)
   })
 
@@ -252,7 +265,7 @@ describe('client chrome', () => {
     const googleInput = $('#lst-ib').waitForElementPresent(5000)
     await client.goTo(pathResolver(file))
     expect(await link.getRect()).to.eql(
-      {width: 76, height: 17, x: 8, y: 8}
+      { width: 76, height: 17, x: 8, y: 8 }
     )
   })
 
@@ -358,7 +371,7 @@ describe('client chrome', () => {
     await clicker.click()
     await clicker.click()
 
-    const res = await client.executeScript(function() {
+    const res = await client.executeScript(function () {
       return document.querySelectorAll('span').length
     })
     expect(res).to.eql(2)
@@ -392,7 +405,7 @@ describe('client chrome', () => {
     await client.goTo(pathResolver(file))
     try {
       await clicker.waitUntilDisappear(1000)
-    } catch(error) {
+    } catch (error) {
       expect(error.toString().includes('still present on page'))
     }
     const time = await clicker.waitUntilDisappear(5000)
@@ -435,7 +448,7 @@ describe('client chrome', () => {
     await client.goTo(pathResolver(file))
     try {
       await links.waitUntilDisappear(1000)
-    } catch(error) {expect(error).to.exist}
+    } catch (error) { expect(error).to.exist }
   })
 
   it('iframe', async () => {
@@ -476,11 +489,11 @@ describe('client chrome', () => {
       '{"first":1,"second":2}'
     )
 
-    await localStorage.set('testy', JSON.stringify({first: 1, second: 2}))
+    await localStorage.set('testy', JSON.stringify({ first: 1, second: 2 }))
 
     expect(await localStorage.getAll()).to.eql({
       test: '{"first":1,"second":2}',
-      testy: JSON.stringify({first: 1, second: 2})
+      testy: JSON.stringify({ first: 1, second: 2 })
     })
 
     await localStorage.clear()
@@ -492,7 +505,7 @@ describe('client chrome', () => {
     const clicker = $('button')
     await client.goTo(pathResolver(file))
     await clicker.click()
-    const resp = await client.executeScriptAsync(function(cb) {cb('test')})
+    const resp = await client.executeScriptAsync(function (cb) { cb('test') })
     expect(resp).to.eql('test')
   })
 
@@ -629,7 +642,7 @@ describe('client chrome', () => {
       try {
         await client.saveScreenshot()
         expect(true).to.eql(false, `method did not throw exception`)
-      } catch(err) {
+      } catch (err) {
         expect(err.message)
           .to.includes('Name is obligatory to save screenshot',
             `Error message is not as expected: "${err.message}"`)
@@ -640,19 +653,19 @@ describe('client chrome', () => {
     })
 
     it(`default parameters`, async () => {
-      await client.saveScreenshot(screenshotName, {screenshot})
+      await client.saveScreenshot(screenshotName, { screenshot })
       expect(fs.existsSync(`${defaultPath}/${fullScreenshotName}`))
         .to.eql(true, `Screenshot was not saved to default folder`)
     })
 
     it(`custom path`, async () => {
-      await client.saveScreenshot(screenshotName, {screenshot, path: customNestedPath})
+      await client.saveScreenshot(screenshotName, { screenshot, path: customNestedPath })
       expect(fs.existsSync(`${customNestedPath}/${fullScreenshotName}`))
         .to.eql(true, `Screenshot was not saved to custom folder`)
     })
 
     it(`custom format`, async () => {
-      await client.saveScreenshot(screenshotName, {screenshot, format: customFormat})
+      await client.saveScreenshot(screenshotName, { screenshot, format: customFormat })
       expect(fs.existsSync(`${defaultPath}/${screenshotName}.${customFormat}`))
         .to.eql(true, `Screenshot was not saved with custom format`)
     })

@@ -48,6 +48,7 @@ export declare class ElementAWB {
   locationView(): Promise<{ x: number, y: number }>
   clear(): Promise<any>
   getElementHTML(): Promise<string>
+  getColor(): Promise<string>
   doubleClick(): Promise<any>
   getText(): Promise<string>
   element: elementFn
