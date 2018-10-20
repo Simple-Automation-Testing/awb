@@ -1,0 +1,34 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+  <div class="div___1">Div 1</div>
+  <div class="div___2">Div 2</div>
+  <div class="div___3">Div 3</div>
+</body>
+<script>
+  const div1 = document.getElementsByClassName('div___1')[0]
+  const div2 = document.getElementsByClassName('div___2')[0]
+  const div3 = document.getElementsByClassName('div___3')[0]
+  // add event listener for div1
+  div1.addEventListener('mouseenter', () => {
+    div1.innerHTML += ' MouseEnter'
+  })
+
+  div2.addEventListener('mouseover', () => {
+    div2.innerHTML += ' MouseOver'
+  })
+
+  div3.addEventListener('mouseleave', () => {
+    div3.innerHTML += ' MouseLeave'
+  })
+</script>
+
+</html>

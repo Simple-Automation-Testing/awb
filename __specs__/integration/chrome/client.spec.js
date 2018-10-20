@@ -124,6 +124,26 @@ describe('client chrome', () => {
   })
 
 
+  it('dispatchEvent', async () => {
+    const file = 'events'
+    
+    const div1 = $('.div___1')
+    const div2 = $('.div___2')
+    const div3 = $('.div___3')
+
+    await client.goTo(pathResolver(file))
+
+    await client.dispatchEvent(div1, client.eventsList.mouseEnter)
+    expect(await div1.getText()).to.includes('MouseEnter')
+
+    await client.dispatchEvent(div2, client.eventsList.mouseOver)
+    expect(await div2.getText()).to.includes('MouseOver')
+
+    await client.dispatchEvent(div3, client.eventsList.mouseLeave)
+    expect(await div3.getText()).to.includes('MouseLeave')
+
+  })
+
 
   it('keyPress', async () => {
     const file = 'keyboard'

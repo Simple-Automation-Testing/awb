@@ -33,12 +33,16 @@ export declare class Client {
   sessionStorage: ISessionLocalStorage
   localStorage: ISessionLocalStorage
   cookie: ICookie
-
+  eventsList: {
+    mouseEnter: 'mouseEnter',
+    mouseOver: 'mouseOver',
+    mouseLeave: 'mouseLeave'
+  }
   alert: Alert
   Keys: Keys
   pressKeys(keys: Keys | [Keys])
   getSize(): Promise<{ height: number, width: number }>
-
+  dispatchEvent(element: ElementAWB, eventType: string): Promise<void>
   refresh(): Promise<any>
   back(): Promise<any>
   forward(): Promise<any>

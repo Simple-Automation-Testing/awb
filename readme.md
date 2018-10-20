@@ -94,6 +94,7 @@ findInGoogle_potapovDim()
     - [getText](#gettext)
     - [sendKeys](#sendKeys)
   * [waitForUrlIncludes](#waitforurlincludes)
+  * [dispatchEvent](#dispatchEvent)
   * [maximizeWindow](#maximizeWindow)
   * [wait](#wait)
   * [getRect](#getRect)
@@ -233,6 +234,21 @@ findInGoogle_potapovDim()
    * any args
    * return current window size {height: number, width: number}
    */
+```
+## dispatchEvent
+```js
+    const awb = require('awb')
+    const { element, client } = awb()
+    const div1 = $('.div___1') // event listener mouseenter
+    const div2 = $('.div___2') // event listener mouseover
+    const div3 = $('.div___3') // event listener mouseleave
+
+    await client.goTo(pathResolver(file))
+
+    await client.dispatchEvent(div1, client.eventsList.mouseEnter)
+    await client.dispatchEvent(div2, client.eventsList.mouseOver)
+    await client.dispatchEvent(div3, client.eventsList.mouseLeave)
+    // will dispatch event
 ```
 ## doubleClick
 ```js
