@@ -126,7 +126,7 @@ describe('client chrome', () => {
 
   it('dispatchEvent', async () => {
     const file = 'events'
-    
+
     const div1 = $('.div___1')
     const div2 = $('.div___2')
     const div3 = $('.div___3')
