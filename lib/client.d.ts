@@ -36,7 +36,8 @@ export declare class Client {
   eventsList: {
     mouseEnter: 'mouseEnter',
     mouseOver: 'mouseOver',
-    mouseLeave: 'mouseLeave'
+    mouseLeave: 'mouseLeave',
+    mouseOut: 'mouseOut'
   }
   alert: Alert
   Keys: Keys
