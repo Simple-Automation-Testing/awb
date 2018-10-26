@@ -1,4 +1,4 @@
-const {baseNegativeWait, waitCondition, waitElementPresent} = require('../../lib/util')
+const {baseNegativeWait} = require('../../lib/util')
 const {expect} = require('chai')
 
 describe('Wait conditions', () => {
