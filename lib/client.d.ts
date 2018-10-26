@@ -66,7 +66,8 @@ export declare class Client {
   getUrl(): Promise<string>
   sleep(time?: number): Promise<any>
   getTitle(): Promise<string>
-  goTo(url: string): Promise<any>
+  goTo(url: string): Promise<void>
+  goToInNewTab(url: string): Promise<void>
   getBrowserTabs(): Promise<Array<string>>
   getCurrentBrowserTab(): Promise<string>
   switchToTab(index: number): Promise<any>

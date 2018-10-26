@@ -110,6 +110,7 @@ findInGoogle_potapovDim()
   * [getSize](#getsize)
   * [forward](#forward)
   * [goTo](#goto)
+  * [goToInNewTab](#gotoinnewtab)
   * [closeCurrentTab](#closecurrenttab)
   * [getTitle](#gettitle)
   * [executeScript](#executescript)
@@ -151,7 +152,7 @@ findInGoogle_potapovDim()
   * [locationView](#locationview)
   * [size](#size)
   * [getElementHTML](#getelementhtml)
-  * [getColor](#getColor)
+  * [getColor](#getcolor)
   * [waitForElementPresent](#waitforelementpresent)
   * [waitForElementVisible](#waitforelementvisible)
   * [wait](#wait)
@@ -203,6 +204,18 @@ findInGoogle_potapovDim()
   const awb = require('awb')
   const {client} = awb()
   await client.goTo('https://google.com')
+  /*
+   * args url
+   * type string
+   */
+```
+## goToInNewTab
+```js
+  const awb = require('awb')
+  const {client} = awb()
+  await client.goTo('https://google.com')
+  await client.goToInNewTab('https://facebook.com')
+  // will open facebook in new browser tab
   /*
    * args url
    * type string

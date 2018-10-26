@@ -57,6 +57,21 @@ describe('client chrome', () => {
     await cookie.set('test', '/test')
   })
 
+  it('openLinkInNewTab', async () => {
+    const tableUrl = pathResolver('table')
+    const tableUpload = pathResolver('upload')
+    await client.goTo(tableUrl)
+    const tabsBeforeOpening = await client.getBrowserTabs()
+    expect(tabsBeforeOpening.length).to.eql(1)
+    await client.goToInNewTab(tableUpload)
+    const tabsAfterOpening = await client.getBrowserTabs()
+    expect(tabsAfterOpening.length).to.eql(2)
+    await client.closeCurrentTab()
+    const tabsAfterClosing = await client.getBrowserTabs()
+    expect(tabsAfterClosing.length).to.eql(1)
+    await client.switchToTab(0)
+  })
+
   it.skip('client minimaze', async () => {
     await client.minimizeWindow()
   })
