@@ -38,13 +38,22 @@ function rmdirRecursively(path) {
 }
 
 describe('client chrome', () => {
+  const defaultPath = `${process.cwd()}/screenshots`
+  const customNestedPath = `${defaultPath}/1/2/3/4`
+  const screenshotName = 'defaultName'
+  const fullScreenshotName = screenshotName + '.png'
+  const customFormat = 'jpeg'
+  let screenshot = null
+
   before(async () => {
     await client.startDriver()
+    await rmdirRecursively(defaultPath)
   })
 
   after(async () => {
     await client.close()
     await client.stopDriver()
+    await rmdirRecursively(defaultPath)
   })
 
   it.skip('cookue', async () => {
@@ -55,6 +64,44 @@ describe('client chrome', () => {
     expect(await cookie.getAll()).to.eql([])
 
     await cookie.set('test', '/test')
+  })
+
+  it('take screenShot', async () => {
+    screenshot = await client.takeScreenshot()
+    expect(screenshot).to.not.eq(null)
+  })
+
+  it('throws if name is not passed', async () => {
+    await rmdirRecursively(defaultPath)
+    try {
+      await client.saveScreenshot(null)
+      expect(true).to.eql(false, `method did not throw exception`)
+    } catch(err) {
+      expect(err.message)
+        .to.includes('Name is obligatory to save screenshot',
+          `Error message is not as expected: "${err.message}"`)
+    } finally {
+      expect(fs.existsSync(defaultPath))
+        .to.eql(false, `Screenshot directory was created`)
+    }
+  })
+
+  it('default parameters', async () => {
+    await client.saveScreenshot(screenshotName, {screenshot})
+    expect(fs.existsSync(`${defaultPath}/${fullScreenshotName}`))
+      .to.eql(true, `Screenshot was not saved to default folder`)
+  })
+
+  it('custom path', async () => {
+    await client.saveScreenshot(screenshotName, {screenshot, path: customNestedPath})
+    expect(fs.existsSync(`${customNestedPath}/${fullScreenshotName}`))
+      .to.eql(true, `Screenshot was not saved to custom folder`)
+  })
+
+  it('custom format', async () => {
+    await client.saveScreenshot(screenshotName, {screenshot, format: customFormat})
+    expect(fs.existsSync(`${defaultPath}/${screenshotName}.${customFormat}`))
+      .to.eql(true, `Screenshot was not saved with custom format`)
   })
 
   it('openLinkInNewTab', async () => {
@@ -659,53 +706,5 @@ describe('client chrome', () => {
     await client.goTo(pathResolver(file))
     await client.doubleClick(button)
     expect(await links.count()).to.eql(1)
-  })
-
-  describe('saveScreenshot', () => {
-    const defaultPath = `${process.cwd()}/screenshots`
-    const customNestedPath = `${defaultPath}/1/2/3/4`
-    const screenshotName = 'defaultName'
-    const fullScreenshotName = screenshotName + '.png'
-    const customFormat = 'jpeg'
-    const screenshot = 'iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAG5SURBVDhPxVRNT8JAEJ1ttyIB+YgQPZCoifGPeTMm3jx6NvHo0cS/ZiTxAAislmgo7a4z0xZaaIvUg2+z2Xbf7tuPeTtCKWUAYYFNDUNDEH2F2JVjUa0DUP4IpJAQGB8aThdsEQ4uw4lP5Zqx9waPL9fY2YHZYgKXJ/fQq16AMQbKcBataAsHmkg05SG2XZCWwzshlOFYlLbu4kquP+XW1wsmCWU4vtPABDCcv/LKgVlAp9IDR1SQNvi/O7eMvo2XHYMG06QYu3JL0RgGi802EWEHgo4phCjkkkiJ0iSJRS2GoI3muQKvvb13xPdF1snjksJpUbRJw2mhTW7YLjStbrfg9vwJxabItXM4lRLl6K+jJpvQIJtgrctW1BuiiIuRKYq3kI8iLkK26B/xj6IYAwsjb1HEV/HIxVZRNARMvHdQ3gDG8xFnJl6lAJmWeu7foU0G/Fo0vW8fLYOFfFzDiJNfNb6eqn0AV6cPv7NUciN0bMpAlN44E+H/NmSKfvsuzDDzrOokUVf9X/5HNCONjeNLaw8G8z6+aY+PnAeaZGE53j/DZ4pj854pgYTpLteTRBZo7GZCAfgBGWVS+xMK5noAAAAASUVORK5CYII='
-    before(async () => {
-      await rmdirRecursively(defaultPath)
-    })
-    after(async () => {
-      await rmdirRecursively(defaultPath)
-    })
-
-    it(`throws if name is not passed`, async () => {
-      await rmdirRecursively(defaultPath)
-      try {
-        await client.saveScreenshot()
-        expect(true).to.eql(false, `method did not throw exception`)
-      } catch(err) {
-        expect(err.message)
-          .to.includes('Name is obligatory to save screenshot',
-            `Error message is not as expected: "${err.message}"`)
-      } finally {
-        expect(fs.existsSync(defaultPath))
-          .to.eql(false, `Screenshot directory was created`)
-      }
-    })
-
-    it(`default parameters`, async () => {
-      await client.saveScreenshot(screenshotName, {screenshot})
-      expect(fs.existsSync(`${defaultPath}/${fullScreenshotName}`))
-        .to.eql(true, `Screenshot was not saved to default folder`)
-    })
-
-    it(`custom path`, async () => {
-      await client.saveScreenshot(screenshotName, {screenshot, path: customNestedPath})
-      expect(fs.existsSync(`${customNestedPath}/${fullScreenshotName}`))
-        .to.eql(true, `Screenshot was not saved to custom folder`)
-    })
-
-    it(`custom format`, async () => {
-      await client.saveScreenshot(screenshotName, {screenshot, format: customFormat})
-      expect(fs.existsSync(`${defaultPath}/${screenshotName}.${customFormat}`))
-        .to.eql(true, `Screenshot was not saved with custom format`)
-    })
   })
 })
