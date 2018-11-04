@@ -1,6 +1,6 @@
-import { Config } from './config'
-import { ElementAWB } from './element'
-import { Keys } from './event/keys'
+import {Config} from './config'
+import {ElementAWB} from './element'
+import {Keys} from './event/keys'
 
 interface ISessionLocalStorage {
   get: (key: string) => Promise<string>
@@ -39,15 +39,15 @@ export declare class Client {
     mouseLeave: 'mouseLeave',
     mouseOut: 'mouseOut'
   }
-  alert: Alert
+  alert: IAlert
   Keys: Keys
   pressKeys(keys: Keys | [Keys])
-  getSize(): Promise<{ height: number, width: number }>
+  getSize(): Promise<{height: number, width: number}>
   dispatchEvent(element: ElementAWB, eventType: string): Promise<void>
   refresh(): Promise<any>
   back(): Promise<any>
   forward(): Promise<any>
-  getRect(): Promise<{ height: number, width: number, x: number, y: number }>
+  getRect(): Promise<{height: number, width: number, x: number, y: number}>
   pageSource(): Promise<string>
   maximizeWindow(): Promise<void>
   // minimizeWindow(): Promise<void>
