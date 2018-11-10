@@ -484,6 +484,16 @@ describe('client chrome', () => {
     expect(await link.isDisplayed()).to.eql(true)
   })
 
+  it('getComputedStyle', async () => {
+    const file = 'appear'
+    const clicker = element('#test_button')
+    const link = element('a').waitForElement(1700)
+    await client.goTo(pathResolver(file))
+    await clicker.click()
+    expect(await link.isDisplayed()).to.eql(true)
+    expect(await link.getComputedStyle(link.computedStyleList.color)).to.eq('rgb(0, 0, 0)')
+  })
+
   it('disappear', async () => {
     const file = 'disappear'
     const clicker = element('#test_button')

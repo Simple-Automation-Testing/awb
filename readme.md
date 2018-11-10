@@ -146,6 +146,7 @@ findInGoogle_potapovDim()
   * [util](https://github.com/potapovDim/interface-webdriver/blob/develop/docs/elementUtil.md)
   * [waitTextContains](#waittextcontains)
   * [getRect](#getrect)
+  * [getComputedStyle](#getcomputedstyle)
   * [clear](#clear)
   * [location](#location)
   * [doubleClick](#doubleclick)
@@ -440,7 +441,7 @@ const token = await sessionStorage.get('token')
    * will wait 1000ms for url includes test
    * /
 ```
-## waitForUrlIncludes
+## getRect
 ```js
   const awb = require('awb')
   const { element, client } = awb()
@@ -752,6 +753,16 @@ const token = await sessionStorage.get('token')
   /*
   * return all text inside element , return string
   */
+```
+## getComputedStyle
+```js
+  const awb = require('awb')
+  const { element, client } = awb()
+  const span = element('span')
+  const textAnchorValue = await span.getComputedStyle(span.computedStyleList.textAnchor)
+  /*
+   * will return string with computed style value
+   * /
 ```
 ## getColor
 ```js

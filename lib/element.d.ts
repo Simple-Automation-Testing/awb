@@ -36,6 +36,8 @@ export declare class ElementAWB {
   constructor(selector: string, sessionId: string | null, elementId: string | null, baseElement: ElementAWB)
 
   util: IElementUtil
+  computedStyleList: object
+  getComputedStyle: (computedStyleName: string) => string
   waitForElement: (time: number) => ElementAWB
   waitForClickable: (time: number) => ElementAWB
   waitForElementVisible: (time: number) => ElementAWB
@@ -43,9 +45,9 @@ export declare class ElementAWB {
   waitUntilDisappear: (time: number) => Promise<void>
   waitTextContains: (text: string, time: number) => ElementAWB
   wait: (time: number, cb: Promise<any>) => ElementAWB
-  size(): Promise<{ width: number, height: number }>
-  location(): Promise<{ x: number, y: number }>
-  locationView(): Promise<{ x: number, y: number }>
+  size(): Promise<{width: number, height: number}>
+  location(): Promise<{x: number, y: number}>
+  locationView(): Promise<{x: number, y: number}>
   clear(): Promise<any>
   getElementHTML(): Promise<string>
   getColor(): Promise<string>
@@ -62,8 +64,8 @@ export declare class ElementAWB {
   toElement(): Promise<any>
   isDisplayed(): Promise<boolean>
   isPresent(): Promise<boolean>
-  getRect(): Promise<{ width: number, heigth: number, x: number, y: number }>
-  mouseDownAndMove(position: { x: number, y: number }): Promise<any>
+  getRect(): Promise<{width: number, heigth: number, x: number, y: number}>
+  mouseDownAndMove(position: {x: number, y: number}): Promise<any>
 }
 
 
