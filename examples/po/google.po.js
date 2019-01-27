@@ -3,7 +3,7 @@ const {$, $$} = require('../driver')
 class Google {
   constructor() {
     this.submitSearch = $('body').$('.tsf-p').$('[name="btnK"]').waitForClickable(1000)
-    this.inputSearch = $('#lst-ib')
+    this.inputSearch = $('[name="q"]')
     this.resultSearch = $('#ires .g').waitForElementVisible(1000)
     this.input4 = $$('input').get(4)
   }
