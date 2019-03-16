@@ -24,7 +24,7 @@ const getReleases = async () => {
   return Contents
 }
 
-function getDownloadLink(list) {
+function getDownloadLink(list, v) {
   const osArchMap = {
     darwinx64: 'mac64',
     win32x64: 'win32',
@@ -36,49 +36,42 @@ function getDownloadLink(list) {
   const chromeArch = osArchMap[`${os.platform()}${os.arch()}`]
 
   const getMap = () => {
-    return list.map(release => {
+    const realisesList = list.map(release => {
       const publishedData = +new Date(release.LastModified[0])
       const version = release.Key[0].split('/')
-      const browser_download_url = `${url}/${release.Key[0]}`
+      const downloadLink = `${url}/${release.Key[0]}`
+      return {publishedData, version, downloadLink}
+    }).sort((a, b) => a.publishedData > b.publishedData ? -1 : a.publishedData < b.publishedData ? 1 : 0)
+      .filter((item) => item.downloadLink.includes('.zip') && item.downloadLink.includes(chromeArch))
 
-
-      return {publishedData, version, browser_download_url}
-    }).filter(release => release.browser_download_url.includes(chromeArch)).reduce((acc, val, index) => {
-      if(!index) {acc = val}
-      if(acc.publishedData < val.publishedData) {
-        acc = val
-      }
-      return acc
-    }, {})
+    if(v) {
+      return realisesList.find((item) => item.downloadLink.includes(v))
+    } else {
+      return realisesList[0]
+    }
   }
-  const {browser_download_url} = getMap()
-  return browser_download_url
+
+  const {downloadLink} = getMap()
+  return downloadLink
 }
 
-async function getChromeDriver() {
-  const downloadUrl = getDownloadLink(await getReleases())
+async function getChromeDriver(v) {
+  const downloadUrl = getDownloadLink(await getReleases(), v)
+
   return new Promise((resolve) => {
-    fetch(downloadUrl)
-      .then(function(res) {
-        const dest = fs.createWriteStream(resolvePath(`./chromedriver.zip`))
-        res.body.pipe(dest)
-        res.body.on('end', () => {
-          const str = fs.createReadStream(resolvePath(`./chromedriver.zip`)).pipe(unzip.Extract({path: resolvePath('./')}))
-          str.on('close', () => {
-            if(os.arch() === 'x64' && os.platform() === 'win32') {
-              fs.unlink(resolvePath(`./chromedriver.zip`), (err) => {
-                if(err) throw err
-                resolve(true)
-              })
-            } else {
-              fs.unlink(resolvePath(`./chromedriver.zip`), (err) => {
-                if(err) throw err
-                resolve(true)
-              })
-            }
+    fetch(downloadUrl).then(function(res) {
+      const dest = fs.createWriteStream(resolvePath(`./chromedriver.zip`))
+      res.body.pipe(dest)
+      res.body.on('end', () => {
+        const str = fs.createReadStream(resolvePath(`./chromedriver.zip`)).pipe(unzip.Extract({path: resolvePath('./')}))
+        str.on('close', () => {
+          fs.unlink(resolvePath(`./chromedriver.zip`), (err) => {
+            if(err) throw err
+            resolve(true)
           })
         })
       })
+    })
   }).then((value) => {
     if(value) {
       console.info('chrome driver installed success')
