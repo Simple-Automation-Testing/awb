@@ -40,7 +40,10 @@ function reformatToDataNameUrl(releases) {
 }
 
 
-function getVersionsList(release) {
+async function getVersionsList(release) {
+  if(!release) {
+    release = reformatToDataNameUrl(await getReleases())
+  }
   return release.reduce(function(acc, {version}) {
     acc[version] = version
     return acc
