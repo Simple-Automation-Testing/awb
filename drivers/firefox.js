@@ -16,8 +16,35 @@ const {dirname, join} = require('path')
 const {spawn, execSync} = require('child_process')
 
 async function getReleases() {
-  const list = await fetch(releaseListUrl).then(resp => resp.json())
-  return list
+  /**
+   * listList structure
+   *
+   */
+  const listList = await fetch(releaseListUrl).then(resp => resp.json())
+  return listList
+}
+
+function reformatToDataNameUrl(releases) {
+  const listObject = releases.map(release => {
+    const publishedData = +new Date(release.published_at)
+    const version = release.tag_name
+
+    const downloadUrlList = release.assets.map(asset => {
+      return asset.browser_download_url
+    })
+
+    return {publishedData, version, downloadUrlList}
+  })
+
+  return listObject
+}
+
+
+function getVersionsList(release) {
+  return release.reduce(function(acc, {version}) {
+    acc[version] = version
+    return acc
+  }, {})
 }
 
 function getDownloadLink(list) {
@@ -30,15 +57,9 @@ function getDownloadLink(list) {
   }
 
   const getMap = () => {
-    return list.map(release => {
-      const publishedData = +new Date(release.published_at)
-      const version = release.tag_name
-      const assets = release.assets.map(asset => {
-        const {name, browser_download_url} = asset
-        return {name, browser_download_url}
-      })
-      return {publishedData, version, assets}
-    }).reduce((acc, val, index) => {
+    const listObject = reformatToDataNameUrl(list)
+
+    return listObject.reduce((acc, val, index) => {
       if(!index) {acc = val}
       if(acc.publishedData < val.publishedData) {
         acc = val
@@ -60,6 +81,7 @@ function getDownloadLink(list) {
 
 async function getGeckoDriver() {
   const downloadUrl = getDownloadLink(await getReleases())
+  console.log(downloadUrl)
   return new Promise((resolve) => {
     fetch(downloadUrl)
       .then(function(res) {
@@ -107,6 +129,7 @@ async function getGeckoDriver() {
     } catch(error) {
       console.error(error.toString())
     }
+    return value
   })
 }
 
@@ -142,9 +165,13 @@ async function clearGecko() {
 }
 
 module.exports = {
+  getReleases,
+  reformatToDataNameUrl,
+  getDownloadLink,
   getGeckoDriver,
   spawnGeckodriver,
-  clearGecko
+  clearGecko,
+  getVersionsList
 }
 
 // https://api.github.com/repos/mozilla/geckodriver/releases

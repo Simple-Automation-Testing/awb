@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 process.title = 'wd-interface'
+const prompt = require('text-prompt');
+const singleSelectPrompt = require('select-prompt');
 
 const {
   getChromeDriver,
@@ -17,46 +19,41 @@ const {
 
 // wd install
 
-const args = process.argv.slice(2)
+const args = process.argv.slice(2);
 
+const installationTypes = {
+  all: 'all',
+  chrome: 'chrome',
+  gecko: 'gecko',
+  standalone: 'standalone'
+};
 
-
-try {
-  if(args.includes('chrome') && args.includes('standalone') && args.includes('gecko')) {
-
-    getChromeDriver().then(getStandalone).then(getGeckoDriver)
-
-  } else if(args.includes('chrome') && args.includes('standalone')) {
-
-    getChromeDriver().then(getStandalone)
-
-  } else if(args.includes('gecko') && args.includes('standalone')) {
-
-    getGeckoDriver().then(getStandalone)
-
-  } else if(args.includes('start') && args.includes('chrome')) {
-
-    spawnChromedriver().then(writeId)
-
-  } else if(args.includes('gecko') && args.includes('start')) {
-
-    spawnGeckodriver().then(writeId)
-
-  } else if(args.includes('start') && args.includes('standalone')) {
-
-    spawnStandalone().then(writeId)
-
-  } else if(args.includes('standalone')) {
-    getStandalone()
-  } else if(args.includes('clear') && args.includes('all')) {
-    clearChrome().then(clearStandalone)
-  } else if(args.includes('killsession')) {
-    killProc()
-  } else if(args.includes('chrome')) {
-    getChromeDriver()
-  } else if(args.includes('gecko')) {
-    getGeckoDriver()
+(async function choose() {
+  const installationType = await selectParam(getPromptOptions(installationTypes))
+  if(installationType === installationTypes.all) {
+    await getChromeDriver().then(getStandalone).then(getGeckoDriver)
+  } else if(installationType === installationTypes.chrome) {
+    await getChromeDriver()
+  } else if(installationType === installationTypes.gecko) {
+    await getGeckoDriver()
+  } else if(installationType === installationTypes.standalone) {
+    await getStandalone()
   }
-} catch(error) {
-  console.error(error.toString())
+})()
+
+function selectParam(options) {
+  return new Promise(resolve => {
+    singleSelectPrompt('Select installation:', options, {cursor: Math.floor(options.length / 2)})
+      .on('submit', resolve)
+  })
+}
+
+function getPromptOptions(options) {
+  const preparedOptions = options instanceof Array
+    ? options
+    : Object.values(options);
+  return preparedOptions.map(option => ({
+    title: option,
+    value: option,
+  }));
 }

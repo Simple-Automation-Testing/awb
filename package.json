@@ -45,7 +45,9 @@
   "homepage": "https://github.com/potapovDim/interface-webdriver#readme",
   "dependencies": {
     "node-fetch": "^2.2.0",
+    "select-prompt": "^0.3.1",
     "tar": "^4.4.6",
+    "text-prompt": "^0.1.2",
     "unzip": "^0.1.11",
     "xml2js": "^0.4.19"
   },
