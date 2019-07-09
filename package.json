@@ -1,6 +1,6 @@
 {
   "name": "awb",
-  "version": "0.7.9",
+  "version": "0.7.10",
   "description": "simple light weight interface for selenium webdriver (node js)",
   "main": "./awb.js",
   "bin": {
@@ -44,9 +44,9 @@
   },
   "homepage": "https://github.com/potapovDim/interface-webdriver#readme",
   "dependencies": {
-    "node-fetch": "^2.2.0",
+    "node-fetch": "^2.6.0",
     "tar": "^4.4.6",
-    "unzip": "^0.1.11",
+    "unzipper": "^0.10.1",
     "xml2js": "^0.4.19"
   },
   "engines": {

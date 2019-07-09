@@ -8,7 +8,7 @@ const url = 'https://chromedriver.storage.googleapis.com'
 
 const fs = require('fs')
 const fetch = require('node-fetch')
-const unzip = require('unzip')
+const unzip = require('unzipper')
 
 const {spawn, execSync} = require('child_process')
 

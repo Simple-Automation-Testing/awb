@@ -6,7 +6,7 @@ const releaseListUrl = 'https://api.github.com/repos/mozilla/geckodriver/release
 
 const fs = require('fs')
 const fetch = require('node-fetch')
-const unzip = require('unzip')
+const unzip = require('unzipper')
 const zlib = require('zlib')
 const tar = require('tar')
 const mkdirp = require('mkdirp')
