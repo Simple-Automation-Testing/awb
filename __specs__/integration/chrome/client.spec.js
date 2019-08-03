@@ -337,7 +337,7 @@ describe('client chrome', () => {
   it('tabs', async () => {
     const file = 'tabs'
     const link = $('a').waitForClickable(1000)
-    const googleInput = $('#lst-ib').waitForElementPresent(5000)
+    const googleInput = $('[name="q"]').waitForElementPresent(5000)
     await client.goTo(pathResolver(file))
     await link.click()
     await client.switchToTab(1)
@@ -347,7 +347,6 @@ describe('client chrome', () => {
   it('getRect', async () => {
     const file = 'tabs'
     const link = $('a').waitForClickable(1000)
-    const googleInput = $('#lst-ib').waitForElementPresent(5000)
     await client.goTo(pathResolver(file))
     expect(await link.getRect()).to.eql(
       {width: 76, height: 17, x: 8, y: 8}
@@ -357,7 +356,6 @@ describe('client chrome', () => {
   it('getElementHTML', async () => {
     const file = 'tabs'
     const link = $('a').waitForClickable(1000)
-    const googleInput = $('#lst-ib').waitForElementPresent(5000)
     await client.goTo(pathResolver(file))
     expect(await link.getElementHTML()).to.eql('<a href="https://www.google.com.ua" target="_blank">Go to goole</a>')
   })
@@ -402,7 +400,7 @@ describe('client chrome', () => {
     expect(await clicker.getTag()).to.eql('button')
   })
 
-  it('rightClick', async () => {
+  it.only('rightClick', async () => {
     const file = 'rightClick'
     const clicker = element('#test_button').waitForClickable(3000)
     const spans = $$('span')

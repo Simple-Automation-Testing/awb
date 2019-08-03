@@ -60,7 +60,7 @@
     "pretest": "./bin/awb standalone chrome",
     "test": "npm run integration-chrome && npm run unit",
     "integration-crash": "mocha --timeout 60000 $(find ./__specs__/crash -path '*.spec.js')",
-    "integration-chrome": "mocha --timeout 60000 $(find ./__specs__/integration/chrome -path '*.spec.js')",
+    "integration-chrome": "mocha --timeout 60000 --bail $(find ./__specs__/integration/chrome -path '*.spec.js')",
     "integration-chrome:watch": "mocha --timeout 60000 -w --harmony --trace-deprecation $(find ./__specs__/integration/chrome -path '*.spec.js')",
     "integration-firefox": "mocha --timeout 60000 $(find ./__specs__/integration/firefox -path '*.spec.js')",
     "integration-firefox:watch": "mocha --timeout 60000 -w $(find ./__specs__/integration/firefox -path '*.spec.js')",
